@@ -20,14 +20,51 @@ class RestfulController extends BaseController
     public static $model = null;
     public static $transformer = null;
 
+    /**
+     * RestfulController constructor.
+     */
+    public function __construct() {
+        // Figure out whether we're using the base controller or a specific one
+        if ( is_null(static::$transformer)) {
+            static::$transformer = RestfulTransformer::class;
+        }
+    }
+
+    /**
+     * Request for a GET of this resource's collection
+     *
+     * @return \Dingo\Api\Http\Response
+     */
     public function getAll() {
         $model = static::$model;
         $objects = $model::all();
 
-        return $this->response->collection($objects, $this->getTransformer());
+        return $this->response->collection($objects, new static::$transformer);
     }
 
+
     public function get($uuid) {
+
+    }
+
+    /**
+     * Request for POST to create a new resource
+     *
+     * @param $object
+     */
+    public function post($object) {
+
+    }
+
+    public function put($object) {
+
+    }
+
+    public function patch($object) {
+
+    }
+
+    public function delete($uuid) {
 
     }
 

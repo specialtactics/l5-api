@@ -22,7 +22,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "specialtactics\\L5Api\\Providers\\ServiceProvider"
+        "Specialtactics\\L5Api\\Providers\\ServiceProvider"
       ]
     }
   }

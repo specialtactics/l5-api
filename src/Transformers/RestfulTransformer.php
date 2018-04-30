@@ -15,8 +15,22 @@ class RestfulTransformer extends TransformerAbstract
      */
     public function transform(RestfulModel $model)
     {
-        $responseTransformed = $model->toArray();
+        $transformed = $model->toArray();
 
-        return $responseTransformed;
+        /**
+         * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
+         */
+        foreach($model->getDates() as $dateColumn) {
+            if(!empty($model->$dateColumn)) {
+                $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
+            }
+        }
+
+        /**
+         * Transform all keys to CamelCase, recursively
+         */
+        camel_case_array($transformed);
+
+        return $transformed;
     }
 }

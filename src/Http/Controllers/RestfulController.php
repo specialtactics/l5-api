@@ -2,6 +2,7 @@
 
 namespace Specialtactics\L5Api\Http\Controllers;
 
+use App\Transformers\BaseTransformer;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,9 +16,20 @@ class RestfulController extends BaseController
     use Helpers;
 
     /**
-     * @var $model \Illuminate\Database\Eloquent\Model;
+     * Specify the model that you want to be associated with this controller. This is the primary model that
+     * the controller deals with
+     *
+     * @var $model \App\Models\BaseModel
      */
     public static $model = null;
+
+    /**
+     * Usually a transformer will be associated with a model, however if you don't specify a model or with to
+     * override the transformer at a controller level (for example if it's a controller for a dashboard resource), then
+     * you can do so by specifying a transformer here
+     *
+     * @var null|BaseTransformer The transformer this controller should use
+     */
     public static $transformer = null;
 
     /**

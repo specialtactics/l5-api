@@ -11,11 +11,11 @@ if (!function_exists('APIUser')) {
 if (!function_exists('camel_case_array')) {
     /**
      * Recursively camel-case an array
-     * Uses pass by reference, and mutates the array in place
      *
      * @param $array
+     * @return array $array
      */
-    function camel_case_array(&$array) {
+    function camel_case_array($array) {
         foreach (array_keys($array) as $key) {
             // Get a reference to the value of the key (avoid copy)
             // Then remove that array element
@@ -34,5 +34,7 @@ if (!function_exists('camel_case_array')) {
             // We'll be dealing with some large values, so memory cleanup is important
             unset($value);
         }
+
+        return $array;
     }
 }

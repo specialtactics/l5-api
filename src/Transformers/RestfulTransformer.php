@@ -8,6 +8,11 @@ use Specialtactics\L5Api\Models\RestfulModel;
 class RestfulTransformer extends TransformerAbstract
 {
     /**
+     * @var RestfulModel The model to be transformed
+     */
+    protected $model = null;
+
+    /**
      * Transform an eloquent object into a jsonable array
      *
      * @param RestfulModel $model
@@ -15,7 +20,19 @@ class RestfulTransformer extends TransformerAbstract
      */
     public function transform(RestfulModel $model)
     {
+        $this->model = $model;
+
+        // Begin the transformation!
         $transformed = $model->toArray();
+
+        /**
+         * Filter out attributes we don't want to expose to the API
+         */
+        $filterOutAttributes = $this->getFilteredOutAttributes();
+
+        $transformed = array_filter($transformed, function($key) use ($filterOutAttributes) {
+            return ! in_array($key, $filterOutAttributes);
+        }, ARRAY_FILTER_USE_KEY);
 
         /**
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
@@ -29,41 +46,82 @@ class RestfulTransformer extends TransformerAbstract
         /**
          * Transform all keys to CamelCase, recursively
          */
-        camel_case_array($transformed);
+        $transformed = camel_case_array($transformed);
 
         /**
          * Get the relations for this object and transform then
          */
-        foreach($model->getRelations() as $relationKey => $relation) {
+        $transformed = $this->transformRelations($transformed);
+
+        return $transformed;
+    }
+
+    /**
+     * Filter out some attributes immediately
+     *
+     * Some attributes we never want to expose to an API consumer, for security and separation of concerns reasons
+     * Feel free to override this function as necessary
+     *
+     * @return array Array of attributes to filter out
+     */
+    protected function getFilteredOutAttributes() {
+        $filterOutAttributes = array_merge(
+            $this->model->getHidden(),
+            [
+                $this->model->getKeyName(),
+                'deleted_at',
+            ]
+        );
+
+        return array_unique($filterOutAttributes);
+    }
+
+    /**
+     * Do relation transformations
+     *
+     * @param array $transformed
+     * @return array $transformed
+     */
+    protected function transformRelations(array $transformed) {
+        // Iterate through all relations
+        foreach($this->model->getRelations() as $relationKey => $relation) {
 
             // Skip Pivot
-            if($relation instanceof \Illuminate\Database\Eloquent\Relations\Pivot) {
+            if ($relation instanceof \Illuminate\Database\Eloquent\Relations\Pivot) {
                 continue;
             }
 
             // Transform Collection
             else if ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
                 if( count($relation->getIterator()) > 0) {
-                    $relationObject = $relation->first();
-                    $class = get_class($relationObject);
-                    $relationTransformerRaw = $class.'Transformer';
 
-                    $relationTransformer = new $relationTransformerRaw;
-                    if($model->$relationKey) {
-                        foreach($relation->getIterator() as $key => $item) {
-                            //replace the entity in the object transformed, because it probably will have been transformed
-                            //need to use the specific transformer
-                            $objectTransformed[camel_case($relationKey)][$key] = $relationTransformer->transform($item);
+                    $relationModel = $relation->first();
+                    $relationTransformer = $relationModel::getTransformer();
+
+                    // Transform related model collection
+                    if ($this->model->$relationKey) {
+                        foreach($relation->getIterator() as $key => $relatedModel) {
+                            // Replace the related models with their transformed selves
+                            $transformedRelatedModel = $relationTransformer->transform($relatedModel);
+
+                            // We don't really care about pivot information at this stage
+                            if ($transformedRelatedModel['pivot']) {
+                                unset($transformedRelatedModel['pivot']);
+                            }
+
+                            $transformed[camel_case($relationKey)][$key] = $transformedRelatedModel;
                         }
                     }
                 }
-            } else if ($relation instanceof RestfulModel) {
-                // Get transformer of relation model
-                $relationTransformer = $relation::$transformer;
-                $transformer = is_null($relationTransformer) ? new RestfulTransformer() : new $relationTransformer;
+            }
 
-                if (array_key_exists($relationKey, $model)) {
-                    $objectTransformed[camel_case($relationKey)] = $transformer->transform($model->$relationKey);
+            // Transformed related model
+            else if ($relation instanceof RestfulModel) {
+                // Get transformer of relation model
+                $relationTransformer = $relation::getTransformer();
+
+                if ($this->model->$relationKey) {
+                    $transformed[camel_case($relationKey)] = $relationTransformer->transform($this->model->$relationKey);
                 }
             }
         }

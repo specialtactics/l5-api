@@ -3,6 +3,7 @@ namespace Specialtactics\L5Api\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Uuid;
+use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
 class RestfulModel extends Model {
     /**
@@ -23,7 +24,12 @@ class RestfulModel extends Model {
     /**
      * @var array Acts like $with (eager loads relations), however only for immediate controller requests for that object
      */
-    public $localWith = [];
+    public static $localWith = [];
+
+    /**
+     * @var null|RestfulTransformer The transformer to use for this model
+     */
+    public static $transformer = null;
 
     /**
      * Boot the model

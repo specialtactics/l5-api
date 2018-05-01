@@ -18,7 +18,8 @@
   "autoload": {
     "psr-4": {
       "Specialtactics\\L5Api\\": "src/"
-    }
+    },
+    "files": ["src/Helpers/helpers.php"]
   },
   "extra": {
     "laravel": {

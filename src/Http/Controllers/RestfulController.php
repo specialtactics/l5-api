@@ -36,8 +36,8 @@ class RestfulController extends BaseController
      * @return \Dingo\Api\Http\Response
      */
     public function getAll() {
-        $model = static::$model;
-        $objects = $model::all();
+        $model = new static::$model;
+        $objects = $model::with($model::$localWith)->get();
 
         return $this->response->collection($objects, new static::$transformer);
     }

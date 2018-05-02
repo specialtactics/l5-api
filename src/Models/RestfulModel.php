@@ -3,7 +3,7 @@ namespace Specialtactics\L5Api\Models;
 
 use App\Transformers\BaseTransformer;
 use Illuminate\Database\Eloquent\Model;
-use Uuid;
+use Ramsey\Uuid\Uuid;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
 class RestfulModel extends Model {
@@ -44,7 +44,7 @@ class RestfulModel extends Model {
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer
      *
-     * @var null|RestfulTransformer The transformer to use for this model
+     * @var null|RestfulTransformer The transformer to use for this model, if overriding the default
      */
     public static $transformer = null;
 
@@ -60,10 +60,23 @@ class RestfulModel extends Model {
             $uuidKeyName = $model->getUuidKeyName();
 
             if (!array_key_exists($uuidKeyName, $model->getAttributes())) {
-                $model->$uuidKeyName = Uuid::generate(4);
+                $model->$uuidKeyName = Uuid::uuid4()->toString();
             }
         });
     }
+
+    /**
+     * Return this model's transformer, or a generic one if a specific one is not defined for the model
+     *
+     * @return BaseTransformer
+     */
+    public static function getTransformer() {
+        return is_null(static::$transformer) ? new BaseTransformer : new static::$transformer;
+    }
+
+    /************************************************************
+     * Adding UUID related functionality
+     ***********************************************************/
 
     /**
      * Get the UUID key for the model.
@@ -86,12 +99,29 @@ class RestfulModel extends Model {
     }
 
     /**
-     * Return this model's transformer, or a generic one if a specific one is not defined for the model
+     * Get the table qualified key name.
      *
-     * @return BaseTransformer
+     * @return string
      */
-    public static function getTransformer() {
-        return is_null(static::$transformer) ? new BaseTransformer : new static::$transformer;
+    public function getQualifiedUuidKeyName()
+    {
+        return $this->qualifyColumn($this->getUuidKeyName());
     }
 
+    /************************************************************
+     * Extending Laravel Functions Below
+     ***********************************************************/
+
+    /**
+     * We're extending the existing Laravel Builder
+     *
+     * Create a new Eloquent query builder for the model.
+     *
+     * @param  \Illuminate\Database\Query\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new Builder($query);
+    }
 }

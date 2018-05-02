@@ -38,3 +38,17 @@ if (!function_exists('camel_case_array')) {
         return $array;
     }
 }
+
+if (!function_exists('class_basename')) {
+
+    /**
+     * Get the basename of a class's FQNS name. This is proven to be the fastest way to do this (for now).
+     *
+     * @param string $className
+     * @return string
+     */
+    function class_basename(string $className) {
+        $reflection = new ReflectionClass($className);
+        return $reflection->getShortName();
+    }
+}

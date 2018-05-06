@@ -1,12 +1,19 @@
 <?php
+
 namespace Specialtactics\L5Api\Models;
 
-use App\Transformers\BaseTransformer;
-use Illuminate\Database\Eloquent\Model;
+use Exception;
 use Ramsey\Uuid\Uuid;
+use Webpatser\Uuid\Uuid as UuidValidator;
+use Illuminate\Database\Eloquent\Model;
+use App\Transformers\BaseTransformer;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
-class RestfulModel extends Model {
+class RestfulModel extends Model
+{
+
+    use Features\UuidMethods;
+
     /**
      * Every model should generally have an incrementing primary integer key.
      * An exception may be pivot tables
@@ -18,7 +25,7 @@ class RestfulModel extends Model {
     /**
      * Every model should have a UUID key, which will be returned to API consumers.
      * The only exception to this may be entities with very vast amounts of records, which never require referencing
-     * for the purposes of updating or deleting by API consumers
+     * for the purposes of updating or deleting by API consumers. In that case, make this null.
      *
      * @var string UUID key
      */
@@ -49,6 +56,37 @@ class RestfulModel extends Model {
     public static $transformer = null;
 
     /**
+     * Return the validation rules for this model
+     *
+     * @return array Validation rules to be used for the model when creating it
+     */
+    public function validationRules()
+    {
+        return [];
+    }
+
+    /**
+     * Return the validation rules for this model's update operations
+     * In most cases, they will be the same as for the create operations
+     *
+     * @return array Validation roles to use for updating model
+     */
+    public function validationRulesUpdating()
+    {
+        return $this->validationRules();
+    }
+
+    /**
+     * Return any custom validation rule messages to be used
+     *
+     * @return array
+     */
+    public function validationMessages()
+    {
+        return [];
+    }
+
+    /**
      * Boot the model
      */
     public static function boot()
@@ -70,42 +108,28 @@ class RestfulModel extends Model {
      *
      * @return BaseTransformer
      */
-    public static function getTransformer() {
+    public static function getTransformer()
+    {
         return is_null(static::$transformer) ? new BaseTransformer : new static::$transformer;
     }
 
-    /************************************************************
-     * Adding UUID related functionality
-     ***********************************************************/
-
     /**
-     * Get the UUID key for the model.
+     * When Laravel creates a new model, it will add any new attributes (such as UUID) at the end. When a create
+     * operation such as a POST returns the new resource, the UUID will thus be at the end, which doesn't look nice.
+     * For purely aesthetic reasons, we have this function to conduct a simple reorder operation to move the UUID
+     * attribute to the head of the attributes array
      *
-     * @return string
-     */
-    public function getUuidKeyName()
-    {
-        return $this->uuidKey;
-    }
-
-    /**
-     * Get the value of the model's UUID key.
+     * This will be used at the end of create-related controller functions
      *
-     * @return mixed
+     * @return void
      */
-    public function getUuidKey()
+    public function orderAttributesUuidFirst()
     {
-        return $this->getAttribute($this->getUuidKeyName());
-    }
-
-    /**
-     * Get the table qualified key name.
-     *
-     * @return string
-     */
-    public function getQualifiedUuidKeyName()
-    {
-        return $this->qualifyColumn($this->getUuidKeyName());
+        if ($this->getUuidKeyName()) {
+            $UuidValue = $this->getUuidKey();
+            unset($this->attributes[$this->getUuidKeyName()]);
+            $this->attributes = [$this->getUuidKeyName() => $UuidValue] + $this->attributes;
+        }
     }
 
     /************************************************************
@@ -123,5 +147,30 @@ class RestfulModel extends Model {
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
+    }
+
+    /************************************************************
+     * Wrappers for eloquent functions
+     *
+     * These will check if the ID is a UUID, and redirect
+     * the function as appropriate
+     *
+     * Note: PCRE compiles regexp to bytecode using PHP's JIT,
+     * so it is very fast
+     ***********************************************************/
+
+    /**
+     * Wrapper to allow both IDs and UUIDs to be used
+     *
+     * @param  array|int  $ids
+     * @return int
+     */
+    public static function destroy($ids)
+    {
+        if (UuidValidator::validate($ids)) {
+            return static::destroyByUuid($ids);
+        } else {
+            return parent::destroy($ids);
+        }
     }
 }

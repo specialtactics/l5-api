@@ -14,7 +14,8 @@ use Webpatser\Uuid\Uuid;
  *
  * @package Specialtactics\L5Api\Models
  */
-class Builder extends \Illuminate\Database\Eloquent\Builder {
+class Builder extends \Illuminate\Database\Eloquent\Builder
+{
     /**
      * Find a model by its UUID key or throw a not found exception.
      *
@@ -92,7 +93,7 @@ class Builder extends \Illuminate\Database\Eloquent\Builder {
      * Wrappers for builder functions
      *
      * These will check if the ID is a UUID, and redirect
-     * the function cass as appropriate
+     * the function as appropriate
      *
      * Note: PCRE compiles regexp to bytecode using PHP's JIT,
      * so it is very fast

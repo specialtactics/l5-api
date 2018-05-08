@@ -115,7 +115,7 @@ class RestfulController extends Controller
             // development debugging
             if ($e instanceof QueryException ) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('That resource already exists.' );
+                    throw new ConflictHttpException('That resource already exists.');
                 } else if (Config::get('api.debug') === true) {
                     throw $e;
                 }
@@ -133,7 +133,6 @@ class RestfulController extends Controller
 
     public function put($object)
     {
-
     }
 
     /**

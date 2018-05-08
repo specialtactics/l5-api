@@ -94,7 +94,7 @@ class RestfulModel extends Model
         parent::boot();
 
         // If the PK(s) are missing, generate them
-        static::creating(function(RestfulModel $model) {
+        static::creating(function (RestfulModel $model) {
             $uuidKeyName = $model->getUuidKeyName();
 
             if (!array_key_exists($uuidKeyName, $model->getAttributes())) {

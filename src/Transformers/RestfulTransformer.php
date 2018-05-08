@@ -30,15 +30,15 @@ class RestfulTransformer extends TransformerAbstract
          */
         $filterOutAttributes = $this->getFilteredOutAttributes();
 
-        $transformed = array_filter($transformed, function($key) use ($filterOutAttributes) {
+        $transformed = array_filter($transformed, function ($key) use ($filterOutAttributes) {
             return ! in_array($key, $filterOutAttributes);
         }, ARRAY_FILTER_USE_KEY);
 
         /**
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
          */
-        foreach($model->getDates() as $dateColumn) {
-            if(!empty($model->$dateColumn)) {
+        foreach ($model->getDates() as $dateColumn) {
+            if (!empty($model->$dateColumn)) {
                 $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
             }
         }
@@ -84,7 +84,7 @@ class RestfulTransformer extends TransformerAbstract
      */
     protected function transformRelations(array $transformed) {
         // Iterate through all relations
-        foreach($this->model->getRelations() as $relationKey => $relation) {
+        foreach ($this->model->getRelations() as $relationKey => $relation) {
 
             // Skip Pivot
             if ($relation instanceof \Illuminate\Database\Eloquent\Relations\Pivot) {
@@ -93,14 +93,14 @@ class RestfulTransformer extends TransformerAbstract
 
             // Transform Collection
             else if ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
-                if( count($relation->getIterator()) > 0) {
+                if (count($relation->getIterator()) > 0) {
 
                     $relationModel = $relation->first();
                     $relationTransformer = $relationModel::getTransformer();
 
                     // Transform related model collection
                     if ($this->model->$relationKey) {
-                        foreach($relation->getIterator() as $key => $relatedModel) {
+                        foreach ($relation->getIterator() as $key => $relatedModel) {
                             // Replace the related models with their transformed selves
                             $transformedRelatedModel = $relationTransformer->transform($relatedModel);
 

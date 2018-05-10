@@ -8,8 +8,6 @@
     <!-- Specify Paths to check -->
     <file>src</file>
 
-    <exclude-pattern>Helpers/*</exclude-pattern>
-
     <!-- ================================================ -->
     <!-- Commandline Flags -->
     <!-- ================================================ -->

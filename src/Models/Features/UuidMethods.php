@@ -2,6 +2,8 @@
 
 namespace Specialtactics\L5Api\Models\Features;
 
+use Webpatser\Uuid\Uuid as UuidValidator;
+
 /**
  * Trait UuidMethods
  *
@@ -41,6 +43,31 @@ trait UuidMethods
     public function getQualifiedUuidKeyName()
     {
         return $this->qualifyColumn($this->getUuidKeyName());
+    }
+
+    /************************************************************
+     * Wrappers for eloquent functions
+     *
+     * These will check if the ID is a UUID, and redirect
+     * the function as appropriate
+     *
+     * Note: PCRE compiles regexp to bytecode using PHP's JIT,
+     * so it is very fast
+     ***********************************************************/
+
+    /**
+     * Wrapper to allow both IDs and UUIDs to be used
+     *
+     * @param  array|int  $ids
+     * @return int
+     */
+    public static function destroy($ids)
+    {
+        if (UuidValidator::validate($ids)) {
+            return static::destroyByUuid($ids);
+        } else {
+            return parent::destroy($ids);
+        }
     }
 
     /************************************************************

@@ -4,7 +4,7 @@ namespace Specialtactics\L5Api\Models;
 
 use Exception;
 use Ramsey\Uuid\Uuid;
-use Webpatser\Uuid\Uuid as UuidValidator;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
 use App\Transformers\BaseTransformer;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
@@ -60,7 +60,7 @@ class RestfulModel extends Model
      *
      * @return array Validation rules to be used for the model when creating it
      */
-    public function validationRules()
+    public function getValidationRules()
     {
         return [];
     }
@@ -71,9 +71,9 @@ class RestfulModel extends Model
      *
      * @return array Validation roles to use for updating model
      */
-    public function validationRulesUpdating()
+    public function getValidationRulesUpdating()
     {
-        return $this->validationRules();
+        return $this->getValidationRules();
     }
 
     /**
@@ -81,24 +81,45 @@ class RestfulModel extends Model
      *
      * @return array
      */
-    public function validationMessages()
+    public function getValidationMessages()
     {
         return [];
     }
 
     /**
      * Boot the model
+     *
+     * Add various functionality in the model lifecycle hooks
      */
     public static function boot()
     {
         parent::boot();
 
-        // If the PK(s) are missing, generate them
+        // Add functionality for creating a model
         static::creating(function (RestfulModel $model) {
+            // If the PK(s) are missing, generate them
             $uuidKeyName = $model->getUuidKeyName();
 
             if (!array_key_exists($uuidKeyName, $model->getAttributes())) {
                 $model->$uuidKeyName = Uuid::uuid4()->toString();
+            }
+        });
+
+        // Add functionality for updating a model
+        static::updating(function (RestfulModel $model) {
+            // Disallow updating UUID keys
+            if ($model->getAttribute($model->getUuidKeyName()) != $model->getOriginal($model->getUuidKeyName())) {
+                throw new BadRequestHttpException('Updating the UUID of a resource is not allowed.');
+            }
+
+            // Disallow updating immutable attributes
+            if (! empty($model->immutableAttributes)) {
+                // For each immutable attribute, check if they have changed
+                foreach ($model->immutableAttributes as $attributeName) {
+                    if ($model->getOriginal($attributeName) != $model->getAttribute($attributeName)) {
+                        throw new BadRequestHttpException('Updating the "'.camel_case($attributeName).'" attribute is not allowed.');
+                    }
+                }
             }
         });
     }
@@ -147,30 +168,5 @@ class RestfulModel extends Model
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
-    }
-
-    /************************************************************
-     * Wrappers for eloquent functions
-     *
-     * These will check if the ID is a UUID, and redirect
-     * the function as appropriate
-     *
-     * Note: PCRE compiles regexp to bytecode using PHP's JIT,
-     * so it is very fast
-     ***********************************************************/
-
-    /**
-     * Wrapper to allow both IDs and UUIDs to be used
-     *
-     * @param  array|int  $ids
-     * @return int
-     */
-    public static function destroy($ids)
-    {
-        if (UuidValidator::validate($ids)) {
-            return static::destroyByUuid($ids);
-        } else {
-            return parent::destroy($ids);
-        }
     }
 }

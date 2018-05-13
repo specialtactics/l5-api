@@ -45,17 +45,7 @@ class DummyClass extends BaseModel {
      *
      * @return array Rules
      */
-    public function validationRules()
-    {
-        return [];
-    }
-
-    /**
-     * Return any custom validation messages for the rules defined for this model
-     *
-     * @return array Custom Validation Messages
-     */
-    public function validationMessages()
+    public function getValidationRules()
     {
         return [];
     }

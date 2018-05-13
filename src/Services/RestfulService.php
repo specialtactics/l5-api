@@ -2,7 +2,11 @@
 
 namespace Specialtactics\L5Api\Services;
 
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Dingo\Api\Exception\StoreResourceFailedException;
+use Validator;
+use Specialtactics\L5Api\Models\RestfulModel;
 
 /**
  * This class contains logic for processing restful requests
@@ -29,5 +33,16 @@ class RestfulService
         }
 
         return $deletedCount;
+    }
+
+    /**
+     * Patch a resource of the given model, with the given request
+     *
+     * @param RestfulModel $model
+     * @param Request $request
+     * @throws HttpException
+     */
+    public function patch($model, $request) {
+        $model->update($request->all());
     }
 }

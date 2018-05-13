@@ -12,12 +12,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Config;
+use Validator;
 use Dingo\Api\Routing\Helpers;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Dingo\Api\Exception\StoreResourceFailedException;
 
 class RestfulController extends Controller
 {
@@ -106,7 +108,7 @@ class RestfulController extends Controller
         $model = new static::$model;
 
         // Validation
-        $request->validate($model->validationRules(), $model->validationMessages());
+        $request->validate($model->getValidationRules(), $model->getValidationMessages());
 
         try {
             $resource = $model::create($request->all());
@@ -139,18 +141,25 @@ class RestfulController extends Controller
      * Request to update the specified resource
      *
      * @param string $uuid UUID of the resource
+     * @param Request $request
      * @return \Dingo\Api\Http\Response
      * @throws HttpException
      */
-    public function patch($uuid)
+    public function patch($uuid, Request $request)
     {
-        $model = new static::$model;
+        $model = static::$model::findOrFail($uuid);
 
-        /** @var BaseModel $resource */
-        $resource = $model::findOrFail($uuid);
+        // Validate the resource data with the updates
+        $validator = Validator::make($request->all(), array_intersect_key($model->getValidationRules(), $request->all()));
 
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Could not update resource with UUID "'.$model->getUuidKey().'".', $validator->errors());
+        }
 
-        // @todo
+        // Patch model
+        $resource = $this->restfulService->patch($model, $request);
+
+        return $this->response->item($resource, $this->getTransformer());
     }
 
     /**

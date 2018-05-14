@@ -111,7 +111,7 @@ class RestfulController extends Controller
         $request->validate($model->getValidationRules(), $model->getValidationMessages());
 
         try {
-            $resource = $model::create($request->all());
+            $resource = $model::create($request->request->all());
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
@@ -150,7 +150,7 @@ class RestfulController extends Controller
         $model = static::$model::findOrFail($uuid);
 
         // Validate the resource data with the updates
-        $validator = Validator::make($request->all(), array_intersect_key($model->getValidationRules(), $request->all()));
+        $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $model->getValidationMessages()));
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not update resource with UUID "'.$model->getUuidKey().'".', $validator->errors());
@@ -218,7 +218,7 @@ class RestfulController extends Controller
      */
     protected function isRequestBodyACollection(Request $request)
     {
-        $input = $request->all();
+        $input = $request->request->all();
 
         // Check that the top-level of the body is an array
         if (is_array($input) && sizeof($input) > 0) {

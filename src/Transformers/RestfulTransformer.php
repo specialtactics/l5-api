@@ -46,7 +46,7 @@ class RestfulTransformer extends TransformerAbstract
         /**
          * Transform all keys to CamelCase, recursively
          */
-        $transformed = camel_case_array($transformed);
+        $transformed = camel_case_array_keys($transformed);
 
         /**
          * Get the relations for this object and transform then

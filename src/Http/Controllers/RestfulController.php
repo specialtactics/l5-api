@@ -134,7 +134,13 @@ class RestfulController extends Controller
         // Put UUID as the first attribute
         $resource->orderAttributesUuidFirst();
 
-        return $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
+        if ($this->shouldTransform()) {
+            $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
+        } else {
+            $response = $resource;
+        }
+
+        return $response;
     }
 
     public function put($object)
@@ -236,5 +242,20 @@ class RestfulController extends Controller
         }
 
         return false;
+    }
+
+    /**
+     * This method determines whether the resource returned should undergo transformation or not.
+     * The reason is, sometimes it is useful to return the untransformed resource (for example - for internal calls)
+     *
+     * @return bool
+     */
+    protected function shouldTransform() {
+        // If we are not called by this function, then we are not called by the router
+        if (debug_backtrace()[2]['function'] != 'call_user_func_array') {
+            return false;
+        }
+
+        return true;
     }
 }

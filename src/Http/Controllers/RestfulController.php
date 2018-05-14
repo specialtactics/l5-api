@@ -108,7 +108,11 @@ class RestfulController extends Controller
         $model = new static::$model;
 
         // Validation
-        $request->validate($model->getValidationRules(), $model->getValidationMessages());
+        $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $model->getValidationMessages()));
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
+        }
 
         try {
             $resource = $model::create($request->request->all());

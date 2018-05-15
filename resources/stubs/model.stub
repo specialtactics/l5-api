@@ -4,7 +4,8 @@ namespace DummyNamespace;
 
 use App\Transformers\BaseTransformer;
 
-class DummyClass extends BaseModel {
+class DummyClass extends BaseModel
+{
     /**
      * @var int Auto increments integer key
      */

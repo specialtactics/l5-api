@@ -271,7 +271,7 @@ class RestfulController extends Controller
         $content = $response->getOriginalContent();
         $content['message'] = $message . $content['message'];
         $response->setContent($content);
-        
+
         return $response;
     }
 }

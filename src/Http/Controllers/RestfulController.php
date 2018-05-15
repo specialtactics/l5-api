@@ -108,7 +108,7 @@ class RestfulController extends Controller
         $model = new static::$model;
 
         // Validation
-        $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $model->getValidationMessages()));
+        $validator = Validator::make($request->request->all(), $model->getValidationRules(), $model->getValidationMessages());
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
@@ -160,7 +160,7 @@ class RestfulController extends Controller
         $model = static::$model::findOrFail($uuid);
 
         // Validate the resource data with the updates
-        $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $model->getValidationMessages()));
+        $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $request->request->all()), $model->getValidationMessages());
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not update resource with UUID "'.$model->getUuidKey().'".', $validator->errors());

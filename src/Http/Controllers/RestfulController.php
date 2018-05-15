@@ -258,4 +258,19 @@ class RestfulController extends Controller
 
         return true;
     }
+
+    /**
+     * Prepend a Response message with a custom message
+     * Useful for adding error info to internal request responses before returning them
+     *
+     * @param \Dingo\Api\Http\Response $response
+     * @param $message
+     * @return \Dingo\Api\Http\Response
+     */
+    protected function prependResponseMessage($response, $message) {
+        $content = $response->getOriginalContent();
+        $content['message'] = $message . $content['message'];
+        $response->setContent($content);
+        return $response;
+    }
 }

@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Config;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Validator;
 use Dingo\Api\Routing\Helpers;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
@@ -97,18 +98,49 @@ class RestfulChildController extends Controller
     }
 
     /**
+     * Request to retrieve a single item of this resource
+     *
+     * @param string $parentUuid UUID of the parent resource
+     * @param string $uuid UUID of the resource
+     * @return \Dingo\Api\Http\Response
+     * @throws HttpException
+     */
+    public function get($parentUuid, $uuid)
+    {
+        // Check parent exists
+        $parentModel = static::$parentModel;
+        $parentResource = $parentModel::findOrFail($parentUuid);
+
+        // Get resource
+        $model = new static::$model;
+        $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
+
+        // Check resource belongs to parent
+        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+            throw new AccessDeniedException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
+                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+        }
+
+        if ( ! $resource) {
+            throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
+        }
+
+        return $this->response->item($resource, $this->getTransformer());
+    }
+
+    /**
      * Request to create the child resource owned by the parent resource
      *
-     * @oaram string $uuid Parent's UUID
+     * @oaram string $parentUuid Parent's UUID
      * @param Request $request
      * @return \Dingo\Api\Http\Response
      * @throws \Exception
      */
-    public function post($uuid, Request $request)
+    public function post($parentUuid, Request $request)
     {
         // Check parent exists
         $parentModel = static::$parentModel;
-        $parentResource = $parentModel::findOrFail($uuid);
+        $parentResource = $parentModel::findOrFail($parentUuid);
 
         // Add parent's key to data
         $data = $request->request->all();

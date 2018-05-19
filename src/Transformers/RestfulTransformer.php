@@ -105,7 +105,7 @@ class RestfulTransformer extends TransformerAbstract
                             $transformedRelatedModel = $relationTransformer->transform($relatedModel);
 
                             // We don't really care about pivot information at this stage
-                            if ($transformedRelatedModel['pivot']) {
+                            if (isset($transformedRelatedModel['pivot'])) {
                                 unset($transformedRelatedModel['pivot']);
                             }
 

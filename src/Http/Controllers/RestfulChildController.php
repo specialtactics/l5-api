@@ -84,11 +84,6 @@ class RestfulChildController extends Controller
 
         $collection = $parentResource->$resourceRelationName;
 
-        if ($collection->isEmpty()) {
-            throw new NotFoundHttpException('Resources \'' . class_basename(static::$model) . '\' for given parent resource \'' .
-                class_basename(static::$parentModel) . '\' with UUID ' . $uuid . ' not found');
-        }
-
         return $this->response->collection($collection, $this->getTransformer());
     }
 

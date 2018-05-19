@@ -168,7 +168,7 @@ class RestfulChildController extends Controller
             }
 
             // Default HTTP exception to use for storage errors
-            throw new UnprocessableEntityHttpException('Unexpected error trying to store this resource');
+            throw new UnprocessableEntityHttpException('Unexpected error trying to store this resource: ' . $e->getMessage());
         }
 
         // Retrieve full model

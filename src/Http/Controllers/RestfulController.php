@@ -132,7 +132,7 @@ class RestfulController extends Controller
         }
 
         // Put UUID as the first attribute
-        $resource->orderAttributesUuidFirst();
+        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);

@@ -81,8 +81,17 @@ class RestfulChildController extends Controller
         $parentResource = $parentModel::findOrFail($uuid);
 
         $resourceRelationName = lcfirst(str_plural(class_basename(static::$model)));
+        $model = static::$model;
 
-        $collection = $parentResource->$resourceRelationName;
+        $withArray = [];
+        foreach ($model::$localWith as $modelRelation) {
+            $withArray[] = $resourceRelationName . '.' . $modelRelation;
+        }
+
+        $withArray = array_merge( [$resourceRelationName], $withArray );
+        $parentResource = $parentResource->where($parentResource->getKeyName(), '=', $parentResource->getKey())->with($withArray)->first();
+
+        $collection = $parentResource->getRelationValue($resourceRelationName);
 
         return $this->response->collection($collection, $this->getTransformer());
     }

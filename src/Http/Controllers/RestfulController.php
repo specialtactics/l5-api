@@ -25,6 +25,7 @@ class RestfulController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Helpers;
+    use Features\RestfulControllerTrait;
 
     /**
      * @var \App\Services\RestfulService
@@ -131,7 +132,7 @@ class RestfulController extends Controller
             throw new UnprocessableEntityHttpException('Unexpected error trying to store this resource');
         }
 
-        // Put UUID as the first attribute
+        // Retrieve full model
         $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
 
         if ($this->shouldTransform()) {

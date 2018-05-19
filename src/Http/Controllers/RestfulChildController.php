@@ -66,11 +66,6 @@ class RestfulChildController extends Controller
     public function __construct(RestfulService $restfulService)
     {
         $this->restfulService = $restfulService;
-
-        // Figure out whether we're using the base controller or a specific one
-        if (is_null(static::$transformer)) {
-            static::$transformer = RestfulTransformer::class;
-        }
     }
 
     /**

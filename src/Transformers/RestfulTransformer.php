@@ -100,6 +100,11 @@ class RestfulTransformer extends TransformerAbstract
 
                     // Transform related model collection
                     if ($this->model->$relationKey) {
+                        $transformedRelationKey = camel_case($relationKey);
+
+                        // Create empty array for relation
+                        $transformed[$transformedRelationKey] = [];
+
                         foreach ($relation->getIterator() as $key => $relatedModel) {
                             // Replace the related models with their transformed selves
                             $transformedRelatedModel = $relationTransformer->transform($relatedModel);
@@ -109,7 +114,8 @@ class RestfulTransformer extends TransformerAbstract
                                 unset($transformedRelatedModel['pivot']);
                             }
 
-                            $transformed[camel_case($relationKey)][$key] = $transformedRelatedModel;
+                            // Add transformed model to relation array
+                            $transformed[$transformedRelationKey][] = $transformedRelatedModel;
                         }
                     }
                 }

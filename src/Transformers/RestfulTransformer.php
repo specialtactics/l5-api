@@ -13,13 +13,55 @@ class RestfulTransformer extends TransformerAbstract
     protected $model = null;
 
     /**
+     * Transform an object into a jsonable array
+     *
+     * @param Object $model
+     * @return array
+     * @throws \Exception
+     */
+    public function transform(Object $object)
+    {
+        if ($object instanceof RestfulModel) {
+            $transformed = $this->transformRestfulModel($object);
+        }
+
+        else if ($object instanceof \stdClass) {
+            $transformed = $this->transformStdClass($object);
+        }
+
+        else {
+            throw new \Exception('Unexpected object type encountered in transformer');
+        }
+
+        return $transformed;
+    }
+
+    /**
+     * Transform an arbitrary stdClass
+     *
+     * @param \stdClass $object
+     * @return array
+     */
+    public function transformStdClass($object) {
+
+        $transformed = (array)$object;
+
+        /**
+         * Transform all keys to CamelCase, recursively
+         */
+        $transformed = camel_case_array_keys($transformed);
+
+        return $transformed;
+
+    }
+
+    /**
      * Transform an eloquent object into a jsonable array
      *
      * @param RestfulModel $model
      * @return array
      */
-    public function transform(RestfulModel $model)
-    {
+    public function transformRestfulModel(RestfulModel $model) {
         $this->model = $model;
 
         // Begin the transformation!
@@ -49,7 +91,7 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = camel_case_array_keys($transformed);
 
         /**
-         * Get the relations for this object and transform then
+         * Get the relations for this object and transform them
          */
         $transformed = $this->transformRelations($transformed);
 

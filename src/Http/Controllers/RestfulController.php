@@ -163,9 +163,9 @@ class RestfulController extends Controller
         }
 
         // Patch model
-        $resource = $this->restfulService->patch($model, $request);
+        $this->restfulService->patch($model, $request);
 
-        return $this->response->item($resource, $this->getTransformer());
+        return $this->response->item($model, $this->getTransformer());
     }
 
     /**

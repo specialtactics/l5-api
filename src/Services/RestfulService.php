@@ -40,9 +40,10 @@ class RestfulService
      *
      * @param RestfulModel $model
      * @param Request $request
+     * @return bool
      * @throws HttpException
      */
     public function patch($model, $request) {
-        $model->update($request->all());
+        return $model->update($request->all());
     }
 }

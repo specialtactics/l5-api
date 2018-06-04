@@ -10,6 +10,11 @@ trait RestfulControllerTrait
     /**
      * Figure out which transformer to use
      *
+     * Order of precedence:
+     *  - Controller specified
+     *  - Model specified
+     *  - Base (extends RestfulTransformer)
+     *
      * @return RestfulTransformer
      */
     protected function getTransformer()

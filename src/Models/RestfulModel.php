@@ -20,7 +20,7 @@ class RestfulModel extends Model
      *
      * @var int Auto increments integer key
      */
-    public $primaryKey = 'user_id';
+    public $primaryKey = '';
 
     /**
      * Every model should have a UUID key, which will be returned to API consumers.
@@ -29,7 +29,7 @@ class RestfulModel extends Model
      *
      * @var string UUID key
      */
-    public $uuidKey = 'user_uuid';
+    public $uuidKey = '';
 
     /**
      * These attributes (in addition to primary & uuid keys) are not allowed to be updated explicitly through

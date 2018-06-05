@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyNamespace;
+
+use NamespacedDummyUserModel;
+
+class DummyClass extends BasePolicy
+{
+    /**
+     * Create a new policy instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+}

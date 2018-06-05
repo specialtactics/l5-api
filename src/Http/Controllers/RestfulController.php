@@ -26,6 +26,7 @@ class RestfulController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     use Helpers;
     use Features\RestfulControllerTrait;
+    use Features\AuthorizesUserActionsOnModelsTrait;
 
     /**
      * @var \App\Services\RestfulService

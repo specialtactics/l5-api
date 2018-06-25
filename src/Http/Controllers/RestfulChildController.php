@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Config;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
 use Dingo\Api\Routing\Helpers;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
@@ -117,7 +117,7 @@ class RestfulChildController extends Controller
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
-            throw new AccessDeniedException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
+            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }
 

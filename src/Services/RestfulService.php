@@ -44,6 +44,6 @@ class RestfulService
      * @throws HttpException
      */
     public function patch($model, $request) {
-        return $model->update($request->all());
+        return $model->update($request->request->all());
     }
 }

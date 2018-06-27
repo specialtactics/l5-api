@@ -98,3 +98,24 @@ if (!function_exists('get_calling_method')) {
         return debug_backtrace()[1]['function'];
     }
 }
+
+
+if (!function_exists('model_relation_name')) {
+    /**
+     * Converts the name of a model class to the name of the relation of this resource on another model
+     *
+     * @param string $relationType The type of relation - ie.. one to.. X ('one', 'many')
+     * @return string The name of the relation, as it would appear inside an eloquent model
+     * @throws \Exception
+     */
+    function model_relation_name($resourceName, $relationType = 'many') {
+        if ($relationType == 'many') {
+            return lcfirst(str_plural(class_basename($resourceName)));
+        }
+        else if ($relationType == 'one') {
+            return lcfirst(class_basename($resourceName));
+        } else {
+            throw new \Exception('Undefined relation type');
+        }
+    }
+}

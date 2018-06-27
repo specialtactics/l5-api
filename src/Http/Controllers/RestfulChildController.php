@@ -81,7 +81,7 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($uuid);
 
-        $resourceRelationName = lcfirst(str_plural(class_basename(static::$model)));
+        $resourceRelationName = model_relation_name(static::$model);
         $model = static::$model;
 
         $withArray = [];

@@ -19,7 +19,6 @@ use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 
 class RestfulController extends Controller
@@ -58,7 +57,7 @@ class RestfulController extends Controller
      */
     public function __construct(RestfulService $restfulService)
     {
-        $this->restfulService = $restfulService;
+        $this->restfulService = $restfulService->setModel(static::$model);
     }
 
     /**
@@ -85,15 +84,13 @@ class RestfulController extends Controller
     {
         $model = new static::$model;
 
-        if ($this->userCan('view')) {
-            throw new UnauthorizedHttpException
-        }
-
         $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
 
         if ( ! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
         }
+
+        $this->authorizeUserAction('view', $resource);
 
         return $this->response->item($resource, $this->getTransformer());
     }
@@ -107,6 +104,8 @@ class RestfulController extends Controller
      */
     public function post(Request $request)
     {
+        $this->authorizeUserAction('create');
+
         $model = new static::$model;
 
         // Validation
@@ -161,6 +160,8 @@ class RestfulController extends Controller
     {
         $model = static::$model::findOrFail($uuid);
 
+        $this->authorizeUserAction('update', $model);
+
         // Validate the resource data with the updates
         $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $request->request->all()), $model->getValidationMessages());
 
@@ -189,9 +190,15 @@ class RestfulController extends Controller
      */
     public function delete($uuid)
     {
-        $model = static::$model;
+        $model = static::$model::findOrFail($uuid);
 
-        $this->restfulService->delete($model, $uuid);
+        $this->authorizeUserAction('delete', $model);
+
+        $deletedCount = $model->delete();
+
+        if ($deletedCount < 1) {
+            throw new NotFoundHttpException('Could not find a resource with that UUID to delete');
+        }
 
         return $this->response->noContent()->setStatusCode(204);
     }

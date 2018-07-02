@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use Gate;
 use Illuminate\Http\Request;
+use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 
 /**
  * Trait AuthorizesUsersActionsAgainstModelsTrait
@@ -16,7 +17,26 @@ use Illuminate\Http\Request;
 trait AuthorizesUserActionsOnModelsTrait
 {
     /**
-     * Determine if the entity has a given ability.
+     * Shorthand function which checks the currently logged in user against an action for the controller's model,
+     * and throws a 401 if unauthorized
+     *
+     * Only checks if a policy exists for that model.
+     *
+     * @param string $ability
+     * @param array|mixed $arguments
+     * @throws UnauthorizedHttpException
+     */
+    public function authorizeUserAction($ability, $arguments = []) {
+        if (! $this->userCan($ability, $arguments)) {
+            throw new UnauthorizedHttpException('Unauthorized action');
+        }
+    }
+
+    /**
+     * Determine if the currently logged in user can perform the specified ability on the model of the controller
+     * When relevant, a specific instance of a model is used - otherwise, the model name.
+     *
+     * Only checks if a policy exists for that model.
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments

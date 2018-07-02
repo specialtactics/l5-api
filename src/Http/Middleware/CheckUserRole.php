@@ -3,7 +3,7 @@
 namespace Specialtactics\L5Api\Http\Middleware;
 
 use Closure;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 
 class CheckUserRole
 {

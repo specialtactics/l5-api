@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 use App\Transformers\BaseTransformer;
 use Illuminate\Http\Request;
 use Dingo\Api\Http\Response;
+use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 
 trait JWTAuthenticationTrait {
     /**

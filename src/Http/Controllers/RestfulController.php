@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 
 class RestfulController extends Controller
@@ -83,6 +84,10 @@ class RestfulController extends Controller
     public function get($uuid)
     {
         $model = new static::$model;
+
+        if ($this->userCan('view')) {
+            throw new UnauthorizedHttpException
+        }
 
         $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
 

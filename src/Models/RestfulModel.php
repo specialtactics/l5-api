@@ -6,8 +6,9 @@ use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
-use App\Transformers\BaseTransformer;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
+use App\Transformers\BaseTransformer;
+use App\Models\User;
 
 class RestfulModel extends Model
 {
@@ -154,13 +155,17 @@ class RestfulModel extends Model
     }
 
     /**
-     * This function can be used to add conditions to the query builder, which
-     * @param Illuminate\Database\Eloquent\Builder
+     * This function can be used to add conditions to the query builder,
+     * which will specify the user's ownership of the model
+     *
+     *
+     * @param App\Models\User $user
+     * @param Illuminate\Database\Eloquent\Builder $query
      * @return Illuminate\Database\Eloquent\Builder|null
      */
-    public function addQueryBuilderForOwner($query)
+    public function addQueryBuilderForOwner(User $user, $query)
     {
-        return null;
+        return $query;
     }
 
     /************************************************************

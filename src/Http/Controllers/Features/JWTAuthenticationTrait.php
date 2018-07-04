@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Dingo\Api\Http\Response;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 
-trait JWTAuthenticationTrait {
+trait JWTAuthenticationTrait
+{
     /**
      * Get a JWT via given credentials.
      *

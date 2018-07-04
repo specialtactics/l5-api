@@ -89,7 +89,7 @@ class RestfulChildController extends Controller
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
         }
 
-        $withArray = array_merge( [$resourceRelationName], $withArray );
+        $withArray = array_merge([$resourceRelationName], $withArray);
         $parentResource = $parentResource->where($parentResource->getKeyName(), '=', $parentResource->getKey())->with($withArray)->first();
 
         $collection = $parentResource->getRelationValue($resourceRelationName);

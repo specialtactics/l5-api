@@ -52,7 +52,6 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = camel_case_array_keys($transformed);
 
         return $transformed;
-
     }
 
     /**

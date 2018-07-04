@@ -183,4 +183,83 @@ class RestfulChildController extends Controller
 
         return $response;
     }
+
+    /**
+     * Request to update the specified child resource
+     *
+     * @param string $parentUuid UUID of the parent resource
+     * @param string $uuid UUID of the child resource
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     * @throws HttpException
+     */
+    public function patch($parentUuid, $uuid, Request $request)
+    {
+        // Check parent exists
+        $parentModel = static::$parentModel;
+        $parentResource = $parentModel::findOrFail($parentUuid);
+
+        // @todo: Auth?
+
+        // Get resource
+        $resource = static::$model::findOrFail($uuid);
+
+        // Check resource belongs to parent
+        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
+                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+        }
+
+        // @todo: Auth?
+        // $this->authorizeUserAction('update', $model);
+
+        // Validate the resource data with the updates
+        $validator = Validator::make($request->request->all(), array_intersect_key($resource->getValidationRules(), $request->request->all()), $resource->getValidationMessages());
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getUuidKey().'".', $validator->errors());
+        }
+
+        // Patch model
+        $this->restfulService->patch($resource, $request);
+
+        if ($this->shouldTransform()) {
+            $response = $this->response->item($resource, $this->getTransformer());
+        } else {
+            $response = $resource;
+        }
+
+        return $response;
+    }
+
+    /**
+     * Deletes a child resource by UUID
+     *
+     * @param string $parentUuid UUID of the parent resource
+     * @param string $uuid UUID of the child resource
+     * @return \Dingo\Api\Http\Response
+     * @throws NotFoundHttpException
+     */
+    public function delete($parentUuid, $uuid)
+    {
+        // Check parent exists
+        $parentModel = static::$parentModel;
+        $parentResource = $parentModel::findOrFail($parentUuid);
+
+        $resource = static::$model::findOrFail($uuid);
+
+        // Check resource belongs to parent
+        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
+                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+        }
+
+        $deletedCount = $resource->delete();
+
+        if ($deletedCount < 1) {
+            throw new NotFoundHttpException('Could not find a resource with that UUID to delete');
+        }
+
+        return $this->response->noContent()->setStatusCode(204);
+    }
 }

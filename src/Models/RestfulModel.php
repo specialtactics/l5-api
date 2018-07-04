@@ -153,6 +153,16 @@ class RestfulModel extends Model
         }
     }
 
+    /**
+     * This function can be used to add conditions to the query builder, which
+     * @param Illuminate\Database\Eloquent\Builder
+     * @return Illuminate\Database\Eloquent\Builder|null
+     */
+    public function addQueryBuilderForOwner($query)
+    {
+        return null;
+    }
+
     /************************************************************
      * Extending Laravel Functions Below
      ***********************************************************/

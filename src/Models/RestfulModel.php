@@ -159,12 +159,16 @@ class RestfulModel extends Model
      * which will specify the user's ownership of the model
      *
      *
-     * @param App\Models\User $user
      * @param Illuminate\Database\Eloquent\Builder $query
+     * @param App\Models\User|null $user Optionally, a user object against which to construct the query. By default, the currently logged in user is used.
      * @return Illuminate\Database\Eloquent\Builder|null
      */
-    public function addQueryBuilderForOwner(User $user, $query)
+    public function addQueryBuilderForOwner($query, User $user = null)
     {
+        if ($user === null) {
+            $user = auth()->user();
+        }
+
         return $query;
     }
 

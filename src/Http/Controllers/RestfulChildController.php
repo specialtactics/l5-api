@@ -60,6 +60,21 @@ class RestfulChildController extends Controller
     public static $transformer = null;
 
     /**
+     * These are the abilities which the authenticated user must be able to perform on the parent model (array of abilities as values)
+     * in order to perform the relevant action on the child model of this controller (array keys).
+     *
+     * Create means create a new
+     *
+     * @var array
+     */
+    public $parentAbilitiesRequired = [
+        'create' => 'update',
+        'view'    => 'own',
+        'update'    => 'own',
+        'delete'    => 'own',
+    ];
+
+    /**
      * RestfulController constructor.
      *
      * @param RestfulService $restfulService
@@ -111,6 +126,9 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
+        // Authorize to ability to create children model for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
+
         // Get resource
         $model = new static::$model;
         $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
@@ -124,6 +142,9 @@ class RestfulChildController extends Controller
         if ( ! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
         }
+
+        // Authorize ability to create this model
+        $this->authorizeUserAction('view');
 
         return $this->response->item($resource, $this->getTransformer());
     }
@@ -141,6 +162,12 @@ class RestfulChildController extends Controller
         // Check parent exists
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
+
+        // Authorize to ability to create children model for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['create'], $parentResource);
+
+        // Authorize ability to create this model
+        $this->authorizeUserAction('create');
 
         // Add parent's key to data
         $data = $request->request->all();

@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 use Gate;
 use Illuminate\Http\Request;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
+use Specialtactics\L5Api\Models\RestfulModel;
 
 /**
  * Trait AuthorizesUsersActionsAgainstModelsTrait
@@ -46,16 +47,18 @@ trait AuthorizesUserActionsOnModelsTrait
     {
         $user = auth()->user();
 
-        $modelPolicy = Gate::getPolicyFor(static::$model);
+        // If no arguments are specified, set it to the controller's model (default)
+        if (empty($arguments)) {
+            $arguments[] = static::$model;
+        }
+
+        // Get policy for model
+        $model = reset($arguments);
+        $modelPolicy = Gate::getPolicyFor($model);
 
         // If no policy exists for this model, then there's nothing to check
         if (is_null($modelPolicy)) {
             return true;
-        }
-
-        // If no arguments are specified, set it to the controller's model (default)
-        if (empty($arguments)) {
-            $arguments[] = static::$model;
         }
 
         // Check if the authenticated user has the required ability for the model

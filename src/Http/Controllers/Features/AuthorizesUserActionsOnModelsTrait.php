@@ -49,11 +49,16 @@ trait AuthorizesUserActionsOnModelsTrait
 
         // If no arguments are specified, set it to the controller's model (default)
         if (empty($arguments)) {
-            $arguments[] = static::$model;
+            $arguments = static::$model;
         }
 
         // Get policy for model
-        $model = reset($arguments);
+        if (is_array($arguments)) {
+            $model = reset($arguments);
+        } else {
+            $model = $arguments;
+        }
+
         $modelPolicy = Gate::getPolicyFor($model);
 
         // If no policy exists for this model, then there's nothing to check

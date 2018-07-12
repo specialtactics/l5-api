@@ -18,7 +18,7 @@ use Specialtactics\L5Api\Models\RestfulModel;
 class RestfulService
 {
     /**
-     * @var RestfulModel $model;
+     * @var string $model The Model Class name
      */
     protected $model = null;
 
@@ -35,10 +35,10 @@ class RestfulService
     /**
      * Set model to be used in the service
      *
-     * @param RestfulModel $model
+     * @param string $model
      * @return $this
      */
-    public function setModel(RestfulModel $model) {
+    public function setModel(string $model) {
         $this->model = $model;
 
         return $this;

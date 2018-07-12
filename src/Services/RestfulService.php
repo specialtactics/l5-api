@@ -35,10 +35,10 @@ class RestfulService
     /**
      * Set model to be used in the service
      *
-     * @param string $model
+     * @param string|null $model
      * @return $this
      */
-    public function setModel(string $model) {
+    public function setModel($model) {
         $this->model = $model;
 
         return $this;

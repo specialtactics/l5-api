@@ -68,7 +68,10 @@ class RestfulController extends Controller
     public function getAll()
     {
         $model = new static::$model;
-        $resources = $model::with($model::$localWith)->get();
+
+        $query = $model::with($model::$localWith);
+        $this->qualifyCollectionQuery($query);
+        $resources = $query->get();
 
         return $this->response->collection($resources, $this->getTransformer());
     }

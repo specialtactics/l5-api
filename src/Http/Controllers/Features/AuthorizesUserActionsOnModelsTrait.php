@@ -34,6 +34,29 @@ trait AuthorizesUserActionsOnModelsTrait
     }
 
     /**
+     * This function can be used to add conditions to the query builder,
+     * which will specify the currently logged in user's ownership of the model
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder|null
+     */
+    public function qualifyCollectionQuery($query) {
+        $user = auth()->user();
+
+        $modelPolicy = Gate::getPolicyFor(static::$model);
+
+        // If no policy exists for this model, then there's nothing to check
+        if (is_null($modelPolicy)) {
+            return $query;
+        }
+
+        // Add conditions to the query, if they are defined in the model's policy
+        $query = $modelPolicy->qualifyCollectionQueryWithUser($user, $query);
+
+        return $query;
+    }
+
+    /**
      * Determine if the currently logged in user can perform the specified ability on the model of the controller
      * When relevant, a specific instance of a model is used - otherwise, the model name.
      *

@@ -17,32 +17,10 @@ class RestfulModelPolicy
      * @param $ability
      * @return bool
      */
-    public function before($user, $ability)
+    public function before(User $user, $ability)
     {
         if ($user->isAdmin()) {
             return true;
         }
-    }
-
-    public function create(User $user)
-    {
-        // @todo
-    }
-
-    public function view(User $user, RestfulModel $model)
-    {
-        // @todo
-    }
-
-    public function update(User $user, RestfulModel $model) {
-        // @todo
-    }
-
-    public function delete(User $user, RestfulModel $model) {
-        return $this->update($user, $model);
-    }
-
-    public function own(User $user, RestfulModel $model) {
-        // @todo
     }
 }

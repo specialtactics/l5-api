@@ -8,18 +8,6 @@ use NamespacedDummyModel;
 class DummyClass extends BasePolicy
 {
     /**
-     * Determine whether the user can view the DocDummyModel.
-     *
-     * @param  \NamespacedDummyUserModel  $user
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return mixed
-     */
-    public function view(DummyUser $user, DummyModel $dummyModel)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create DocDummyPluralModel.
      *
      * @param  \NamespacedDummyUserModel  $user
@@ -31,6 +19,18 @@ class DummyClass extends BasePolicy
     }
 
     /**
+     * Determine whether the user can view the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function view(DummyUser $user, DummyModel $dummyModel)
+    {
+        return $this->own($user, $dummyModel);
+    }
+
+    /**
      * Determine whether the user can update the DocDummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
@@ -39,7 +39,7 @@ class DummyClass extends BasePolicy
      */
     public function update(DummyUser $user, DummyModel $dummyModel)
     {
-        //
+        return $this->own($user, $dummyModel);
     }
 
     /**
@@ -51,6 +51,17 @@ class DummyClass extends BasePolicy
      */
     public function delete(DummyUser $user, DummyModel $dummyModel)
     {
+        return $this->own($user, $dummyModel);
+    }
+
+    /**
+     * Determine whether the user owns the DocDummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @param  \NamespacedDummyModel  $dummyModel
+     * @return mixed
+     */
+    public function own(DummyUser $user, DummyModel $dummyModel) {
         //
     }
 }

@@ -28,6 +28,11 @@ trait AuthorizesUserActionsOnModelsTrait
      * @throws UnauthorizedHttpException
      */
     public function authorizeUserAction($ability, $arguments = []) {
+        // Ability could be discarded for child controller parent resource checks
+        if (is_null($ability)) {
+            return true;
+        }
+
         if (! $this->userCan($ability, $arguments)) {
             throw new UnauthorizedHttpException('Unauthorized action');
         }

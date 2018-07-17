@@ -60,8 +60,10 @@ class RestfulChildController extends Controller
     public static $transformer = null;
 
     /**
-     * These are the abilities which the authenticated user must be able to perform on the parent model (array of abilities as values)
+     * These are the abilities which the authenticated user must be able to perform on the parent model
      * in order to perform the relevant action on the child model of this controller (array keys).
+     *
+     * Array keys are child resource operations, and values are matching abilities on parent model required
      *
      * Create means create a new
      *
@@ -144,7 +146,7 @@ class RestfulChildController extends Controller
         }
 
         // Authorize ability to create this model
-        $this->authorizeUserAction('view');
+        $this->authorizeUserAction('view', $resource);
 
         return $this->response->item($resource, $this->getTransformer());
     }
@@ -155,7 +157,7 @@ class RestfulChildController extends Controller
      * @oaram string $parentUuid Parent's UUID
      * @param Request $request
      * @return \Dingo\Api\Http\Response
-     * @throws \Exception
+     * @throws HttpException
      */
     public function post($parentUuid, Request $request)
     {
@@ -265,7 +267,7 @@ class RestfulChildController extends Controller
      * @param string $parentUuid UUID of the parent resource
      * @param string $uuid UUID of the child resource
      * @return \Dingo\Api\Http\Response
-     * @throws NotFoundHttpException
+     * @throws HttpException
      */
     public function delete($parentUuid, $uuid)
     {
@@ -273,7 +275,13 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
+        // Authorize to ability to create children model for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['delete'], $parentResource);
+
         $resource = static::$model::findOrFail($uuid);
+
+        // Authorize to ability to create children model for parent
+        $this->authorizeUserAction('delete', $resource);
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {

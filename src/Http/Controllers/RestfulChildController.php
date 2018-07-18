@@ -233,6 +233,7 @@ class RestfulChildController extends Controller
         $this->authorizeUserAction($this->parentAbilitiesRequired['update'], $parentResource);
 
         // Get resource
+        $model = new static::$model;
         $resource = static::$model::findOrFail($uuid);
 
         // Check resource belongs to parent
@@ -252,6 +253,9 @@ class RestfulChildController extends Controller
 
         // Patch model
         $this->restfulService->patch($resource, $request);
+
+        // Get updated resource
+        $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer());

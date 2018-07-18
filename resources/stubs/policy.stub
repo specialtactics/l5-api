@@ -8,7 +8,7 @@ use NamespacedDummyModel;
 class DummyClass extends BasePolicy
 {
     /**
-     * Determine whether the user can create DocDummyPluralModel.
+     * Determine whether the user can create DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
      * @return mixed
@@ -19,7 +19,7 @@ class DummyClass extends BasePolicy
     }
 
     /**
-     * Determine whether the user can view the DocDummyModel.
+     * Determine whether the user can view the DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
@@ -31,7 +31,7 @@ class DummyClass extends BasePolicy
     }
 
     /**
-     * Determine whether the user can update the DocDummyModel.
+     * Determine whether the user can update the DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
@@ -43,7 +43,7 @@ class DummyClass extends BasePolicy
     }
 
     /**
-     * Determine whether the user can delete the DocDummyModel.
+     * Determine whether the user can delete the DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel
@@ -55,7 +55,7 @@ class DummyClass extends BasePolicy
     }
 
     /**
-     * Determine whether the user owns the DocDummyModel.
+     * Determine whether the user owns the DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
      * @param  \NamespacedDummyModel  $dummyModel

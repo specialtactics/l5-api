@@ -98,9 +98,13 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($uuid);
 
-        $resourceRelationName = model_relation_name(static::$model);
-        $model = static::$model;
+        // Authorize ability to view children models for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
+        $model = static::$model;
+        $resourceRelationName = model_relation_name($model);
+
+        // Form model's with relations for parent query
         $withArray = [];
         foreach ($model::$localWith as $modelRelation) {
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
@@ -128,7 +132,7 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
-        // Authorize to ability to create children model for parent
+        // Authorize ability to view children model for parent
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         // Get resource
@@ -165,27 +169,24 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
-        // Authorize to ability to create children model for parent
+        // Authorize ability to create children model for parent
         $this->authorizeUserAction($this->parentAbilitiesRequired['create'], $parentResource);
 
         // Authorize ability to create this model
         $this->authorizeUserAction('create');
 
-        // Add parent's key to data
-        $data = $request->request->all();
-        $data[$parentResource->getKeyName()] = $parentResource->getKey();
-
+        $requestData = $request->request->all();
         $model = new static::$model;
 
         // Validation
-        $validator = Validator::make($data, $model->getValidationRules(), $model->getValidationMessages());
+        $validator = Validator::make($requestData, $model->getValidationRules(), $model->getValidationMessages());
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
         }
 
         try {
-            $resource = $model::create($data);
+            $resource = $parentResource->{model_relation_name(static::$model)}()->create($requestData);
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
@@ -228,7 +229,8 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
-        // @todo: Auth?
+        // Authorize ability to update children models for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['update'], $parentResource);
 
         // Get resource
         $resource = static::$model::findOrFail($uuid);
@@ -239,8 +241,7 @@ class RestfulChildController extends Controller
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }
 
-        // @todo: Auth?
-        // $this->authorizeUserAction('update', $model);
+        $this->authorizeUserAction('update', $resource);
 
         // Validate the resource data with the updates
         $validator = Validator::make($request->request->all(), array_intersect_key($resource->getValidationRules(), $request->request->all()), $resource->getValidationMessages());
@@ -275,12 +276,11 @@ class RestfulChildController extends Controller
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($parentUuid);
 
-        // Authorize to ability to create children model for parent
+        // Authorize ability to delete children model for parent
         $this->authorizeUserAction($this->parentAbilitiesRequired['delete'], $parentResource);
 
         $resource = static::$model::findOrFail($uuid);
 
-        // Authorize to ability to create children model for parent
         $this->authorizeUserAction('delete', $resource);
 
         // Check resource belongs to parent

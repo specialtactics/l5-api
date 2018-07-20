@@ -5,6 +5,8 @@ namespace Specialtactics\L5Api\Models\Features;
 use Webpatser\Uuid\Uuid as UuidValidator;
 
 /**
+ * @deprecated This trait is deprecated - it was designed to allow parallel UUID and ID keys, no longer used
+ *
  * Trait UuidMethods
  *
  * @package Specialtactics\L5Api\Models\Features

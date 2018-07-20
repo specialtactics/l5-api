@@ -88,10 +88,10 @@ class RestfulTransformer extends TransformerAbstract
          * Primary Key transformation - all PKs to be called "id"
          */
         $transformed = array_merge(
-            ['id' => $model->getUuidKey()],
+            ['id' => $model->getKey()],
             $transformed
         );
-        unset($transformed[$model->getUuidKeyName()]);
+        unset($transformed[$model->getKeyName()]);
 
         /**
          * Transform all keys to CamelCase, recursively

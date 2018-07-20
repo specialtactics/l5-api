@@ -66,7 +66,7 @@ trait JWTAuthenticationTrait
      */
     public function getUser()
     {
-        return $this->api->raw()->get('users/' . $this->auth->user()->getUuidKey());
+        return $this->api->raw()->get('users/' . $this->auth->user()->getKey());
     }
 
     /**

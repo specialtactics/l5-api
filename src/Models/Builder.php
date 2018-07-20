@@ -7,6 +7,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Webpatser\Uuid\Uuid;
 
 /**
+ * @deprecated This class is deprecated - it was designed to allow parallel UUID and ID keys, no longer used
+ *
  * Class Builder
  *
  * This adds some functionality similar to existing provided by the Eloquent Builder, relating to UUIDs and

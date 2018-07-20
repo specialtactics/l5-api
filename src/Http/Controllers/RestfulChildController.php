@@ -137,7 +137,7 @@ class RestfulChildController extends Controller
 
         // Get resource
         $model = new static::$model;
-        $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
@@ -248,14 +248,14 @@ class RestfulChildController extends Controller
         $validator = Validator::make($request->request->all(), array_intersect_key($resource->getValidationRules(), $request->request->all()), $resource->getValidationMessages());
 
         if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getUuidKey().'".', $validator->errors());
+            throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getKey().'".', $validator->errors());
         }
 
         // Patch model
         $this->restfulService->patch($resource, $request);
 
         // Get updated resource
-        $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer());

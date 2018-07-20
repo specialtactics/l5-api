@@ -6,31 +6,27 @@ use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
-use Specialtactics\L5Api\Transformers\RestfulTransformer;
 use App\Transformers\BaseTransformer;
-use App\Models\User;
+use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
 class RestfulModel extends Model
 {
-
-    use Features\UuidMethods;
-
     /**
-     * Every model should generally have an incrementing primary integer key.
-     * An exception may be pivot tables
+     * Every model should have a primary UUID key, which will be returned to API consumers.
      *
-     * @var int Auto increments integer key
+     * @var string UUID key
      */
     public $primaryKey = '';
 
     /**
-     * Every model should have a UUID key, which will be returned to API consumers.
-     * The only exception to this may be entities with very vast amounts of records, which never require referencing
-     * for the purposes of updating or deleting by API consumers. In that case, make this null.
-     *
-     * @var string UUID key
+     * @var bool Set to false for UUID keys
      */
-    public $uuidKey = '';
+    public $incrementing = false;
+
+    /**
+     * @var string Set to string for UUID keys
+     */
+    protected $keyType = 'string';
 
     /**
      * These attributes (in addition to primary & uuid keys) are not allowed to be updated explicitly through
@@ -99,7 +95,7 @@ class RestfulModel extends Model
         // Add functionality for creating a model
         static::creating(function (RestfulModel $model) {
             // If the PK(s) are missing, generate them
-            $uuidKeyName = $model->getUuidKeyName();
+            $uuidKeyName = $model->getKeyName();
 
             if (!array_key_exists($uuidKeyName, $model->getAttributes())) {
                 $model->$uuidKeyName = Uuid::uuid4()->toString();
@@ -109,7 +105,7 @@ class RestfulModel extends Model
         // Add functionality for updating a model
         static::updating(function (RestfulModel $model) {
             // Disallow updating UUID keys
-            if ($model->getAttribute($model->getUuidKeyName()) != $model->getOriginal($model->getUuidKeyName())) {
+            if ($model->getAttribute($model->getKeyName()) != $model->getOriginal($model->getKeyName())) {
                 throw new BadRequestHttpException('Updating the UUID of a resource is not allowed.');
             }
 
@@ -147,29 +143,11 @@ class RestfulModel extends Model
      */
     public function orderAttributesUuidFirst()
     {
-        if ($this->getUuidKeyName()) {
-            $UuidValue = $this->getUuidKey();
-            unset($this->attributes[$this->getUuidKeyName()]);
-            $this->attributes = [$this->getUuidKeyName() => $UuidValue] + $this->attributes;
+        if ($this->getKeyName()) {
+            $UuidValue = $this->getKey();
+            unset($this->attributes[$this->getKeyName()]);
+            $this->attributes = [$this->getKeyName() => $UuidValue] + $this->attributes;
         }
-    }
-
-    /**
-     * This function can be used to add conditions to the query builder,
-     * which will specify the user's ownership of the model
-     *
-     *
-     * @param Illuminate\Database\Eloquent\Builder $query
-     * @param App\Models\User|null $user Optionally, a user object against which to construct the query. By default, the currently logged in user is used.
-     * @return Illuminate\Database\Eloquent\Builder|null
-     */
-    public function addQueryBuilderForOwner($query, User $user = null)
-    {
-        if ($user === null) {
-            $user = auth()->user();
-        }
-
-        return $query;
     }
 
     /************************************************************
@@ -184,8 +162,11 @@ class RestfulModel extends Model
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
+    /*
+     * @deprecated That builder is no longer used, but potentially could be re-purposed in the future
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
     }
+    */
 }

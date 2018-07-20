@@ -87,7 +87,7 @@ class RestfulController extends Controller
     {
         $model = new static::$model;
 
-        $resource = $model::with($model::$localWith)->where($model->getUuidKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
 
         if ( ! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
@@ -169,7 +169,7 @@ class RestfulController extends Controller
         $validator = Validator::make($request->request->all(), array_intersect_key($model->getValidationRules(), $request->request->all()), $model->getValidationMessages());
 
         if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not update resource with UUID "'.$model->getUuidKey().'".', $validator->errors());
+            throw new StoreResourceFailedException('Could not update resource with UUID "'.$model->getKey().'".', $validator->errors());
         }
 
         // Patch model

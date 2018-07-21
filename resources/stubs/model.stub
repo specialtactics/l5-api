@@ -7,19 +7,9 @@ use App\Transformers\BaseTransformer;
 class DummyClass extends BaseModel
 {
     /**
-     * @var int Auto increments integer key
-     */
-    public $primaryKey = '_id';
-
-    /**
      * @var string UUID key
      */
-    public $uuidKey = '_uuid';
-
-    /**
-     * @var array Attributes to disallow updating through an API update or put
-     */
-    public $immutableAttributes = ['created_at', 'deleted_at'];
+    public $primaryKey = '_id';
 
     /**
      * @var array Relations to load implicitly by Restful controllers

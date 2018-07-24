@@ -118,22 +118,7 @@ class RestfulController extends Controller
             throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
         }
 
-        try {
-            $resource = $model::create($request->request->all());
-        } catch (\Exception $e) {
-            // Check for QueryException - if so, we may want to display a more meaningful message, or help with
-            // development debugging
-            if ($e instanceof QueryException ) {
-                if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('That resource already exists.');
-                } else if (Config::get('api.debug') === true) {
-                    throw $e;
-                }
-            }
-
-            // Default HTTP exception to use for storage errors
-            throw new UnprocessableEntityHttpException('Unexpected error trying to store this resource: ' . $e->getMessage());
-        }
+        $resource = $this->restfulService->persistResource(new $model($request->request->all()));
 
         // Retrieve full model
         $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();

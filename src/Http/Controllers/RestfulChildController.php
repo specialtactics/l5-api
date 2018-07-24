@@ -185,22 +185,13 @@ class RestfulChildController extends Controller
             throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
         }
 
-        try {
-            $resource = $parentResource->{model_relation_name(static::$model)}()->create($requestData);
-        } catch (\Exception $e) {
-            // Check for QueryException - if so, we may want to display a more meaningful message, or help with
-            // development debugging
-            if ($e instanceof QueryException ) {
-                if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('That resource already exists.');
-                } else if (Config::get('api.debug') === true) {
-                    throw $e;
-                }
-            }
+        // Set parent key in request data
+        $resource = new $model($requestData);
+        $parentRelation = $parentResource->{model_relation_name(static::$model)}();
+        $resource->{$parentRelation->getForeignKeyName()} = $parentUuid;
 
-            // Default HTTP exception to use for storage errors
-            throw new UnprocessableEntityHttpException('Unexpected error trying to store this resource: ' . $e->getMessage());
-        }
+        // Create model in DB
+        $resource = $this->restfulService->persistResource($resource);
 
         // Retrieve full model
         $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();

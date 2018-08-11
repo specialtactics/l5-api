@@ -1,13 +1,13 @@
 <?php
 
-namespace Specialtactics\L5Api\Providers;
+namespace Specialtactics\L5Api;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
-class ServiceProvider extends LaravelServiceProvider
+class L5ApiServiceProvider extends LaravelServiceProvider
 {
     /**
      * Register the application services.
@@ -23,6 +23,10 @@ class ServiceProvider extends LaravelServiceProvider
         $loader = AliasLoader::getInstance();
         $loader->alias('API', \Dingo\Api\Facade\API::class);
         $loader->alias('APIRoute', \Dingo\Api\Facade\Route::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands(Console\Commands\MakeApiResource::class);
+        }
     }
 
     /**

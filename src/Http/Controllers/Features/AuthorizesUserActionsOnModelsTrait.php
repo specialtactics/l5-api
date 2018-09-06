@@ -4,7 +4,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use Gate;
 use Illuminate\Http\Request;
-use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Specialtactics\L5Api\Models\RestfulModel;
 
 /**
@@ -25,7 +25,7 @@ trait AuthorizesUserActionsOnModelsTrait
      *
      * @param string $ability
      * @param array|mixed $arguments
-     * @throws UnauthorizedHttpException
+     * @throws AccessDeniedHttpException
      */
     public function authorizeUserAction($ability, $arguments = []) {
         // Ability could be discarded for child controller parent resource checks
@@ -34,7 +34,7 @@ trait AuthorizesUserActionsOnModelsTrait
         }
 
         if (! $this->userCan($ability, $arguments)) {
-            throw new UnauthorizedHttpException('Unauthorized action');
+            throw new AccessDeniedHttpException('Unauthorized action');
         }
     }
 

@@ -56,7 +56,9 @@ trait AuthorizesUserActionsOnModelsTrait
         }
 
         // Add conditions to the query, if they are defined in the model's policy
-        $query = $modelPolicy->qualifyCollectionQueryWithUser($user, $query);
+        if (method_exists($modelPolicy, 'qualifyCollectionQueryWithUser')) {
+            $query = $modelPolicy->qualifyCollectionQueryWithUser($user, $query);
+        }
 
         return $query;
     }

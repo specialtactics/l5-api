@@ -98,4 +98,29 @@ trait RestfulControllerTrait
 
         return $response;
     }
+
+    /**
+     * Try to find the relation name of the child model in the parent model
+     *
+     * @param $parent Object Parent model instance
+     * @param $child string Child model name
+     * @return null|string
+     */
+    protected function getChildRelationNameForParent($parent, $child) {
+        // Try model plural name
+        $manyName = model_relation_name($child, 'many');
+
+        if (method_exists($parent, $manyName)) {
+            return $manyName;
+        }
+
+        // Try model singular name
+        $oneName = model_relation_name($child, 'one');
+
+        if (method_exists($parent, $oneName)) {
+            return $oneName;
+        }
+
+        return null;
+    }
 }

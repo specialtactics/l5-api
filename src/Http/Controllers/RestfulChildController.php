@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Config;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
 use Dingo\Api\Routing\Helpers;
@@ -111,11 +112,56 @@ class RestfulChildController extends Controller
         }
 
         $withArray = array_merge([$resourceRelationName], $withArray);
+
         $parentResource = $parentResource->where($parentResource->getKeyName(), '=', $parentResource->getKey())->with($withArray)->first();
 
         $collection = $parentResource->getRelationValue($resourceRelationName);
 
+        if ($collection == null) {
+            $collection = new Collection();
+        }
+
         return $this->response->collection($collection, $this->getTransformer());
+    }
+
+    /**
+     * Request to retrieve a single child owned by the parent of this resource (hasOne relationship)
+     *
+     * @param string $uuid
+     * @param Request $request
+     * @return \Dingo\Api\Http\Response
+     */
+    public function getOneFromParent($uuid, Request $request)
+    {
+        $parentModel = static::$parentModel;
+        $parentResource = $parentModel::findOrFail($uuid);
+
+        // Authorize ability to view children models for parent
+        $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
+
+        $model = static::$model;
+        $resourceRelationName = model_relation_name($model, 'one');
+
+        // Form model's with relations for parent query
+        $withArray = [];
+        foreach ($model::$localWith as $modelRelation) {
+            $withArray[] = $resourceRelationName . '.' . $modelRelation;
+        }
+
+        $withArray = array_merge([$resourceRelationName], $withArray);
+        $parentResource = $parentResource->where($parentResource->getKeyName(), '=', $parentResource->getKey())->with($withArray)->first();
+
+        $resource = $parentResource->getRelationValue($resourceRelationName);
+
+        // Make sure it exists, and if so, authorize view action
+        if ($resource == null) {
+            throw new NotFoundHttpException('Can not find a "' . $resourceRelationName . '" attached to this ' . (new \ReflectionClass($parentModel))->getShortName());
+        } else {
+            // Authorize ability to view this model
+            $this->authorizeUserAction('view', $resource);
+        }
+
+        return $this->response->item($resource, $this->getTransformer());
     }
 
     /**

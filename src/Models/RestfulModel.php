@@ -162,11 +162,8 @@ class RestfulModel extends Model
      * @param  \Illuminate\Database\Query\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
-    /*
-     * @deprecated That builder is no longer used, but potentially could be re-purposed in the future
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
     }
-    */
 }

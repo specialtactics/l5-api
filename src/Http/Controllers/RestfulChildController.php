@@ -221,7 +221,7 @@ class RestfulChildController extends Controller
         // Authorize ability to create this model
         $this->authorizeUserAction('create');
 
-        $requestData = $request->request->all();
+        $requestData = $request->input();
         $model = new static::$model;
 
         // Validation
@@ -282,7 +282,7 @@ class RestfulChildController extends Controller
         $this->authorizeUserAction('update', $resource);
 
         // Validate the resource data with the updates
-        $validator = Validator::make($request->request->all(), array_intersect_key($resource->getValidationRules(), $request->request->all()), $resource->getValidationMessages());
+        $validator = Validator::make($request->input(), array_intersect_key($resource->getValidationRules(), $request->input()), $resource->getValidationMessages());
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getKey().'".', $validator->errors());

@@ -52,7 +52,7 @@ trait RestfulControllerTrait
      */
     protected function isRequestBodyACollection(Request $request)
     {
-        $input = $request->request->all();
+        $input = $request->input();
 
         // Check that the top-level of the body is an array
         if (is_array($input) && sizeof($input) > 0) {

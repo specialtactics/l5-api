@@ -76,7 +76,7 @@ class RestfulService
      */
     public function patch($model, $request)
     {
-        return $model->update($request->request->all());
+        return $model->update($request->input());
     }
 
     /**

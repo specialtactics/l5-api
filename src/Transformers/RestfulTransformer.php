@@ -3,6 +3,7 @@
 namespace Specialtactics\L5Api\Transformers;
 
 use League\Fractal\TransformerAbstract;
+use Specialtactics\L5Api\APIBoilerPlate;
 use Specialtactics\L5Api\Models\RestfulModel;
 
 class RestfulTransformer extends TransformerAbstract
@@ -49,7 +50,7 @@ class RestfulTransformer extends TransformerAbstract
         /**
          * Transform all keys to CamelCase, recursively
          */
-        $transformed = camel_case_array_keys($transformed);
+        $transformed = $this->formatCase($transformed);
 
         return $transformed;
     }
@@ -96,12 +97,38 @@ class RestfulTransformer extends TransformerAbstract
         /**
          * Transform all keys to CamelCase, recursively
          */
-        $transformed = camel_case_array_keys($transformed);
+        $transformed = $this->formatCase($transformed);
 
         /**
          * Get the relations for this object and transform them
          */
         $transformed = $this->transformRelations($transformed);
+
+        return $transformed;
+    }
+
+    /**
+     * Formats case of the input array or scalar to desired case
+     *
+     * @param array|mixed $input
+     * @return array $transformed
+     */
+    protected function formatCase($input) {
+        $caseFormat = APIBoilerPlate::getResponseCaseType();
+
+        if ($caseFormat == APIBoilerPlate::CAMEL_CASE) {
+            if (is_array($input)) {
+                $transformed = camel_case_array_keys($input);
+            } else {
+                $transformed = camel_case($input);
+            }
+        } else if ($caseFormat == APIBoilerPlate::SNAKE_CASE) {
+            if (is_array($input)) {
+                $transformed = snake_case_array_keys($input);
+            } else {
+                $transformed = snake_case($input);
+            }
+        }
 
         return $transformed;
     }
@@ -150,7 +177,7 @@ class RestfulTransformer extends TransformerAbstract
 
                     // Transform related model collection
                     if ($this->model->$relationKey) {
-                        $transformedRelationKey = camel_case($relationKey);
+                        $transformedRelationKey = $this->formatCase($relationKey);
 
                         // Create empty array for relation
                         $transformed[$transformedRelationKey] = [];
@@ -177,7 +204,7 @@ class RestfulTransformer extends TransformerAbstract
                 $relationTransformer = $relation::getTransformer();
 
                 if ($this->model->$relationKey) {
-                    $transformed[camel_case($relationKey)] = $relationTransformer->transform($this->model->$relationKey);
+                    $transformed[$this->formatCase($relationKey)] = $relationTransformer->transform($this->model->$relationKey);
                 }
             }
         }

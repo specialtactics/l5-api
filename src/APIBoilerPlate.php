@@ -13,6 +13,11 @@ class APIBoilerPlate {
     const SNAKE_CASE = 'snake-case';
 
     /**
+     * Case type config path
+     */
+    const CASE_TYPE_CONFIG_PATH = 'api.formatsOptions.caseType';
+
+    /**
      * The header which can be used to override config provided case type
      */
     const CASE_TYPE_HEADER = 'X-Accept-Case-Type';
@@ -37,7 +42,7 @@ class APIBoilerPlate {
 
         // Get case format from config (default case)
         if (is_null($format)) {
-            $caseFormat = Config('api.formatsOptions.caseType');
+            $caseFormat = Config(static::CASE_TYPE_CONFIG_PATH);
 
             // Figure out required case
             if ($caseFormat == static::CAMEL_CASE || empty($caseFormat)) {

@@ -80,7 +80,7 @@ class RestfulTransformer extends TransformerAbstract
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
          */
         foreach ($model->getDates() as $dateColumn) {
-            if (!empty($model->$dateColumn)) {
+            if (!empty($model->$dateColumn) && !in_array($dateColumn, $filterOutAttributes)) {
                 $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
             }
         }

@@ -133,25 +133,20 @@ class RestfulTransformer extends TransformerAbstract
         return $transformed;
     }
 
-    /**
-     * Filter out some attributes immediately
-     *
-     * Some attributes we never want to expose to an API consumer, for security and separation of concerns reasons
-     * Feel free to override this function as necessary
-     *
-     * @return array Array of attributes to filter out
-     */
-    protected function getFilteredOutAttributes() {
-        $filterOutAttributes = array_merge(
-            $this->model->getHidden(),
-            [
-                $this->model->getKeyName(),
-                'deleted_at',
-            ]
-        );
-
-        return array_unique($filterOutAttributes);
-    }
+	/**
+	 * Filter out some attributes immediately
+	 *
+	 * Some attributes we never want to expose to an API consumer, for security and separation of concerns reasons
+	 * Feel free to override this function as necessary
+	 *
+	 * @return array Array of attributes to filter out
+	 */
+	protected function getFilteredOutAttributes() {
+		return collect($this->model->getAttributes())
+			->keys()
+			->diff($this->model::$allowedFields)
+			->toArray();
+	}
 
     /**
      * Do relation transformations

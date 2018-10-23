@@ -66,6 +66,12 @@ class RestfulModel extends Model
 	 */
 	public static $allowedFields = [];
 
+	/**
+	 * Computed properties to return on the API
+	 * @var array
+	 */
+	public static $allowedAppends = [];
+
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer
      *

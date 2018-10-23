@@ -70,7 +70,7 @@ class RestfulController extends Controller
 		                     ->defaultSort($model::$defaultSort)
 		                     ->allowedSorts($model::$allowedSorts)
 		                     ->allowedFields($model::$allowedFields)
-		                     ->allowedFilters($model::allowedFilters)
+		                     ->allowedFilters($model::$allowedFilters)
 		                     ->jsonPaginate();
 
 		$this->qualifyCollectionQuery($query);

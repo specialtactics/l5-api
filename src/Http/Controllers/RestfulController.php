@@ -65,7 +65,7 @@ class RestfulController extends Controller
 	{
 		$model = new static::$model;
 
-		$query = QueryBuilder::for($model)
+		$query = QueryBuilder::for(static::$model::query())
 		                         ->allowedIncludes($model::$allowedIncludes)
 		                         ->defaultSort($model::$defaultSort)
 		                         ->allowedSorts($model::$allowedSorts)

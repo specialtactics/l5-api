@@ -3,7 +3,7 @@
 namespace Specialtactics\L5Api\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use Specialtactics\L5Api\APIBoilerPlate;
+use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
 
 class RestfulTransformer extends TransformerAbstract
@@ -114,15 +114,15 @@ class RestfulTransformer extends TransformerAbstract
      * @return array $transformed
      */
     protected function formatCase($input) {
-        $caseFormat = APIBoilerPlate::getResponseCaseType();
+        $caseFormat = APIBoilerplate::getResponseCaseType();
 
-        if ($caseFormat == APIBoilerPlate::CAMEL_CASE) {
+        if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
             if (is_array($input)) {
                 $transformed = camel_case_array_keys($input);
             } else {
                 $transformed = camel_case($input);
             }
-        } else if ($caseFormat == APIBoilerPlate::SNAKE_CASE) {
+        } else if ($caseFormat == APIBoilerplate::SNAKE_CASE) {
             if (is_array($input)) {
                 $transformed = snake_case_array_keys($input);
             } else {

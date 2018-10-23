@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Models;
 
-use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
@@ -30,20 +29,42 @@ class RestfulModel extends Model
 
     /**
      * These attributes (in addition to primary & uuid keys) are not allowed to be updated explicitly through
-     *  API routes of update and put. They can still be updated internally by Laravel, and your own code.
+     * API routes of update and put. They can still be updated internally by Laravel, and your own code.
      *
      * @var array Attributes to disallow updating through an API update or put
      */
     public $immutableAttributes = ['created_at', 'deleted_at'];
 
     /**
-     * Acts like $with (eager loads relations), however only for immediate controller requests for that object
-     * This is useful if you want to use "with" for immediate resource routes, however don't want these relations
-     *  always loaded in various service functions, for performance reasons
+     * Includes for relationships that are allowed to be requested with the main model
      *
-     * @var array Relations to load implicitly by Restful controllers
+     * @var array Relations allowed to be loaded via the Restful controller
      */
-    public static $localWith = [];
+    public static $allowedIncludes = [];
+
+	/**
+	 * How GET requests should sort the results in the response
+	 * @var string Which field to sort the results in
+	 */
+    public static $defaultSort = 'created_at';
+
+	/**
+	 * Which fields the API can sort on
+	 * @var array A list of fields that the api can sort for
+	 */
+	public static $allowedSorts = [];
+
+	/**
+	 * Which fields the api can filter on
+	 * @var array A list of fields that the api can filter for
+	 */
+	public static $allowedFilters = [];
+
+	/**
+	 * Which fields will the API expose
+	 * @var array A list of fields that the api will expose
+	 */
+	public static $allowedFields = [];
 
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer

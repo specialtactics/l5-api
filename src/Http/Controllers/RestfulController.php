@@ -71,6 +71,7 @@ class RestfulController extends Controller
 		                     ->allowedSorts($model::$allowedSorts)
 		                     ->allowedFields($model::$allowedFields)
 		                     ->allowedFilters($model::$allowedFilters)
+		                     ->allowedAppends($model::$allowedAppends)
 		                     ->jsonPaginate();
 
 		$this->qualifyCollectionQuery($query);

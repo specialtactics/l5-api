@@ -5,7 +5,7 @@ namespace Specialtactics\L5Api\Exceptions;
 use Config;
 use Exception;
 use Dingo\Api\Exception\Handler as ExceptionHandler;
-use Specialtactics\L5Api\APIBoilerPlate;
+use Specialtactics\L5Api\APIBoilerplate;
 
 /**
  * This class extends the Dingo API Exception Handler, and can be used to modify it's functionality, if required
@@ -43,7 +43,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         if (array_key_exists($errorKey, $replacements)) {
             $errorMessages = $replacements[$errorKey];
 
-            if (Config(APIBoilerPlate::CASE_TYPE_CONFIG_PATH) == APIBoilerPlate::CAMEL_CASE) {
+            if (Config(APIBoilerplate::CASE_TYPE_CONFIG_PATH) == APIBoilerplate::CAMEL_CASE) {
                 $errorMessages = camel_case_array_keys($errorMessages);
             } else {
                 $errorMessages = snake_case_array_keys($errorMessages);

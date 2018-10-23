@@ -2,10 +2,10 @@
 
 namespace Specialtactics\L5Api;
 
-use Config;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use HttpException;
 
-class APIBoilerPlate {
+class APIBoilerplate {
+
     /**
      * Case type constants for configuring responses
      */
@@ -22,11 +22,12 @@ class APIBoilerPlate {
      */
     const CASE_TYPE_HEADER = 'X-Accept-Case-Type';
 
-    /**
-     * Get the required 'case type' for transforming response data
-     *
-     * @return string
-     */
+	/**
+	 * Get the required 'case type' for transforming response data
+	 *
+	 * @return string
+	 * @throws HttpException
+	 */
     public static function getResponseCaseType() {
         $format = null;
 
@@ -42,7 +43,7 @@ class APIBoilerPlate {
 
         // Get case format from config (default case)
         if (is_null($format)) {
-            $caseFormat = Config(static::CASE_TYPE_CONFIG_PATH);
+            $caseFormat = config(static::CASE_TYPE_CONFIG_PATH);
 
             // Figure out required case
             if ($caseFormat == static::CAMEL_CASE || empty($caseFormat)) {

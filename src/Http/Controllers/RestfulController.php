@@ -66,16 +66,16 @@ class RestfulController extends Controller
 		$model = new static::$model;
 
 		$query = QueryBuilder::for(static::$model::query())
-		                         ->allowedIncludes($model::$allowedIncludes)
-		                         ->defaultSort($model::$defaultSort)
-		                         ->allowedSorts($model::$allowedSorts)
-		                         ->allowedFields($model::$allowedFields)
-		                         ->allowedFilters($model::$allowedSorts)
-		                         ->jsonPaginate();
+		                     ->allowedIncludes($model::$allowedIncludes)
+		                     ->defaultSort($model::$defaultSort)
+		                     ->allowedSorts($model::$allowedSorts)
+		                     ->allowedFields($model::$allowedFields)
+		                     ->allowedFilters($model::allowedFilters)
+		                     ->jsonPaginate();
 
 		$this->qualifyCollectionQuery($query);
 
-		return $this->response->collection($query->get(), $this->getTransformer());
+		return $this->response->paginator($query, $this->getTransformer());
 	}
 
 	/**

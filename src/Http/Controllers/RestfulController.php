@@ -66,7 +66,7 @@ class RestfulController extends Controller
 	 */
 	private function queryBuilderForQuery($model, $query = null) {
 		if (empty($query)) {
-			$query = static::$model::query();
+			$query = static::$model::with($model::$localWith);
 		}
 		return QueryBuilder::for($query)
 		            ->allowedIncludes($model::$allowedIncludes)
@@ -105,7 +105,7 @@ class RestfulController extends Controller
 	{
 		$model = new static::$model;
 
-		$resource = $this->queryBuilderForQuery($model, $model::where($model->getKeyName(), '=', $uuid))
+		$resource = $this->queryBuilderForQuery($model, $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid))
 		                        ->first();
 
 

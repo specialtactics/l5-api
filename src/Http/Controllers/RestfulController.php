@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Spatie\QueryBuilder\QueryBuilder;
 use Specialtactics\L5Api\Models\RestfulModel;
 use Dingo\Api\Routing\Helpers;
@@ -57,6 +58,26 @@ class RestfulController extends Controller
 	}
 
 	/**
+	 * Automatically add all of the query params to any query
+	 * @param $model
+	 * @param null $query
+	 *
+	 * @return mixed
+	 */
+	private function queryBuilderForQuery($model, $query = null) {
+		if (empty($query)) {
+			$query = static::$model::query();
+		}
+		return QueryBuilder::for($query)
+		            ->allowedIncludes($model::$allowedIncludes)
+		            ->defaultSort($model::$defaultSort)
+		            ->allowedSorts($model::$allowedSorts)
+		            ->allowedFields($model::$allowedFields)
+		            ->allowedFilters($model::$allowedFilters)
+		            ->allowedAppends($model::$allowedAppends);
+	}
+
+	/**
 	 * Request to retrieve a collection of all items of this resource
 	 *
 	 * @return \Dingo\Api\Http\Response
@@ -65,13 +86,7 @@ class RestfulController extends Controller
 	{
 		$model = new static::$model;
 
-		$query = QueryBuilder::for(static::$model::query())
-		                     ->allowedIncludes($model::$allowedIncludes)
-		                     ->defaultSort($model::$defaultSort)
-		                     ->allowedSorts($model::$allowedSorts)
-		                     ->allowedFields($model::$allowedFields)
-		                     ->allowedFilters($model::$allowedFilters)
-		                     ->allowedAppends($model::$allowedAppends)
+		$query = $this->queryBuilderForQuery($model)
 		                     ->jsonPaginate();
 
 		$this->qualifyCollectionQuery($query);
@@ -90,7 +105,9 @@ class RestfulController extends Controller
 	{
 		$model = new static::$model;
 
-		$resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
+		$resource = $this->queryBuilderForQuery($model, $model::where($model->getKeyName(), '=', $uuid))
+		                        ->first();
+
 
 		if ( ! $resource) {
 			throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
@@ -124,7 +141,8 @@ class RestfulController extends Controller
 		$resource = $this->restfulService->persistResource(new $model($request->input()));
 
 		// Retrieve full model
-		$resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
+		$resource = $this->queryBuilderForQuery($model, $model::where($model->getKeyName(), '=', $resource->getKey()))
+		     ->first();
 
 		if ($this->shouldTransform()) {
 			$response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);

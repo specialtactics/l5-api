@@ -1,5 +1,5 @@
 {
-  "name": "loonpwn/l5-api",
+  "name": "specialtactics/l5-api",
   "description": "Dependencies for the Laravel 5 API Boilerplate package",
   "keywords": ["laravel", "boilerplate", "api"],
   "license": "MIT",
@@ -7,21 +7,17 @@
     {
       "name": "Max Snow",
       "email": "contact@maxsnow.me"
-    },
-    {
-      "name": "Harlan",
-      "email": "harlan@harlanzw.com"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": "^7.1.3",
     "dingo/api": "dev-master",
     "tymon/jwt-auth": "^1.0",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",
-    "atehnix/laravel-stubs": "^5.0",
-    "spatie/laravel-query-builder": "^1.11",
-    "spatie/laravel-json-api-paginate": "^1.4"
+    "atehnix/laravel-stubs": "^5.0"
   },
   "autoload": {
     "psr-4": {
@@ -35,7 +31,5 @@
         "Specialtactics\\L5Api\\L5ApiServiceProvider"
       ]
     }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  }
 }

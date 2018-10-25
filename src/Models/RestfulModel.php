@@ -35,6 +35,15 @@ class RestfulModel extends Model
      */
     public $immutableAttributes = ['created_at', 'deleted_at'];
 
+	/**
+	 * Acts like $with (eager loads relations), however only for immediate controller requests for that object
+	 * This is useful if you want to use "with" for immediate resource routes, however don't want these relations
+	 * always loaded in various service functions, for performance reasons
+	 *
+	 * @var array Relations to load implicitly by Restful controllers
+	 */
+	public static $localWith = [];
+
     /**
      * Includes for relationships that are allowed to be requested with the main model
      *

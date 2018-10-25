@@ -12,9 +12,9 @@ class DummyClass extends BaseModel
     public $primaryKey = '_id';
 
     /**
-     * @var array Relations allowed to be loaded via the Restful controller
+     * @var array Relations to load implicitly by Restful controllers
      */
-    public static $allowedIncludes = [];
+    public static $localWith = [];
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default

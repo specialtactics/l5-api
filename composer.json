@@ -1,5 +1,5 @@
 {
-  "name": "specialtactics/l5-api",
+  "name": "loonpwn/l5-api",
   "description": "Dependencies for the Laravel 5 API Boilerplate package",
   "keywords": ["laravel", "boilerplate", "api"],
   "license": "MIT",
@@ -17,7 +17,9 @@
     "tymon/jwt-auth": "^1.0",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",
-    "atehnix/laravel-stubs": "^5.0"
+    "atehnix/laravel-stubs": "^5.0",
+    "spatie/laravel-query-builder": "^1.11",
+    "spatie/laravel-json-api-paginate": "^1.4"
   },
   "autoload": {
     "psr-4": {

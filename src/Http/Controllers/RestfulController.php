@@ -64,7 +64,7 @@ class RestfulController extends Controller
 	 *
 	 * @return mixed
 	 */
-	private function queryBuilderForQuery($model, $query = null) {
+	public function queryBuilderForQuery($model, $query = null) {
 		if (empty($query)) {
 			$query = static::$model::with($model::$localWith);
 		}

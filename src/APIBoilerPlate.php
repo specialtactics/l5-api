@@ -5,7 +5,7 @@ namespace Specialtactics\L5Api;
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class APIBoilerPlate {
+class APIBoilerplate {
     /**
      * Case type constants for configuring responses
      */

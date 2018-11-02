@@ -120,7 +120,12 @@ class RestfulService
      * @param array $data
      * @throws StoreResourceFailedException
      */
-    public function validateResource($resource, $data) {
+    public function validateResource($resource, $data = null) {
+        // If no data is provided, validate the resource against it's present attributes
+        if (is_null($data)) {
+            $data = $resource->getAttributes();
+        }
+
         $validator = Validator::make($data, $resource->getValidationRules(), $resource->getValidationMessages());
 
         if ($validator->fails()) {

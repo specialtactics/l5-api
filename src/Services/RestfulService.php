@@ -74,9 +74,9 @@ class RestfulService
      * @return bool
      * @throws HttpException
      */
-    public function patch($model, $request)
+    public function patch($model, $data)
     {
-        return $model->update($request->input());
+        return $model->update($data);
     }
 
     /**
@@ -111,5 +111,36 @@ class RestfulService
         }
 
         return $resource;
+    }
+
+    /**
+     * Validates a given resource (Restful Model) against a given data set, and throws an API exception on failure
+     *
+     * @param RestfulModel $resource
+     * @param array $data
+     * @throws StoreResourceFailedException
+     */
+    public function validateResource($resource, $data) {
+        $validator = Validator::make($data, $resource->getValidationRules(), $resource->getValidationMessages());
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
+        }
+    }
+
+    /**
+     * Validates a given resource (Restful Model) against a given data set in the update context - ie. validating
+     * only the fields updated in the provided data set, and throws an API exception on failure
+     *
+     * @param RestfulModel $resource
+     * @param array $data
+     * @throws StoreResourceFailedException
+     */
+    public function validateResourceUpdate($resource, $data) {
+        $validator = Validator::make($data, array_intersect_key($resource->getValidationRulesUpdating(), $data), $resource->getValidationMessages());
+
+        if ($validator->fails()) {
+            throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getKey().'".', $validator->errors());
+        }
     }
 }

@@ -5,17 +5,12 @@ namespace Specialtactics\L5Api\Http\Controllers;
 use App\Models\BaseModel;
 use App\Services\RestfulService;
 use App\Transformers\BaseTransformer;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Config;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Validator;
-use Dingo\Api\Routing\Helpers;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -23,26 +18,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Dingo\Api\Exception\StoreResourceFailedException;
 
-class RestfulChildController extends Controller
+class RestfulChildController extends BaseRestfulController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    use Helpers;
-    use Features\RestfulControllerTrait;
-    use Features\AuthorizesUserActionsOnModelsTrait;
-
-    /**
-     * @var \App\Services\RestfulService
-     */
-    protected $restfulService = null;
-
-    /**
-     * Specify the model that you want to be associated with this controller. This is the primary model that
-     * the controller deals with
-     *
-     * @var \App\Models\BaseModel $model
-     */
-    public static $model = null;
-
     /**
      * Specify the parent model that you want to be associated with this controller. This is the parent model of the
      * primary model the controller deals with
@@ -50,15 +27,6 @@ class RestfulChildController extends Controller
      * @var \App\Models\BaseModel $model
      */
     public static $parentModel = null;
-
-    /**
-     * Usually a transformer will be associated with a model, however if you don't specify a model or with to
-     * override the transformer at a controller level (for example if it's a controller for a dashboard resource), then
-     * you can do so by specifying a transformer here
-     *
-     * @var null|BaseTransformer The transformer this controller should use
-     */
-    public static $transformer = null;
 
     /**
      * These are the abilities which the authenticated user must be able to perform on the parent model
@@ -76,16 +44,6 @@ class RestfulChildController extends Controller
         'update'    => 'own',
         'delete'    => 'own',
     ];
-
-    /**
-     * RestfulController constructor.
-     *
-     * @param RestfulService $restfulService
-     */
-    public function __construct(RestfulService $restfulService)
-    {
-        $this->restfulService = $restfulService;
-    }
 
     /**
      * Request to retrieve a collection of all items owned by the parent of this resource
@@ -224,12 +182,8 @@ class RestfulChildController extends Controller
         $requestData = $request->input();
         $model = new static::$model;
 
-        // Validation
-        $validator = Validator::make($requestData, $model->getValidationRules(), $model->getValidationMessages());
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not create resource.', $validator->errors());
-        }
+        // Validate
+        $this->restfulService->validateResource($model, $requestData);
 
         // Set parent key in request data
         $resource = new $model($requestData);
@@ -282,14 +236,10 @@ class RestfulChildController extends Controller
         $this->authorizeUserAction('update', $resource);
 
         // Validate the resource data with the updates
-        $validator = Validator::make($request->input(), array_intersect_key($resource->getValidationRules(), $request->input()), $resource->getValidationMessages());
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getKey().'".', $validator->errors());
-        }
+        $this->restfulService->validateResourceUpdate($resource, $request->input());
 
         // Patch model
-        $this->restfulService->patch($resource, $request);
+        $this->restfulService->patch($resource, $request->input());
 
         // Get updated resource
         $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();

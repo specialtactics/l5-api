@@ -77,13 +77,13 @@ class RestfulService
     public function patch($model, $data)
     {
         try {
-            $model->update($data);
+            $resource = $model->update($data);
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
             if ($e instanceof QueryException ) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('The resource already exists: ' . $this->model);
+                    throw new ConflictHttpException('Duplicate entry for ' . $this->model);
                 } else if (Config::get('api.debug') === true) {
                     throw $e;
                 }
@@ -111,7 +111,7 @@ class RestfulService
      */
     public function persistResource(RestfulModel $resource) {
         try {
-            $resource->update($data);
+            $resource->save();
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging

@@ -76,7 +76,30 @@ class RestfulService
      */
     public function patch($model, $data)
     {
-        return $model->update($data);
+        try {
+            $resource = $model->update($data);
+        } catch (\Exception $e) {
+            // Check for QueryException - if so, we may want to display a more meaningful message, or help with
+            // development debugging
+            if ($e instanceof QueryException ) {
+                if (stristr($e->getMessage(), 'duplicate')) {
+                    throw new ConflictHttpException('Duplicate entry for ' . $this->model);
+                } else if (Config::get('api.debug') === true) {
+                    throw $e;
+                }
+            }
+
+            // Default HTTP exception to use for storage errors
+            $errorMessage = 'Unexpected error trying to store this resource.';
+
+            if (Config::get('api.debug') === true) {
+                $errorMessage .= ' ' . $e->getMessage();
+            }
+
+            throw new UnprocessableEntityHttpException($errorMessage);
+        }
+
+        return $resource;
     }
 
     /**
@@ -94,7 +117,7 @@ class RestfulService
             // development debugging
             if ($e instanceof QueryException ) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('That resource already exists.');
+                    throw new ConflictHttpException('The resource already exists: ' . $this->model);
                 } else if (Config::get('api.debug') === true) {
                     throw $e;
                 }

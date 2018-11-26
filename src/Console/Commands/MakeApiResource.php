@@ -45,9 +45,7 @@ class MakeApiResource extends Command
 
         $this->call('make:model', ['name' => $name]);
 
-        $this->call('make:controller', ['name' => $name.'Controller']);
-
-        // @todo: Link up model inside controller file
+        $this->call('make:controller', ['name' => $name.'Controller', 'model' => $name]);
 
         // Conditionally create policy
         if ($this->anticipate('Would you like to create a policy for this resource?', ['yes', 'no']) == 'yes') {

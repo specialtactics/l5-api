@@ -39,14 +39,33 @@ class MakeApiResource extends Command
     {
         $name = $this->argument('name');
 
+        //
+        // Model - Controller - (Policy)
+        //
+
         $this->call('make:model', ['name' => $name]);
 
         $this->call('make:controller', ['name' => $name.'Controller']);
 
-        $policyChoice = $this->anticipate('Would you like to create a policy for this resource?', ['yes', 'no']);
+        // @todo: Link up model inside controller file
 
-        if ($policyChoice == 'yes') {
+        // Conditionally create policy
+        if ($this->anticipate('Would you like to create a policy for this resource?', ['yes', 'no']) == 'yes') {
             $this->call('make:policy', ['name' => $name.'Policy', '-m' => $name]);
         }
+
+        //
+        // Migration - (Seed)
+        //
+
+        $migrationName = 'create_' . snake_case($name) . '_table';
+        $this->call('make:migration', ['name' => $migrationName]);
+
+        // Conditionally create seeder
+        if ($this->anticipate('Would you like to create a Seeder for this resource?', ['yes', 'no']) == 'yes') {
+            $this->call('make:seeder', ['name' => str_plural($name) . 'Seeder']);
+        }
+
+        // @todo: Add seeder class to DatabaseSeeder.php
     }
 }

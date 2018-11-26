@@ -58,7 +58,7 @@ class MakeApiResource extends Command
         // Migration - (Seed)
         //
 
-        $migrationName = 'create_' . snake_case($name) . '_table';
+        $migrationName = 'create_' . str_plural(snake_case($name)) . '_table';
         $this->call('make:migration', ['name' => $migrationName]);
 
         // Conditionally create seeder

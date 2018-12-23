@@ -187,7 +187,8 @@ class RestfulChildController extends BaseRestfulController
 
         // Set parent key in request data
         $resource = new $model($requestData);
-        $parentRelation = $parentResource->{model_relation_name(static::$model)}();
+
+        $parentRelation = $parentResource->{$this->getChildRelationNameForParent($parentResource, static::$model)}();
         $resource->{$parentRelation->getForeignKeyName()} = $parentUuid;
 
         // Create model in DB

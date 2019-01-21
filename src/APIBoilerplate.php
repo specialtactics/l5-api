@@ -23,12 +23,22 @@ class APIBoilerplate {
     const CASE_TYPE_HEADER = 'X-Accept-Case-Type';
 
     /**
+     * @var null|string Cache this value for a given request
+     */
+    static protected $requestedKeyCaseFormat = null;
+
+    /**
      * Get the required 'case type' for transforming response data
      *
      * @return string
      */
-    public static function getResponseCaseType() {
-        $format = null;
+    public static function getResponseCaseType()
+    {
+        $format = static::$requestedKeyCaseFormat;
+
+        if (!is_null($format)) {
+            return $format;
+        }
 
         // See if the client is requesting a specific case type
         $caseFormat = request()->header(static::CASE_TYPE_HEADER, null);
@@ -54,6 +64,28 @@ class APIBoilerplate {
             }
         }
 
+        // Save and return
+        static::$requestedKeyCaseFormat = $format;
+
         return $format;
+    }
+
+    /**
+     * Format the provided key string into the required case response format
+     *
+     * @param string $key
+     * @return string
+     */
+    public static function formatKeyCaseAccordingToReponseFormat($key)
+    {
+        $format = static::getResponseCaseType();
+
+        if ($format == static::CAMEL_CASE) {
+            $key = camel_case($key);
+        } else {
+            $key = snake_case($key);
+        }
+
+        return $key;
     }
 }

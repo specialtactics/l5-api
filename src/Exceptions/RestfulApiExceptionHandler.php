@@ -21,24 +21,34 @@ class RestfulApiExceptionHandler extends ExceptionHandler
      * @param Exception $exception
      * @return array
      */
-    protected function prepareReplacements(Exception $exception) {
+    protected function prepareReplacements(Exception $exception)
+    {
+        // Run parent
+        $replacements =  parent::prepareReplacements($exception);
 
+        // Format error message field keys
         if ($exception instanceof \Illuminate\Validation\ValidationException) {
-            return $this->formatCaseOfValidationMessages($exception);
-        } else {
-            return parent::prepareReplacements($exception);
+            $replacements = $this->formatCaseOfValidationMessages($replacements);
         }
+
+        // Format response object keys
+        $updatedFormat = [];
+        foreach ($this->format as $key => $value) {
+            $updatedFormat[APIBoilerplate::formatKeyCaseAccordingToReponseFormat($key)] = $value;
+        }
+        $this->format = $updatedFormat;
+
+        return $replacements;
     }
 
     /**
      * Formats the case of validation message keys, if response case is not snake-case
      *
-     * @param Exception $exception
+     * @param array $replacements
      * @return array
      */
-    protected function formatCaseOfValidationMessages(Exception $exception) {
-        $replacements =  parent::prepareReplacements($exception);
-
+    protected function formatCaseOfValidationMessages($replacements)
+    {
         $errorKey = Config('api.errorFormat.errors');
         if (array_key_exists($errorKey, $replacements)) {
             $errorMessages = $replacements[$errorKey];

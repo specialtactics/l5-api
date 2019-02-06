@@ -29,9 +29,16 @@ class RestfulController extends BaseRestfulController
 
         $query = $model::with($model::$localWith);
         $this->qualifyCollectionQuery($query);
-        $resources = $query->get();
 
-        return $this->response->collection($resources, $this->getTransformer());
+        // Handle pagination, if applicable
+        $perPage = $model->getPerPage();
+        if ($perPage) {
+            $paginator = $query->paginate($perPage);
+            return $this->response->paginator($paginator, $this->getTransformer());
+        } else {
+            $resources = $query->get();
+            return $this->response->collection($resources, $this->getTransformer());
+        }
     }
 
     /**

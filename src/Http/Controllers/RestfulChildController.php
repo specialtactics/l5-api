@@ -141,7 +141,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Get resource
         $model = new static::$model;
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->firstOrFail();
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {

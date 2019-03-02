@@ -4,7 +4,7 @@ namespace Specialtactics\L5Api\Http\Middleware;
 
 use Closure;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class CheckUserRole
 {
     /**
@@ -32,7 +32,7 @@ class CheckUserRole
         $matchedRoles = array_intersect($roles, $loggedInUser->getRoles());
 
         if (empty($matchedRoles)) {
-            throw new UnauthorizedHttpException('You do not have the permission to use this resource');
+            throw new AccessDeniedHttpException('You do not have the permission to use this resource');
         }
 
         return $next($request);

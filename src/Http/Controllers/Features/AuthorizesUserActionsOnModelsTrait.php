@@ -19,7 +19,7 @@ trait AuthorizesUserActionsOnModelsTrait
 {
     /**
      * Shorthand function which checks the currently logged in user against an action for the controller's model,
-     * and throws a 401 if unauthorized
+     * and throws a 403 if unauthorized
      *
      * Only checks if a policy exists for that model.
      *

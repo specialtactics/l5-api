@@ -14,6 +14,6 @@ class UnauthorizedHttpException extends HttpException
      */
     public function __construct(string $message = null, \Exception $previous = null, ?int $code = 0, array $headers = array())
     {
-        parent::__construct(403, $message, $previous, $headers, $code);
+        parent::__construct(401, $message, $previous, $headers, $code);
     }
 }

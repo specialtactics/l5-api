@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^7.1.3",
-    "dingo/api": "dev-master",
+    "dingo/api": "^2",
     "tymon/jwt-auth": "^1.0",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",

@@ -60,7 +60,7 @@ class APIBoilerplate {
             } else if ($caseFormat == static::SNAKE_CASE) {
                 $format = static::SNAKE_CASE;
             } else {
-                throw new HttpException(500, 'Invalid case type specified in API config.');
+                throw new BadRequestHttpException('Invalid case type specified in API config.');
             }
         }
 

@@ -20,13 +20,13 @@ class RestfulTransformer extends TransformerAbstract
      * @return array
      * @throws \Exception
      */
-    public function transform(Object $object)
+    public function transform($object)
     {
-        if ($object instanceof RestfulModel) {
+        if (is_object($object) && $object instanceof RestfulModel) {
             $transformed = $this->transformRestfulModel($object);
         }
 
-        else if ($object instanceof \stdClass) {
+        else if (is_object($object) && $object instanceof \stdClass) {
             $transformed = $this->transformStdClass($object);
         }
 

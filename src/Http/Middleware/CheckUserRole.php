@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Http\Middleware;
 use Closure;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 class CheckUserRole
 {
     /**
@@ -24,7 +25,7 @@ class CheckUserRole
             throw new UnauthorizedHttpException('Unauthorized - not logged in!');
         }
 
-        if (!is_array($roles)) {
+        if (! is_array($roles)) {
             $roles = [$roles];
         }
 

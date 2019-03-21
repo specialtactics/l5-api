@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  * Class Builder
  *
  * This changes some default functionality to be more API-friendly
- *
- * @package Specialtactics\L5Api\Models
  */
 class Builder extends \Illuminate\Database\Eloquent\Builder
 {
@@ -21,7 +19,8 @@ class Builder extends \Illuminate\Database\Eloquent\Builder
      * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function findOrFail($id, $columns = ['*']) {
+    public function findOrFail($id, $columns = ['*'])
+    {
         try {
             $resource = parent::findOrFail($id, $columns);
         } catch (ModelNotFoundException $e) {

@@ -2,21 +2,11 @@
 
 namespace Specialtactics\L5Api\Http\Controllers;
 
-use App\Models\BaseModel;
-use App\Services\RestfulService;
-use App\Transformers\BaseTransformer;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Config;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Validator;
-use Specialtactics\L5Api\Transformers\RestfulTransformer;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 
 class RestfulChildController extends BaseRestfulController
 {
@@ -149,7 +139,7 @@ class RestfulChildController extends BaseRestfulController
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }
 
-        if ( ! $resource) {
+        if (! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
         }
 

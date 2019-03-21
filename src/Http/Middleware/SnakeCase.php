@@ -9,10 +9,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * Class SnakeCaseInputParameterKeys
  *
  * This middleware makes sure all incoming request parameters are snake cased for the application
- *
- * @package Specialtactics\L5Api\Http\Middleware
  */
-class SnakeCaseInputParameterKeys
+class SnakeCase
 {
     /**
      * HTTP Methods we want to consider for transforming URL query params
@@ -58,10 +56,11 @@ class SnakeCaseInputParameterKeys
      *
      * @param ParameterBag $bag
      */
-    protected function processParamBag(ParameterBag $bag) {
+    protected function processParamBag(ParameterBag $bag)
+    {
         $parameters = $bag->all();
 
-        if (!empty($parameters) && count($parameters) > 0) {
+        if (! empty($parameters) && count($parameters) > 0) {
             $parameters = snake_case_array_keys($parameters);
 
             $bag->replace($parameters);

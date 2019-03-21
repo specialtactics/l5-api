@@ -3,17 +3,13 @@
 namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Specialtactics\L5Api\Models\RestfulModel;
 
 /**
  * Trait AuthorizesUsersActionsAgainstModelsTrait
  *
  * These are wrappers for Illuminate\Foundation\Auth\Access\Authorizable from the perspective of a RESTful controller
  * authorizing the access of authenticated users on a given resource model
- *
- * @package Specialtactics\L5Api\Http\Controllers\Features
  */
 trait AuthorizesUserActionsOnModelsTrait
 {
@@ -27,7 +23,8 @@ trait AuthorizesUserActionsOnModelsTrait
      * @param array|mixed $arguments
      * @throws AccessDeniedHttpException
      */
-    public function authorizeUserAction($ability, $arguments = []) {
+    public function authorizeUserAction($ability, $arguments = [])
+    {
         // Ability could be discarded for child controller parent resource checks
         if (is_null($ability)) {
             return true;
@@ -45,7 +42,8 @@ trait AuthorizesUserActionsOnModelsTrait
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder|null
      */
-    public function qualifyCollectionQuery($query) {
+    public function qualifyCollectionQuery($query)
+    {
         $user = auth()->user();
 
         $modelPolicy = Gate::getPolicyFor(static::$model);

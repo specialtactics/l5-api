@@ -2,24 +2,13 @@
 
 namespace Specialtactics\L5Api\Http\Controllers;
 
-use App\Models\BaseModel;
 use App\Services\RestfulService;
 use App\Transformers\BaseTransformer;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use Config;
-use Validator;
 use Dingo\Api\Routing\Helpers;
-use Specialtactics\L5Api\Transformers\RestfulTransformer;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 
 class BaseRestfulController extends Controller
 {
@@ -59,5 +48,4 @@ class BaseRestfulController extends Controller
     {
         $this->restfulService = $restfulService->setModel(static::$model);
     }
-
 }

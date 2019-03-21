@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Http\Controllers\Features;
 
-use App\Transformers\BaseTransformer;
 use Illuminate\Http\Request;
 use Dingo\Api\Http\Response;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
@@ -20,14 +19,14 @@ trait JWTAuthenticationTrait
         $authHeader = $request->header('Authorization');
 
         // Get for Auth Basic
-        if ( strtolower(substr($authHeader, 0, 5)) !== 'basic') {
+        if (strtolower(substr($authHeader, 0, 5)) !== 'basic') {
             throw new UnauthorizedHttpException('Invalid authorization header, should be type basic');
         }
 
         // Get credentials
         $credentials = base64_decode(trim(substr($authHeader, 5)));
 
-        list ($login, $password) = explode(':', $credentials, 2);
+        list($login, $password) = explode(':', $credentials, 2);
 
         // Do auth
         if (! $token = auth()->attempt(['email' => $login, 'password' => $password])) {

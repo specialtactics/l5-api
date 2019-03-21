@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Models;
 
-use Exception;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
@@ -97,7 +96,7 @@ class RestfulModel extends Model
             // If the PK(s) are missing, generate them
             $uuidKeyName = $model->getKeyName();
 
-            if (!array_key_exists($uuidKeyName, $model->getAttributes())) {
+            if (! array_key_exists($uuidKeyName, $model->getAttributes())) {
                 $model->$uuidKeyName = Uuid::uuid4()->toString();
             }
         });

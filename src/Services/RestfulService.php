@@ -16,8 +16,6 @@ use Specialtactics\L5Api\Models\RestfulModel;
  * This class contains logic for processing restful requests
  *
  * Class RestfulService
- *
- * @package Specialtactics\L5Api\Services
  */
 class RestfulService
 {
@@ -42,7 +40,8 @@ class RestfulService
      * @param string|null $model
      * @return $this
      */
-    public function setModel($model) {
+    public function setModel($model)
+    {
         $this->model = $model;
 
         return $this;
@@ -81,10 +80,10 @@ class RestfulService
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
-            if ($e instanceof QueryException ) {
+            if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
                     throw new ConflictHttpException('Duplicate entry for ' . $this->model);
-                } else if (Config::get('api.debug') === true) {
+                } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }
             }
@@ -109,16 +108,17 @@ class RestfulService
      * @param $data
      * @return mixed
      */
-    public function persistResource(RestfulModel $resource) {
+    public function persistResource(RestfulModel $resource)
+    {
         try {
             $resource->save();
         } catch (\Exception $e) {
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
-            if ($e instanceof QueryException ) {
+            if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
                     throw new ConflictHttpException('The resource already exists: ' . $this->model);
-                } else if (Config::get('api.debug') === true) {
+                } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }
             }
@@ -143,7 +143,8 @@ class RestfulService
      * @param array $data
      * @throws StoreResourceFailedException
      */
-    public function validateResource($resource, $data = null) {
+    public function validateResource($resource, $data = null)
+    {
         // If no data is provided, validate the resource against it's present attributes
         if (is_null($data)) {
             $data = $resource->getAttributes();
@@ -164,7 +165,8 @@ class RestfulService
      * @param array $data
      * @throws StoreResourceFailedException
      */
-    public function validateResourceUpdate($resource, $data) {
+    public function validateResourceUpdate($resource, $data)
+    {
         $validator = Validator::make($data, array_intersect_key($resource->getValidationRulesUpdating(), $data), $resource->getValidationMessages());
 
         if ($validator->fails()) {

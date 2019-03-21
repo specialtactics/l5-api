@@ -2,19 +2,10 @@
 
 namespace Specialtactics\L5Api\Http\Controllers;
 
-use App\Models\BaseModel;
-use App\Services\RestfulService;
-use App\Transformers\BaseTransformer;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Config;
-use Validator;
-use Specialtactics\L5Api\Transformers\RestfulTransformer;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Dingo\Api\Exception\StoreResourceFailedException;
 
 class RestfulController extends BaseRestfulController
 {
@@ -34,9 +25,11 @@ class RestfulController extends BaseRestfulController
         $perPage = $model->getPerPage();
         if ($perPage) {
             $paginator = $query->paginate($perPage);
+
             return $this->response->paginator($paginator, $this->getTransformer());
         } else {
             $resources = $query->get();
+
             return $this->response->collection($resources, $this->getTransformer());
         }
     }
@@ -54,7 +47,7 @@ class RestfulController extends BaseRestfulController
 
         $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
 
-        if ( ! $resource) {
+        if (! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
         }
 

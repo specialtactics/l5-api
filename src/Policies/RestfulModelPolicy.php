@@ -3,7 +3,6 @@
 namespace Specialtactics\L5Api\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Specialtactics\L5Api\Models\RestfulModel;
 use App\Models\User;
 
 class RestfulModelPolicy

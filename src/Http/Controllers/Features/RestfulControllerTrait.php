@@ -22,16 +22,16 @@ trait RestfulControllerTrait
         $transformer = null;
 
         // Check if controller specifies a resource
-        if ( ! is_null(static::$transformer)) {
+        if (! is_null(static::$transformer)) {
             $transformer = static::$transformer;
         }
 
         // Otherwise, check if model is specified
         else {
             // If it is, check if the controller's model specifies the transformer
-            if ( ! is_null(static::$model)) {
+            if (! is_null(static::$model)) {
                 // If it does, use it
-                if ( ! is_null((static::$model)::$transformer)) {
+                if (! is_null((static::$model)::$transformer)) {
                     $transformer = (static::$model)::$transformer;
                 }
             }
@@ -55,7 +55,7 @@ trait RestfulControllerTrait
         $input = $request->input();
 
         // Check that the top-level of the body is an array
-        if (is_array($input) && sizeof($input) > 0) {
+        if (is_array($input) && count($input) > 0) {
 
             // Check if the first element is an array (json object)
             $firstChild = array_shift($input);
@@ -74,7 +74,8 @@ trait RestfulControllerTrait
      *
      * @return bool
      */
-    protected function shouldTransform() {
+    protected function shouldTransform()
+    {
         // If we are not called by this function, then we are not called by the router
         if (debug_backtrace()[2]['function'] != 'call_user_func_array') {
             return false;
@@ -91,7 +92,8 @@ trait RestfulControllerTrait
      * @param $message
      * @return \Dingo\Api\Http\Response
      */
-    protected function prependResponseMessage($response, $message) {
+    protected function prependResponseMessage($response, $message)
+    {
         $content = $response->getOriginalContent();
         $content['message'] = $message . $content['message'];
         $response->setContent($content);
@@ -106,7 +108,8 @@ trait RestfulControllerTrait
      * @param $child string Child model name
      * @return null|string
      */
-    protected function getChildRelationNameForParent($parent, $child) {
+    protected function getChildRelationNameForParent($parent, $child)
+    {
         // Try model plural name
         $manyName = model_relation_name($child, 'many');
 
@@ -120,7 +123,5 @@ trait RestfulControllerTrait
         if (method_exists($parent, $oneName)) {
             return $oneName;
         }
-
-        return null;
     }
 }

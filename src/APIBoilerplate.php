@@ -5,7 +5,8 @@ namespace Specialtactics\L5Api;
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class APIBoilerplate {
+class APIBoilerplate
+{
     /**
      * Case type constants for configuring responses
      */
@@ -25,7 +26,7 @@ class APIBoilerplate {
     /**
      * @var null|string Cache this value for a given request
      */
-    static protected $requestedKeyCaseFormat = null;
+    protected static $requestedKeyCaseFormat = null;
 
     /**
      * Get the required 'case type' for transforming response data
@@ -36,16 +37,16 @@ class APIBoilerplate {
     {
         $format = static::$requestedKeyCaseFormat;
 
-        if (!is_null($format)) {
+        if (! is_null($format)) {
             return $format;
         }
 
         // See if the client is requesting a specific case type
         $caseFormat = request()->header(static::CASE_TYPE_HEADER, null);
-        if (!is_null($caseFormat)) {
+        if (! is_null($caseFormat)) {
             if ($caseFormat == static::CAMEL_CASE) {
                 $format = static::CAMEL_CASE;
-            } else if ($caseFormat == static::SNAKE_CASE) {
+            } elseif ($caseFormat == static::SNAKE_CASE) {
                 $format = static::SNAKE_CASE;
             }
         }
@@ -57,7 +58,7 @@ class APIBoilerplate {
             // Figure out required case
             if ($caseFormat == static::CAMEL_CASE || empty($caseFormat)) {
                 $format = static::CAMEL_CASE;
-            } else if ($caseFormat == static::SNAKE_CASE) {
+            } elseif ($caseFormat == static::SNAKE_CASE) {
                 $format = static::SNAKE_CASE;
             } else {
                 throw new BadRequestHttpException('Invalid case type specified in API config.');

@@ -13,8 +13,6 @@ use Webpatser\Uuid\Uuid;
  *
  * This adds some functionality similar to existing provided by the Eloquent Builder, relating to UUIDs and
  * other API elements
- *
- * @package Specialtactics\L5Api\Models
  */
 class UuidBuilder extends \Illuminate\Database\Eloquent\Builder
 {
@@ -100,6 +98,7 @@ class UuidBuilder extends \Illuminate\Database\Eloquent\Builder
      * Note: PCRE compiles regexp to bytecode using PHP's JIT,
      * so it is very fast
      ***********************************************************/
+
     /**
      * Wrapper to allow both UUIDs and traditional IDs to be used
      *
@@ -107,7 +106,8 @@ class UuidBuilder extends \Illuminate\Database\Eloquent\Builder
      * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function findOrFail($id, $columns = ['*']) {
+    public function findOrFail($id, $columns = ['*'])
+    {
         if (Uuid::validate($id)) {
             return $this->findOrFailByUuid($id, $columns);
         } else {
@@ -122,7 +122,8 @@ class UuidBuilder extends \Illuminate\Database\Eloquent\Builder
      * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      */
-    public function find($id, $columns = ['*']) {
+    public function find($id, $columns = ['*'])
+    {
         if (Uuid::validate($id)) {
             return $this->findByUuid($id, $columns);
         } else {

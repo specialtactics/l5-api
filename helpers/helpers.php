@@ -1,21 +1,23 @@
 <?php
 
-if (!function_exists('APIUser')) {
-    function APIUser() {
+if (! function_exists('APIUser')) {
+    function APIUser()
+    {
         $user = app('Dingo\Api\Auth\Auth')->user();
 
         return $user;
     }
 }
 
-if (!function_exists('camel_case_array_keys')) {
+if (! function_exists('camel_case_array_keys')) {
     /**
      * Recursively camel-case an array's keys
      *
      * @param $array
      * @return array $array
      */
-    function camel_case_array_keys($array) {
+    function camel_case_array_keys($array)
+    {
         foreach (array_keys($array) as $key) {
             // Get a reference to the value of the key (avoid copy)
             // Then remove that array element
@@ -41,14 +43,15 @@ if (!function_exists('camel_case_array_keys')) {
     }
 }
 
-if (!function_exists('snake_case_array_keys')) {
+if (! function_exists('snake_case_array_keys')) {
     /**
      * Recursively snake-case an array's keys
      *
      * @param $array
      * @return array $array
      */
-    function snake_case_array_keys(array $array) {
+    function snake_case_array_keys(array $array)
+    {
         foreach (array_keys($array) as $key) {
             // Get a reference to the value of the key (avoid copy)
             // Then remove that array element
@@ -74,7 +77,7 @@ if (!function_exists('snake_case_array_keys')) {
     }
 }
 
-if (!function_exists('class_basename')) {
+if (! function_exists('class_basename')) {
 
     /**
      * Get the basename of a class's FQNS name. This is proven to be the fastest way to do this (for now).
@@ -82,25 +85,27 @@ if (!function_exists('class_basename')) {
      * @param string $className
      * @return string
      */
-    function class_basename(string $className) {
+    function class_basename(string $className)
+    {
         $reflection = new ReflectionClass($className);
+
         return $reflection->getShortName();
     }
 }
 
-if (!function_exists('get_calling_method')) {
+if (! function_exists('get_calling_method')) {
     /**
      * Get the calling method name
      *
      * @return string
      */
-    function get_calling_method() {
+    function get_calling_method()
+    {
         return debug_backtrace()[1]['function'];
     }
 }
 
-
-if (!function_exists('model_relation_name')) {
+if (! function_exists('model_relation_name')) {
     /**
      * Converts the name of a model class to the name of the relation of this resource on another model
      *
@@ -108,11 +113,11 @@ if (!function_exists('model_relation_name')) {
      * @return string The name of the relation, as it would appear inside an eloquent model
      * @throws \Exception
      */
-    function model_relation_name($resourceName, $relationType = 'many') {
+    function model_relation_name($resourceName, $relationType = 'many')
+    {
         if ($relationType == 'many') {
             return lcfirst(str_plural(class_basename($resourceName)));
-        }
-        else if ($relationType == 'one') {
+        } elseif ($relationType == 'one') {
             return lcfirst(class_basename($resourceName));
         } else {
             throw new \Exception('Undefined relation type');

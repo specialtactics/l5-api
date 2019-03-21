@@ -11,7 +11,6 @@ use Specialtactics\L5Api\APIBoilerplate;
  * This class extends the Dingo API Exception Handler, and can be used to modify it's functionality, if required
  *
  * Class ApiHandler
- * @package App\Exceptions
  */
 class RestfulApiExceptionHandler extends ExceptionHandler
 {
@@ -24,7 +23,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     protected function prepareReplacements(Exception $exception)
     {
         // Run parent
-        $replacements =  parent::prepareReplacements($exception);
+        $replacements = parent::prepareReplacements($exception);
 
         // Format error message field keys
         if ($exception instanceof \Illuminate\Validation\ValidationException) {

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  *
  * This middleware makes sure all incoming request parameters are snake cased for the application
  */
-class SnakeCase
+class SnakeCaseInputParameterKeys
 {
     /**
      * HTTP Methods we want to consider for transforming URL query params

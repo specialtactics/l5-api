@@ -123,7 +123,7 @@ class RestfulTransformer extends TransformerAbstract
         /*
          * However, if the level is 1, we also want to transform the first level of keys in a json field which has been cast to array
          */
-        if (! $levels == 1) {
+        if ($levels == 1) {
             foreach ($this->model->getCasts() as $fieldName => $castType) {
                 if ($castType == 'array') {
                     $fieldNameFormatted = $this->formatKeyCase($fieldName);

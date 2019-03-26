@@ -1,4 +1,5 @@
 [![StyleCI](https://github.styleci.io/repos/131504248/shield?branch=master)](https://github.styleci.io/repos/131504248)
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
 
 ## Laravel 5 API
 

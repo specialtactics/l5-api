@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Transformers;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
+use Specialtactics\L5Api\Helpers\APIHelper;
 
 class RestfulTransformer extends TransformerAbstract
 {
@@ -16,7 +17,7 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform an object into a jsonable array
      *
-     * @param object $model
+     * @param mixed $model
      * @return array
      * @throws \Exception
      */
@@ -39,14 +40,14 @@ class RestfulTransformer extends TransformerAbstract
      * @param \stdClass $object
      * @return array
      */
-    public function transformStdClass($object)
-    {
-        $transformed = (array) $object;
+    public function transformStdClass($object) {
+
+        $transformed = (array)$object;
 
         /**
-         * Transform all keys to CamelCase, recursively
+         * Transform all keys to correct case, recursively
          */
-        $transformed = $this->formatCase($transformed);
+        $transformed = $this->transformKeysCase($transformed);
 
         return $transformed;
     }
@@ -57,8 +58,7 @@ class RestfulTransformer extends TransformerAbstract
      * @param RestfulModel $model
      * @return array
      */
-    public function transformRestfulModel(RestfulModel $model)
-    {
+    public function transformRestfulModel(RestfulModel $model) {
         $this->model = $model;
 
         // Begin the transformation!
@@ -73,11 +73,11 @@ class RestfulTransformer extends TransformerAbstract
             return ! in_array($key, $filterOutAttributes);
         }, ARRAY_FILTER_USE_KEY);
 
-        /*
+        /**
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
          */
         foreach ($model->getDates() as $dateColumn) {
-            if (! empty($model->$dateColumn) && ! in_array($dateColumn, $filterOutAttributes)) {
+            if (!empty($model->$dateColumn) && !in_array($dateColumn, $filterOutAttributes)) {
                 $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
             }
         }
@@ -91,10 +91,10 @@ class RestfulTransformer extends TransformerAbstract
         );
         unset($transformed[$model->getKeyName()]);
 
-        /**
-         * Transform all keys to CamelCase, recursively
+        /*
+         * Transform the model keys' case
          */
-        $transformed = $this->formatCase($transformed);
+        $transformed = $this->transformKeysCase($transformed);
 
         /**
          * Get the relations for this object and transform them
@@ -105,24 +105,57 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Formats case of the input array or scalar to desired case
+     * Transform the keys of the object to the correct case as required
      *
-     * @param array|mixed $input
+     * @param array $transformed
      * @return array $transformed
      */
-    protected function formatCase($input)
+    protected function transformKeysCase(array $transformed)
     {
+        // Get the config for how many levels of keys to transform
+        $levels = config('api.formatsOptions.transform_keys_levels', null);
+
+        /**
+         * Transform all keys to required case, to the specified number of levels (by default, infinite)
+         */
+        $transformed = $this->formatKeyCase($transformed, $levels);
+
+        /*
+         * However, if the level is 1, we also want to transform the first level of keys in a json field which has been cast to array
+         */
+        if (! $levels == 1) {
+            foreach ($this->model->getCasts() as $fieldName => $castType) {
+                if ($castType == 'array') {
+                    $fieldNameFormatted = $this->formatKeyCase($fieldName);
+                    if (array_key_exists($fieldNameFormatted, $transformed)) {
+                        $transformed[$fieldNameFormatted] = $this->formatKeyCase($transformed[$fieldNameFormatted]);
+                    }
+                }
+            }
+        }
+
+        return $transformed;
+    }
+
+    /**
+     * Formats case of the input array or scalar to desired case
+     *
+     * @param array|string $input
+     * @param int|null $levels How many levels of an array keys to transform - by default recurse infiniately (null)
+     * @return array $transformed
+     */
+    protected function formatKeyCase($input, $levels = null) {
         $caseFormat = APIBoilerplate::getResponseCaseType();
 
         if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
             if (is_array($input)) {
-                $transformed = camel_case_array_keys($input);
+                $transformed = camel_case_array_keys($input, 1);
             } else {
                 $transformed = camel_case($input);
             }
-        } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
+        } else if ($caseFormat == APIBoilerplate::SNAKE_CASE) {
             if (is_array($input)) {
-                $transformed = snake_case_array_keys($input);
+                $transformed = snake_case_array_keys($input, 1);
             } else {
                 $transformed = snake_case($input);
             }
@@ -139,8 +172,7 @@ class RestfulTransformer extends TransformerAbstract
      *
      * @return array Array of attributes to filter out
      */
-    protected function getFilteredOutAttributes()
-    {
+    protected function getFilteredOutAttributes() {
         $filterOutAttributes = array_merge(
             $this->model->getHidden(),
             [
@@ -158,10 +190,10 @@ class RestfulTransformer extends TransformerAbstract
      * @param array $transformed
      * @return array $transformed
      */
-    protected function transformRelations(array $transformed)
-    {
+    protected function transformRelations(array $transformed) {
         // Iterate through all relations
         foreach ($this->model->getRelations() as $relationKey => $relation) {
+            $transformedRelationKey = $this->formatKeyCase($relationKey);
 
             // Skip Pivot
             if ($relation instanceof \Illuminate\Database\Eloquent\Relations\Pivot) {
@@ -169,15 +201,14 @@ class RestfulTransformer extends TransformerAbstract
             }
 
             // Transform Collection
-            elseif ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
+            else if ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
                 if (count($relation->getIterator()) > 0) {
+
                     $relationModel = $relation->first();
                     $relationTransformer = $relationModel::getTransformer();
 
                     // Transform related model collection
                     if ($this->model->$relationKey) {
-                        $transformedRelationKey = $this->formatCase($relationKey);
-
                         // Create empty array for relation
                         $transformed[$transformedRelationKey] = [];
 
@@ -198,12 +229,12 @@ class RestfulTransformer extends TransformerAbstract
             }
 
             // Transformed related model
-            elseif ($relation instanceof RestfulModel) {
+            else if ($relation instanceof RestfulModel) {
                 // Get transformer of relation model
                 $relationTransformer = $relation::getTransformer();
 
                 if ($this->model->$relationKey) {
-                    $transformed[$this->formatCase($relationKey)] = $relationTransformer->transform($this->model->$relationKey);
+                    $transformed[$transformedRelationKey] = $relationTransformer->transform($this->model->$relationKey);
                 }
             }
         }

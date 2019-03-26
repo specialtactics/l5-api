@@ -5,7 +5,6 @@ namespace Specialtactics\L5Api\Transformers;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
-use Specialtactics\L5Api\Helpers\APIHelper;
 
 class RestfulTransformer extends TransformerAbstract
 {
@@ -40,9 +39,9 @@ class RestfulTransformer extends TransformerAbstract
      * @param \stdClass $object
      * @return array
      */
-    public function transformStdClass($object) {
-
-        $transformed = (array)$object;
+    public function transformStdClass($object)
+    {
+        $transformed = (array) $object;
 
         /**
          * Transform all keys to correct case, recursively
@@ -58,7 +57,8 @@ class RestfulTransformer extends TransformerAbstract
      * @param RestfulModel $model
      * @return array
      */
-    public function transformRestfulModel(RestfulModel $model) {
+    public function transformRestfulModel(RestfulModel $model)
+    {
         $this->model = $model;
 
         // Begin the transformation!
@@ -73,11 +73,11 @@ class RestfulTransformer extends TransformerAbstract
             return ! in_array($key, $filterOutAttributes);
         }, ARRAY_FILTER_USE_KEY);
 
-        /**
+        /*
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
          */
         foreach ($model->getDates() as $dateColumn) {
-            if (!empty($model->$dateColumn) && !in_array($dateColumn, $filterOutAttributes)) {
+            if (! empty($model->$dateColumn) && ! in_array($dateColumn, $filterOutAttributes)) {
                 $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
             }
         }
@@ -144,7 +144,8 @@ class RestfulTransformer extends TransformerAbstract
      * @param int|null $levels How many levels of an array keys to transform - by default recurse infiniately (null)
      * @return array $transformed
      */
-    protected function formatKeyCase($input, $levels = null) {
+    protected function formatKeyCase($input, $levels = null)
+    {
         $caseFormat = APIBoilerplate::getResponseCaseType();
 
         if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
@@ -153,7 +154,7 @@ class RestfulTransformer extends TransformerAbstract
             } else {
                 $transformed = camel_case($input);
             }
-        } else if ($caseFormat == APIBoilerplate::SNAKE_CASE) {
+        } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
             if (is_array($input)) {
                 $transformed = snake_case_array_keys($input, 1);
             } else {
@@ -172,7 +173,8 @@ class RestfulTransformer extends TransformerAbstract
      *
      * @return array Array of attributes to filter out
      */
-    protected function getFilteredOutAttributes() {
+    protected function getFilteredOutAttributes()
+    {
         $filterOutAttributes = array_merge(
             $this->model->getHidden(),
             [
@@ -190,7 +192,8 @@ class RestfulTransformer extends TransformerAbstract
      * @param array $transformed
      * @return array $transformed
      */
-    protected function transformRelations(array $transformed) {
+    protected function transformRelations(array $transformed)
+    {
         // Iterate through all relations
         foreach ($this->model->getRelations() as $relationKey => $relation) {
             $transformedRelationKey = $this->formatKeyCase($relationKey);
@@ -201,9 +204,8 @@ class RestfulTransformer extends TransformerAbstract
             }
 
             // Transform Collection
-            else if ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
+            elseif ($relation instanceof \Illuminate\Database\Eloquent\Collection) {
                 if (count($relation->getIterator()) > 0) {
-
                     $relationModel = $relation->first();
                     $relationTransformer = $relationModel::getTransformer();
 
@@ -229,7 +231,7 @@ class RestfulTransformer extends TransformerAbstract
             }
 
             // Transformed related model
-            else if ($relation instanceof RestfulModel) {
+            elseif ($relation instanceof RestfulModel) {
                 // Get transformer of relation model
                 $relationTransformer = $relation::getTransformer();
 

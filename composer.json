@@ -17,6 +17,13 @@
     "ramsey/uuid": "^3.0",
     "atehnix/laravel-stubs": "~6.0"
   },
+  "require-dev": {
+    "beyondcode/laravel-dump-server": "^1.0",
+    "fzaninotto/faker": "^1.4",
+    "mockery/mockery": "^1.0",
+    "nunomaduro/collision": "^2.0",
+    "phpunit/phpunit": "^7.5"
+  },
   "autoload": {
     "psr-4": {
       "Specialtactics\\L5Api\\": "src/"
@@ -29,5 +36,10 @@
         "Specialtactics\\L5Api\\L5ApiServiceProvider"
       ]
     }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "test": "./vendor/bin/phpunit --colors=always -v --testdox"
   }
 }

@@ -150,13 +150,13 @@ class RestfulTransformer extends TransformerAbstract
 
         if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
             if (is_array($input)) {
-                $transformed = camel_case_array_keys($input, 1);
+                $transformed = camel_case_array_keys($input, $levels);
             } else {
                 $transformed = camel_case($input);
             }
         } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
             if (is_array($input)) {
-                $transformed = snake_case_array_keys($input, 1);
+                $transformed = snake_case_array_keys($input, $levels);
             } else {
                 $transformed = snake_case($input);
             }

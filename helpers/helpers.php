@@ -79,22 +79,6 @@ if (! function_exists('snake_case_array_keys')) {
     }
 }
 
-if (! function_exists('class_basename')) {
-
-    /**
-     * Get the basename of a class's FQNS name. This is proven to be the fastest way to do this (for now).
-     *
-     * @param string $className
-     * @return string
-     */
-    function class_basename(string $className)
-    {
-        $reflection = new ReflectionClass($className);
-
-        return $reflection->getShortName();
-    }
-}
-
 if (! function_exists('get_calling_method')) {
     /**
      * Get the calling method name

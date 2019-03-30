@@ -13,6 +13,7 @@
     "php": "^7.1.3",
     "dingo/api": "^2",
     "tymon/jwt-auth": "^1.0",
+    "illuminate/support": "^5.8",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",
     "atehnix/laravel-stubs": "~6.0"

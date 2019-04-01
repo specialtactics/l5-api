@@ -62,7 +62,7 @@ class MakeApiResource extends Command
 
         // Create a migration
         $migrationName = Str::snake(Str::pluralStudly($name));
-        $this->call('make:migration', ['name' => $migrationName]);
+        $this->call('make:migration', ['name' => "create_{$migrationName}_table"]);
 
         // Conditionally create seeder
         if ($this->anticipate('Would you like to create a Seeder for this resource?', ['yes', 'no']) == 'yes') {

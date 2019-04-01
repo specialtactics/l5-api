@@ -89,7 +89,7 @@ class MakeApiResource extends Command
             '/*' . PHP_EOL .
             ' * ' . $sectionName . PHP_EOL .
             ' */' . PHP_EOL .
-            '$api->group([\'prefix\' => \''. $routePrefix .'\', function ($api) {' . PHP_EOL .
+            '$api->group([\'prefix\' => \''. $routePrefix .'\'], function ($api) {' . PHP_EOL .
             '    $api->get(\'/\', \'App\Http\Controllers\\'. $controllerName .'@getAll\');' . PHP_EOL .
             '    $api->get(\'/{uuid}\', \'App\Http\Controllers\\'. $controllerName .'@get\');' . PHP_EOL .
             '    $api->post(\'/\', \'App\Http\Controllers\\'. $controllerName .'@post\');' . PHP_EOL .

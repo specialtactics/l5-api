@@ -82,7 +82,7 @@ class MakeApiResource extends Command
         $this->line('Example routes to put in your routes/api.php', 'important');
 
         $sectionName = Str::pluralStudly($name);
-        $routePrefix = Str::plural(Str::snake($name));
+        $routePrefix = Str::plural(Str::kebab($name));
         $controllerName = $name . 'Controller';
 
         $exampleRoutes =

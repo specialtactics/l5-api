@@ -40,9 +40,24 @@ class RestfulModel extends Model
      * This is useful if you want to use "with" for immediate resource routes, however don't want these relations
      *  always loaded in various service functions, for performance reasons
      *
+     * @deprecated Use  getItemWith() and getCollectionWith()
      * @var array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = [];
+    public static $localWith = null;
+
+    /**
+     * What relations should one model of this entity be returned with, from a relevant controller?
+     *
+     * @var null|array
+     */
+    protected $itemWith = [];
+
+    /**
+     * What relations should a collection of models of this entity be returned with, from a relevant controller?
+     *
+     * @var null
+     */
+    protected $collectionWith = null;
 
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer
@@ -146,6 +161,41 @@ class RestfulModel extends Model
             $UuidValue = $this->getKey();
             unset($this->attributes[$this->getKeyName()]);
             $this->attributes = [$this->getKeyName() => $UuidValue] + $this->attributes;
+        }
+    }
+
+    /**
+     * If using deprecated $localWith then use that
+     * Otherwise, use $itemWith
+     *
+     * @return array
+     */
+    public function getItemWith()
+    {
+        if (is_null(static::$localWith)) {
+            return $this->itemWith;
+        } else {
+            return static::$localWith;
+        }
+    }
+
+    /**
+     * If using deprecated $localWith then use that
+     * Otherwise, if collectionWith hasn't been set, use $itemWith by default
+     * Otherwise, use collectionWith
+     *
+     * @return array
+     */
+    public function getCollectionWith()
+    {
+        if (is_null(static::$localWith)) {
+            if (! is_null($this->collectionWith)) {
+                return $this->collectionWith;
+            } else {
+                return $this->itemWith;
+            }
+        } else {
+            return static::$localWith;
         }
     }
 

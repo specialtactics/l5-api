@@ -3,6 +3,7 @@
 namespace Specialtactics\L5Api\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class MakeApiResource extends Command
 {
@@ -37,7 +38,7 @@ class MakeApiResource extends Command
      */
     public function handle()
     {
-        $name = $this->argument('name');
+        $name = ucfirst($this->argument('name'));
 
         //
         // Model - Controller - (Policy)
@@ -56,12 +57,12 @@ class MakeApiResource extends Command
         // Migration - (Seed)
         //
 
-        $migrationName = 'create_' . str_plural(snake_case($name)) . '_table';
+        $migrationName = 'create_' . Str::plural(Str::snake($name)) . '_table';
         $this->call('make:migration', ['name' => $migrationName]);
 
         // Conditionally create seeder
         if ($this->anticipate('Would you like to create a Seeder for this resource?', ['yes', 'no']) == 'yes') {
-            $this->call('make:seeder', ['name' => str_plural($name) . 'Seeder']);
+            $this->call('make:seeder', ['name' => Str::plural($name) . 'Seeder']);
         }
 
         // @todo: Add seeder class to DatabaseSeeder.php

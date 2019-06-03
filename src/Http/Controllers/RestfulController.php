@@ -85,8 +85,9 @@ class RestfulController extends BaseRestfulController
         return $response;
     }
 
-    public function put($object)
+    public function put(Request $request)
     {
+
     }
 
     /**

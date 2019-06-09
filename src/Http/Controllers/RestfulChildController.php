@@ -29,8 +29,9 @@ class RestfulChildController extends BaseRestfulController
      * @var array
      */
     public $parentAbilitiesRequired = [
-        'create' => 'update',
-        'view'    => 'own',
+        'create'    => 'update',
+        'view'      => 'view',
+        'viewAll'   => 'view',
         'update'    => 'own',
         'delete'    => 'own',
     ];
@@ -44,6 +45,8 @@ class RestfulChildController extends BaseRestfulController
      */
     public function getAll($uuid, Request $request)
     {
+        $this->authorizeUserAction('viewAll');
+
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($uuid);
 

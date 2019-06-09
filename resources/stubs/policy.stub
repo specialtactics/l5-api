@@ -31,6 +31,18 @@ class DummyClass extends BasePolicy
     }
 
     /**
+     * Determine whether the user can view the collection of DummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function viewAll(DummyUser $user)
+    {
+        // @todo
+        return true;
+    }
+
+    /**
      * Determine whether the user can update the DummyModel.
      *
      * @param  \NamespacedDummyUserModel  $user
@@ -62,7 +74,7 @@ class DummyClass extends BasePolicy
      * @return mixed
      */
     public function own(DummyUser $user, DummyModel $dummyModel) {
-        //
+        // @todo
     }
 
     /**

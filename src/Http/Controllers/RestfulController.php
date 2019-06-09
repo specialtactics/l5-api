@@ -16,6 +16,8 @@ class RestfulController extends BaseRestfulController
      */
     public function getAll()
     {
+        $this->authorizeUserAction('viewAll');
+
         $model = new static::$model;
 
         $query = $model::with($model::$localWith);

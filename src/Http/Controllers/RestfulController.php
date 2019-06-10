@@ -87,9 +87,45 @@ class RestfulController extends BaseRestfulController
         return $response;
     }
 
-    public function put(Request $request)
+    /**
+     * Request to create or replace a resource
+     *
+     * @param Request $request
+     * @param string $uuid
+     * @return \Dingo\Api\Http\Response
+     */
+    public function put(Request $request, $uuid)
     {
+        $model = static::$model::find($uuid);
 
+        if (!model) {
+            // Doesn't exist - create
+            $this->authorizeUserAction('create');
+
+            $model = new static::$model;
+
+            $this->restfulService->validateResource($model, $request->input());
+
+            $resource = $this->restfulService->persistResource(new $model($request->input()));
+
+            $resource->loadMissing($model::$localWith);
+
+            if ($this->shouldTransform()) {
+                $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
+            }
+        } else {
+            // Exists - replace
+            $this->authorizeUserAction('update', $model);
+
+            $this->restfulService->validateResourceUpdate($model, $request->input());
+            $this->restfulService->patch($model, $request->input());
+
+            if ($this->shouldTransform()) {
+                $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(200);
+            }
+        }
+
+        return $response;
     }
 
     /**

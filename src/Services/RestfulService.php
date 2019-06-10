@@ -31,7 +31,7 @@ class RestfulService
      */
     public function __construct($model = null)
     {
-        $this->model = null;
+        $this->model = $model;
     }
 
     /**
@@ -68,6 +68,7 @@ class RestfulService
     /**
      * Patch a resource of the given model, with the given request
      *
+     * @deprecated Use persistResource() instead
      * @param RestfulModel $model
      * @param Request $request
      * @return bool
@@ -82,7 +83,7 @@ class RestfulService
             // development debugging
             if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('Duplicate entry for ' . $this->model);
+                    throw new ConflictHttpException('The resource already exists: ' . class_basename($model));
                 } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }
@@ -117,7 +118,7 @@ class RestfulService
             // development debugging
             if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('The resource already exists: ' . $this->model);
+                    throw new ConflictHttpException('The resource already exists: ' . class_basename($resource));
                 } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }

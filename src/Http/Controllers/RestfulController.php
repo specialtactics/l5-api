@@ -105,23 +105,26 @@ class RestfulController extends BaseRestfulController
             $model = new static::$model;
 
             $this->restfulService->validateResource($model, $request->input());
-
             $resource = $this->restfulService->persistResource(new $model($request->input()));
 
             $resource->loadMissing($model::$localWith);
 
             if ($this->shouldTransform()) {
                 $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
+            } else {
+                $response = $resource;
             }
         } else {
             // Exists - replace
             $this->authorizeUserAction('update', $model);
 
             $this->restfulService->validateResourceUpdate($model, $request->input());
-            $this->restfulService->patch($model, $request->input());
+            $this->restfulService->persistResource($model->fill($request->input()));
 
             if ($this->shouldTransform()) {
-                $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(200);
+                $response = $this->response->item($model, $this->getTransformer())->setStatusCode(200);
+            } else {
+                $response = $model;
             }
         }
 

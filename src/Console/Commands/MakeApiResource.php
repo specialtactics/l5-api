@@ -41,7 +41,7 @@ class MakeApiResource extends Command
     {
         $this->setupStyles();
 
-        $name = $this->argument('name');
+        $name = ucfirst($this->argument('name'));
 
         //
         // The basics - Model - Controller - (Policy)

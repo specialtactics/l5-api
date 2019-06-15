@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api;
 
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Illuminate\Support\Str;
 
 class APIBoilerplate
 {
@@ -72,21 +73,33 @@ class APIBoilerplate
     }
 
     /**
-     * Format the provided key string into the required case response format
+     * Format the provided string into the required case response format, for attributes (ie. keys)
      *
-     * @param string $key
+     * @param string $attributeString
      * @return string
      */
-    public static function formatKeyCaseAccordingToReponseFormat($key)
+    public static function formatCaseAccordingToResponseFormat($attributeString)
     {
         $format = static::getResponseCaseType();
 
         if ($format == static::CAMEL_CASE) {
-            $key = camel_case($key);
+            $attributeString = Str::camel($attributeString);
         } else {
-            $key = snake_case($key);
+            $attributeString = Str::snake($attributeString);
         }
 
-        return $key;
+        return $attributeString;
+    }
+
+    /**
+     * Format the provided key string into the required case response format
+     *
+     * @deprecated Use the updated function name
+     * @param string $key
+     * @return string
+     */
+    public static function formatKeyCaseAccordingToReponseFormat($value)
+    {
+        return self::formatCaseAccordingToResponseFormat($value);
     }
 }

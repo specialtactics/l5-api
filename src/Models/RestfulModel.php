@@ -7,6 +7,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Database\Eloquent\Model;
 use App\Transformers\BaseTransformer;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
+use Specialtactics\L5Api\APIBoilerplate;
 
 class RestfulModel extends Model
 {
@@ -128,7 +129,7 @@ class RestfulModel extends Model
                 // For each immutable attribute, check if they have changed
                 foreach ($model->immutableAttributes as $attributeName) {
                     if ($model->getOriginal($attributeName) != $model->getAttribute($attributeName)) {
-                        throw new BadRequestHttpException('Updating the "'.camel_case($attributeName).'" attribute is not allowed.');
+                        throw new BadRequestHttpException('Updating the "'. APIBoilerplate::formatCaseAccordingToResponseFormat($attributeName) .'" attribute is not allowed.');
                     }
                 }
             }

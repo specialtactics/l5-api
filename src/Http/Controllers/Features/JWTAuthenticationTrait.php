@@ -26,7 +26,7 @@ trait JWTAuthenticationTrait
         // Get credentials
         $credentials = base64_decode(trim(substr($authHeader, 5)));
 
-        list($login, $password) = explode(':', $credentials, 2);
+        [$login, $password] = explode(':', $credentials, 2);
 
         // Do auth
         if (! $token = auth()->attempt(['email' => $login, 'password' => $password])) {

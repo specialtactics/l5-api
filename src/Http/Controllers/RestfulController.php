@@ -98,7 +98,7 @@ class RestfulController extends BaseRestfulController
     {
         $model = static::$model::find($uuid);
 
-        if (!model) {
+        if (! $model) {
             // Doesn't exist - create
             $this->authorizeUserAction('create');
 

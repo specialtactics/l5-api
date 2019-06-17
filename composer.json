@@ -23,13 +23,20 @@
     "fzaninotto/faker": "^1.4",
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^2.0",
-    "phpunit/phpunit": "^7.5"
+    "phpunit/phpunit": "^7.5",
+    "orchestra/testbench": "^3.8"
   },
   "autoload": {
     "psr-4": {
       "Specialtactics\\L5Api\\": "src/"
     },
     "files": ["helpers/helpers.php"]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Specialtactics\\L5Api\\Tests\\": "tests/",
+      "Dingo\\Api\\Tests\\": "vendor/dingo/api/tests/"
+    }
   },
   "extra": {
     "laravel": {

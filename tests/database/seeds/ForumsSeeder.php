@@ -1,6 +1,6 @@
 <?php
 
-use Specialtactics\L5Api\Tests\App\Models\Forum;
+use App\Models\Forum;
 
 class ForumsSeeder extends BaseSeeder
 {

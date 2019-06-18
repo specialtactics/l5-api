@@ -28,17 +28,9 @@ foreach ($migrationsIterator as $migration) {
 }
 
 // Copy over App
-echo `rm -rf ./App`;
+echo `rm -rf ./app`;
 echo `cp -pr {$sourceDir}/app .`;
-echo `mv ./app ./App`;
 
 // Copy routes
 echo `rm -rf ./routes.php`;
 echo `cp -pr {$sourceDir}/routes/api.php ./routes.php`;
-
-// Replace all namespaces
-echo shell_exec('find ./App \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i \'s/App\\\\/Specialtactics\\\\L5Api\\\\Tests\\\\App\\\\/g\'');
-echo shell_exec('find ./database \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i \'s/App\\\\/Specialtactics\\\\L5Api\\\\Tests\\\\App\\\\/g\'');
-echo shell_exec('find ./routes.php \( -type d -name .git -prune \) -o -type f -print0 | xargs -0 sed -i \'s/App\\\\/Specialtactics\\\\L5Api\\\\Tests\\\\App\\\\/g\'');
-
-// Next steps - try without namespace overriding, if it's only autoloading on testing of this package, maybe not a problem

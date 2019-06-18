@@ -2,24 +2,13 @@
 
 namespace Specialtactics\L5Api\Tests;
 
-use Mockery as m;
-use Dingo\Api\Http;
-use Dingo\Api\Auth\Auth;
-use Dingo\Api\Dispatcher;
-use Illuminate\Http\Request;
-use Dingo\Api\Routing\Router;
-use Dingo\Api\Tests\Stubs\UserStub;
-use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
-use Dingo\Api\Tests\Stubs\MiddlewareStub;
-use Dingo\Api\Tests\Stubs\TransformerStub;
-use Dingo\Api\Tests\Stubs\RoutingAdapterStub;
-use Dingo\Api\Exception\InternalHttpException;
-use Dingo\Api\Tests\Stubs\UserTransformerStub;
-use Dingo\Api\Exception\ValidationHttpException;
-use Dingo\Api\Transformer\Factory as TransformerFactory;
-use Illuminate\Support\Facades\Request as RequestFacade;
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Database\Eloquent\Factory as EloquentFactory;
+use JWTAuth;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use UserStorySeeder;
 
 class TestCase extends BaseTestCase
 {
@@ -30,53 +19,32 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        $defaultKernel = $this->app->make(Kernel::class);
+
+        // Sneakily swap the kernels, with no witnesses
+        $this->app->bind(Kernel::class, function () use ($defaultKernel) {
+            $reflectionKernel = new \ReflectionClass($defaultKernel);
+            $routerProperty = $reflectionKernel->getProperty('router');
+            $routerProperty->setAccessible(true);
+
+            return new \App\Http\Kernel($defaultKernel->getApplication(), $routerProperty->getValue($defaultKernel));
+        });
+
+
         // Do migrations for tests
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
-        $this->artisan('migrate', ['--database' => 'testing']);
+        $factory = app(EloquentFactory::class);
+        $factory->load(__DIR__  . '/database/factories');
 
-        $this->setUpDingo();
-
-        $this->setupRoutes();
+        $this->artisan('migrate', ['--database' => 'testing', '--seed' => true]);
     }
 
-    public function setUpDingo()
-    {
-        $this->container = new Container;
-        $this->container['request'] = Request::create('/', 'GET');
-        $this->container['api.auth'] = new MiddlewareStub;
-        $this->container['api.limiting'] = new MiddlewareStub;
 
-        Http\Request::setAcceptParser(new Http\Parser\Accept('vnd', 'api', 'v1', 'json'));
-
-        $this->transformerFactory = new TransformerFactory($this->container, new TransformerStub);
-
-        $this->adapter = new RoutingAdapterStub;
-        $this->exception = m::mock(\Dingo\Api\Exception\Handler::class);
-        $this->router = new Router($this->adapter, $this->exception, $this->container, null, null);
-
-        $this->auth = new Auth($this->router, $this->container, []);
-        $this->dispatcher = new Dispatcher($this->container, new Filesystem, $this->router, $this->auth);
-
-        app()->instance(\Illuminate\Routing\Router::class, $this->adapter, true);
-
-        $this->dispatcher->setSubtype('api');
-        $this->dispatcher->setStandardsTree('vnd');
-        $this->dispatcher->setDefaultVersion('v1');
-        $this->dispatcher->setDefaultFormat('json');
-
-        Http\Response::setFormatters(['json' => new Http\Response\Format\Json]);
-        Http\Response::setTransformer($this->transformerFactory);
-    }
 
     public function tearDown(): void
     {
-        m::close();
-    }
-
-    public function setupRoutes()
-    {
-        require __DIR__ . '/routes.php';
+        //m::close();
     }
 
     /**
@@ -88,8 +56,8 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
-        $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
             'driver'   => 'sqlite',
             'database' => ':memory:',
             'prefix'   => '',
@@ -105,8 +73,11 @@ class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            'Dingo\Api\Provider\LaravelServiceProvider',
-            'Specialtactics\L5Api\L5ApiServiceProvider',
+            \Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+            \Dingo\Api\Provider\LaravelServiceProvider::class,
+            \Specialtactics\L5Api\L5ApiServiceProvider::class,
+            \Specialtactics\L5Api\Tests\Mocks\AppServiceProvider::class,
+            \Specialtactics\L5Api\Tests\Mocks\RouteServiceProvider::class,
         ];
     }
 
@@ -119,7 +90,54 @@ class TestCase extends BaseTestCase
     protected function getPackageAliases($app) {
         // Will be useful later
         return [
-            ';'
+            'API' => \Dingo\Api\Facade\API::class,
+            'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
         ];
+    }
+
+    /**
+     * Set the currently logged in user for the application and Authorization headers for API request
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable
+     * @param  string|null  $driver
+     * @return $this
+     */
+    public function actingAs(UserContract $user, $driver = null)
+    {
+        parent::actingAs($user, $driver);
+
+        return $this->withHeader('Authorization', 'Bearer ' . JWTAuth::fromUser($user));
+    }
+
+    /**
+     * API Test case helper function for setting up
+     * the request auth header as supplied user
+     *
+     * @param array $credentials
+     * @return $this
+     */
+    public function actingAsUser($credentials)
+    {
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return $this;
+        }
+
+        $user = ($apiKey = Arr::get($credentials, 'api_key'))
+            ? User::whereApiKey($apiKey)->firstOrFail()
+            : User::whereEmail(Arr::get($credentials, 'email'))->firstOrFail();
+
+        return $this->actingAs($user);
+    }
+
+    /**
+     * API Test case helper function for setting up the request as a logged in admin user
+     *
+     * @return $this
+     */
+    public function actingAsAdmin()
+    {
+        $user = User::where('email', UserStorySeeder::ADMIN_CREDENTIALS[0])->firstOrFail();
+
+        return $this->actingAs($user);
     }
 }

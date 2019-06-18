@@ -9,41 +9,19 @@ class GetTest extends TestCase
     public function testGet()
     {
 
-        /*
-        $jsonResponse = $this->json('GET', '/users');
 
-        $jsonResponse
-            ->assertStatus(200);
-        */
 
-        /*
-        $this->router->version('v1', function () {
-            $this->router->get('test', function () {
-                return 'foo';
-            });
 
-            $this->router->post('test', function () {
-                return 'bar';
-            });
 
-            $this->router->put('test', function () {
-                return 'baz';
-            });
+        $jsonResponse = $this->actingAsAdmin()
+            ->json('GET', '/users');
+        var_dump($jsonResponse->status());
 
-            $this->router->patch('test', function () {
-                return 'yin';
-            });
 
-            $this->router->delete('test', function () {
-                return 'yang';
-            });
-        });
 
-        */
-        //$this->assertSame('foo', $this->dispatcher->get('test'));
+        //$jsonResponse->assertStatus(200);
 
-        $result = $this->dispatcher->get('/posts');
 
-        var_dump($result);
+
     }
 }

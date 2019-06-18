@@ -1,8 +1,8 @@
 <?php
 
-use Specialtactics\L5Api\Tests\App\Models\Forum;
-use Specialtactics\L5Api\Tests\App\Models\Topic;
-use Specialtactics\L5Api\Tests\App\Models\Post;
+use App\Models\Forum;
+use App\Models\Topic;
+use App\Models\Post;
 
 class PostsSeeder extends BaseSeeder
 {

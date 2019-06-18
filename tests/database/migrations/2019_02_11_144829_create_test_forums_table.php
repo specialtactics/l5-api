@@ -21,7 +21,7 @@ class CreateTestForumsTable extends Migration
             $table->uuid('parent_id')->nullable();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('type')->default(\Specialtactics\L5Api\Tests\App\Models\Forum::TYPE_FORUM);
+            $table->string('type')->default(\App\Models\Forum::TYPE_FORUM);
 
             $table->primary('forum_id');
             $table->foreign('parent_id')->references('forum_id')->on(static::TABLE_NAME)->onDelete('restrict');

@@ -1,6 +1,6 @@
 <?php
 
-use Specialtactics\L5Api\Tests\App\Models\Role;
+use App\Models\Role;
 
 class RoleTableSeeder extends BaseSeeder
 {

@@ -26,7 +26,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         $replacements = parent::prepareReplacements($exception);
 
         // Format error message field keys
-        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+        if ($exception instanceof \Illuminate\Validation\ValidationException || $exception instanceof \Dingo\Api\Exception\StoreResourceFailedException) {
             $replacements = $this->formatCaseOfValidationMessages($replacements);
         }
 
@@ -52,10 +52,21 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         if (array_key_exists($errorKey, $replacements)) {
             $errorMessages = $replacements[$errorKey];
 
-            if (Config(APIBoilerplate::CASE_TYPE_CONFIG_PATH) == APIBoilerplate::CAMEL_CASE) {
+            // Handle MessageBag situation
+            $usingMessageBag = false;
+            if (!is_array($errorMessages) && $errorMessages instanceof \Illuminate\Support\MessageBag) {
+                $errorMessages = $errorMessages->toArray();
+                $usingMessageBag = true;
+            }
+
+            if (Config(APIBoilerplate::CASE_TYPE_CONFIG_PATH, APIBoilerplate::DEFAULT_CASE) == APIBoilerplate::CAMEL_CASE) {
                 $errorMessages = camel_case_array_keys($errorMessages);
             } else {
                 $errorMessages = snake_case_array_keys($errorMessages);
+            }
+
+            if ($usingMessageBag) {
+                $errorMessages = new \Illuminate\Support\MessageBag($errorMessages);
             }
 
             $replacements[$errorKey] = $errorMessages;

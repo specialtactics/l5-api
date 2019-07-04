@@ -12,6 +12,7 @@ class APIBoilerplate
      */
     const CAMEL_CASE = 'camel-case';
     const SNAKE_CASE = 'snake-case';
+    const DEFAULT_CASE = self::CAMEL_CASE;
 
     /**
      * Case type config path

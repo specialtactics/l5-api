@@ -26,7 +26,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         $replacements = parent::prepareReplacements($exception);
 
         // Format error message field keys
-        if ($exception instanceof \Illuminate\Validation\ValidationException || $exception instanceof \Dingo\Api\Exception\StoreResourceFailedException) {
+        if ($exception instanceof \Illuminate\Validation\ValidationException || $exception instanceof \Dingo\Api\Exception\ResourceException) {
             $replacements = $this->formatCaseOfValidationMessages($replacements);
         }
 

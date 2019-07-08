@@ -11,15 +11,15 @@ class GetTest extends TestCase
 
 
 
-
-
         $jsonResponse = $this->actingAsAdmin()
             ->json('GET', '/users');
-        var_dump($jsonResponse->status());
+
+
+        //var_dump($jsonResponse->status());
 
 
 
-        //$jsonResponse->assertStatus(200);
+        $jsonResponse->assertStatus(200);
 
 
 

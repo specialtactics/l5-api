@@ -19,18 +19,6 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $defaultKernel = $this->app->make(Kernel::class);
-
-        // Sneakily swap the kernels, with no witnesses
-        $this->app->bind(Kernel::class, function () use ($defaultKernel) {
-            $reflectionKernel = new \ReflectionClass($defaultKernel);
-            $routerProperty = $reflectionKernel->getProperty('router');
-            $routerProperty->setAccessible(true);
-
-            return new \App\Http\Kernel($defaultKernel->getApplication(), $routerProperty->getValue($defaultKernel));
-        });
-
-
         // Do migrations for tests
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
 
@@ -62,6 +50,11 @@ class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+
+        // API Config
+        $app['config']->set('api', include __DIR__ . '/configs/api.php');
+        $app['config']->set('auth', include __DIR__ . '/configs/auth.php');
+        $app['config']->set('jwt', include __DIR__ . '/configs/jwt.php');
     }
 
     /**
@@ -93,6 +86,17 @@ class TestCase extends BaseTestCase
             'API' => \Dingo\Api\Facade\API::class,
             'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
         ];
+    }
+
+    /**
+     * Resolve application HTTP Kernel implementation.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function resolveApplicationHttpKernel($app)
+    {
+        $app->singleton(\Illuminate\Contracts\Http\Kernel::class, \App\Http\Kernel::class);
     }
 
     /**

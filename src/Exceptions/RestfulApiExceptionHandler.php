@@ -54,7 +54,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
 
             // Handle MessageBag situation
             $usingMessageBag = false;
-            if (!is_array($errorMessages) && $errorMessages instanceof \Illuminate\Support\MessageBag) {
+            if (! is_array($errorMessages) && $errorMessages instanceof \Illuminate\Support\MessageBag) {
                 $errorMessages = $errorMessages->toArray();
                 $usingMessageBag = true;
             }

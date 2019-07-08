@@ -92,7 +92,7 @@ class RestfulModel extends Model
         parent::boot();
 
         // Add functionality for creating a model
-        static::creating(function (RestfulModel $model) {
+        static::creating(function (self $model) {
             // If the PK(s) are missing, generate them
             $uuidKeyName = $model->getKeyName();
 
@@ -102,7 +102,7 @@ class RestfulModel extends Model
         });
 
         // Add functionality for updating a model
-        static::updating(function (RestfulModel $model) {
+        static::updating(function (self $model) {
             // Disallow updating UUID keys
             if ($model->getAttribute($model->getKeyName()) != $model->getOriginal($model->getKeyName())) {
                 throw new BadRequestHttpException('Updating the UUID of a resource is not allowed.');

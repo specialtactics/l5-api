@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - '7.1'
+  - '7.2'
+  - '7.3'
+
+sudo: false
+
+dist: xenial
+
+env:
+  global:
+    - setup=basic
+    - xdebug=false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction --no-suggest; fi
+  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable --prefer-lowest; fi
+
+script:
+  - vendor/bin/phpunit

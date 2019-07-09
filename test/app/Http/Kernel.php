@@ -2,9 +2,7 @@
 
 namespace App\Http;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Illuminate\Routing\Router;
 
 class Kernel extends HttpKernel
 {

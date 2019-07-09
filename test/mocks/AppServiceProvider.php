@@ -1,6 +1,6 @@
 <?php
 
-namespace Specialtactics\L5Api\Tests\Mocks;
+namespace Specialtactics\L5Api\Test\Mocks;
 
 use Illuminate\Support\ServiceProvider;
 use App\Exceptions\ApiExceptionHandler;

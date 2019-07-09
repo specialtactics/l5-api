@@ -106,8 +106,6 @@ class User extends BaseModel implements
             $this->roles->pluck('name')->toArray()
         );
 
-        $user = new static;
-
         return $allRoles;
     }
 

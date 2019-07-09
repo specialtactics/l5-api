@@ -1,6 +1,6 @@
 <?php
 
-namespace Specialtactics\L5Api\Tests\Mocks;
+namespace Specialtactics\L5Api\Test\Mocks;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -50,6 +50,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::middleware('api')
              ->namespace($this->namespace)
-             ->group(__DIR__ . '/../routes.php');
+             ->group(__DIR__ . '/../routes/api-routes.php');
     }
 }

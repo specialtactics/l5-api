@@ -20,10 +20,10 @@ class TestCase extends BaseTestCase
         parent::setUp();
 
         // Do migrations for tests
-        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $factory = app(EloquentFactory::class);
-        $factory->load(__DIR__  . '/database/factories');
+        $factory->load(__DIR__ . '/../database/factories');
 
         $this->artisan('migrate', ['--database' => 'testing', '--seed' => true]);
     }
@@ -52,9 +52,9 @@ class TestCase extends BaseTestCase
         ]);
 
         // API Config
-        $app['config']->set('api', include __DIR__ . '/configs/api.php');
-        $app['config']->set('auth', include __DIR__ . '/configs/auth.php');
-        $app['config']->set('jwt', include __DIR__ . '/configs/jwt.php');
+        $app['config']->set('api', include __DIR__ . '/../config/api.php');
+        $app['config']->set('auth', include __DIR__ . '/../config/auth.php');
+        $app['config']->set('jwt', include __DIR__ . '/../config/jwt.php');
     }
 
     /**
@@ -69,8 +69,8 @@ class TestCase extends BaseTestCase
             \Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
             \Dingo\Api\Provider\LaravelServiceProvider::class,
             \Specialtactics\L5Api\L5ApiServiceProvider::class,
-            \Specialtactics\L5Api\Tests\Mocks\AppServiceProvider::class,
-            \Specialtactics\L5Api\Tests\Mocks\RouteServiceProvider::class,
+            \Specialtactics\L5Api\Test\Mocks\AppServiceProvider::class,
+            \Specialtactics\L5Api\Test\Mocks\RouteServiceProvider::class,
         ];
     }
 

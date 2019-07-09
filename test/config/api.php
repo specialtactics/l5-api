@@ -57,7 +57,7 @@ return [
     |
     */
 
-    'prefix' => env('API_PREFIX', '/'),
+    'prefix' => env('API_PREFIX', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -226,6 +226,7 @@ return [
             'indent_style' => env('API_JSON_FORMAT_INDENT_STYLE', 'space'),
             'indent_size' => env('API_JSON_FORMAT_INDENT_SIZE', 2),
         ],
+
         'caseType' => env ('API_CASE_TYPE', 'camel-case'),
     ],
 

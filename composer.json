@@ -35,10 +35,11 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Specialtactics\\L5Api\\Tests\\": "tests/",
-      "App\\": "tests/app/"
+      "Specialtactics\\L5Api\\Tests\\": "test/tests/",
+      "Specialtactics\\L5Api\\Test\\Mocks\\": "test/mocks/",
+      "App\\": "test/app/"
     },
-    "classmap": ["tests/database/seeds/", "tests/database/factories/"]
+    "classmap": ["test/database/seeds/", "test/database/factories/"]
   },
   "extra": {
     "laravel": {

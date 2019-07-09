@@ -20,6 +20,9 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+  - if [[ $xdebug = 'true' ]] ; then phpenv config-rm xdebug.ini; fi
+
 install:
   - if [[ $setup = 'basic' ]]; then travis_retry composer install --prefer-dist --no-interaction --no-suggest; fi
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest --prefer-stable; fi

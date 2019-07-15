@@ -124,10 +124,13 @@ class RestfulTransformer extends TransformerAbstract
          * However, if the level is 1, we also want to transform the first level of keys in a json field which has been cast to array
          */
         if ($levels == 1 && ! is_null($this->model)) {
+            // Go through casted atrributes, figuring out what their new key name is to access them
             foreach ($this->model->getCasts() as $fieldName => $castType) {
                 if ($castType == 'array') {
                     $fieldNameFormatted = $this->formatKeyCase($fieldName);
-                    if (array_key_exists($fieldNameFormatted, $transformed)) {
+
+                    // Transform the keys of the array attribute
+                    if (array_key_exists($fieldNameFormatted, $transformed) && !empty($transformed[$fieldNameFormatted])) {
                         $transformed[$fieldNameFormatted] = $this->formatKeyCase($transformed[$fieldNameFormatted]);
                     }
                 }
@@ -146,6 +149,11 @@ class RestfulTransformer extends TransformerAbstract
      */
     protected function formatKeyCase($input, $levels = null)
     {
+        // Fail early in the event of special cases (such as a null which could be an array), to prevent unwanted casting
+        if (empty($input)) {
+            return $input;
+        }
+
         $caseFormat = APIBoilerplate::getResponseCaseType();
 
         if ($caseFormat == APIBoilerplate::CAMEL_CASE) {

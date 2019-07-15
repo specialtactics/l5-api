@@ -130,7 +130,7 @@ class RestfulTransformer extends TransformerAbstract
                     $fieldNameFormatted = $this->formatKeyCase($fieldName);
 
                     // Transform the keys of the array attribute
-                    if (array_key_exists($fieldNameFormatted, $transformed) && !empty($transformed[$fieldNameFormatted])) {
+                    if (array_key_exists($fieldNameFormatted, $transformed) && ! empty($transformed[$fieldNameFormatted])) {
                         $transformed[$fieldNameFormatted] = $this->formatKeyCase($transformed[$fieldNameFormatted]);
                     }
                 }

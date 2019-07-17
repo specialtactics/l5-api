@@ -162,16 +162,43 @@ class RestfulService
      * Validates a given resource (Restful Model) against a given data set in the update context - ie. validating
      * only the fields updated in the provided data set, and throws an API exception on failure
      *
-     * @param RestfulModel $resource
-     * @param array $data
+     * @param RestfulModel $resource model resource
+     * @param array $data Data we are validating against
      * @throws StoreResourceFailedException
      */
     public function validateResourceUpdate($resource, $data)
     {
-        $validator = Validator::make($data, array_intersect_key($resource->getValidationRulesUpdating(), $data), $resource->getValidationMessages());
+        $validator = Validator::make($data, $this->getRelevantValidationRules($resource, $data), $resource->getValidationMessages());
 
         if ($validator->fails()) {
             throw new StoreResourceFailedException('Could not update resource with UUID "'.$resource->getKey().'".', $validator->errors());
         }
+    }
+
+    /**
+     * For a given RestfulModel resource and request's data, get the relevant validation rules for updating that resource
+     *
+     * @param RestfulModel $resource model resource
+     * @param array $data Data we are validating against
+     * @return array The relevant rules
+     */
+    public function getRelevantValidationRules($resource, array $data)
+    {
+        $dataKeys = array_keys($data);
+        $rules = $resource->getValidationRulesUpdating();
+
+        $relevantRules = [];
+        foreach ($rules as $attribute => $rule) {
+            // We only want to compare with the attribute name portion of the rule key (example: attribute.other.irrelevant.items => required)
+            $comparisonKey = explode('.', $attribute);
+
+            // If the comparison portion of the array key matches a key in the data, then the rule is relevant
+            if (in_array($comparisonKey[0], $dataKeys)) {
+                $relevantRules[$attribute] = $rule;
+            }
+
+        }
+
+        return $relevantRules;
     }
 }

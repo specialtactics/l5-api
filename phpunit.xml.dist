@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         beStrictAboutOutputDuringTests="true"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         verbose="true"
+    >
+    <testsuites>
+        <testsuite name="API Test Suite">
+            <directory suffix="Test.php">./test/tests</directory>
+            <exclude>./test/tests/TestCase.php</exclude>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+    <php>
+        <env name="DB_CONNECTION" value="testing"/>
+        <env name="APP_ENV" value="testing"/>
+        <!-- Test App -->
+        <env name="APP_DEBUG" value="true"/>
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="APP_KEY" value="CC58JtJ6QNRTnAr3tdwTw6qMuiK4nDTaozD8Uk3zQ0xuTc6VbW2DBek3cArbnZTx"/>
+        <env name="API_PREFIX" value="/"/>
+        <env name="JWT_SECRET" value="WrL8dp51k231ErDyUMgazU9KceL1RKXusu1U39YARuMbUWKuurPEtqGhEDCrUMoB"/>
+        <env name="JWT_TTL" value="7220"/>
+        <!-- Test App -->
+    </php>
+</phpunit>

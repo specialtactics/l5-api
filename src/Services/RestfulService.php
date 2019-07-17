@@ -70,11 +70,11 @@ class RestfulService
      *
      * @deprecated Use persistResource() instead
      * @param RestfulModel $model
-     * @param Request $request
+     * @param array $data
      * @return bool
      * @throws HttpException
      */
-    public function patch($model, $data)
+    public function patch($model, array $data)
     {
         try {
             $resource = $model->update($data);
@@ -144,7 +144,7 @@ class RestfulService
      * @param array $data
      * @throws StoreResourceFailedException
      */
-    public function validateResource($resource, $data = null)
+    public function validateResource($resource, array $data = null)
     {
         // If no data is provided, validate the resource against it's present attributes
         if (is_null($data)) {
@@ -166,7 +166,7 @@ class RestfulService
      * @param array $data Data we are validating against
      * @throws StoreResourceFailedException
      */
-    public function validateResourceUpdate($resource, $data)
+    public function validateResourceUpdate($resource, array $data)
     {
         $validator = Validator::make($data, $this->getRelevantValidationRules($resource, $data), $resource->getValidationMessages());
 

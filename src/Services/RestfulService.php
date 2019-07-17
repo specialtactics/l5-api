@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Services;
 use Validator;
 use Config;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Database\QueryException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -189,11 +190,10 @@ class RestfulService
 
         $relevantRules = [];
         foreach ($rules as $attribute => $rule) {
-            // We only want to compare with the attribute name portion of the rule key (example: attribute.other.irrelevant.items => required)
-            $comparisonKey = explode('.', $attribute);
-
-            // If the comparison portion of the array key matches a key in the data, then the rule is relevant
-            if (in_array($comparisonKey[0], $dataKeys)) {
+            // We only want to compare with the attribute name portion of the rule key (example: only attribute in
+            //    attribute.other.irrelevant.items => required)
+            // If it matches a key in the data array, then the rule is relevant
+            if (in_array(Str::before($attribute, '.'), $dataKeys)) {
                 $relevantRules[$attribute] = $rule;
             }
         }

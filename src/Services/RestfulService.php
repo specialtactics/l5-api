@@ -196,7 +196,6 @@ class RestfulService
             if (in_array($comparisonKey[0], $dataKeys)) {
                 $relevantRules[$attribute] = $rule;
             }
-
         }
 
         return $relevantRules;

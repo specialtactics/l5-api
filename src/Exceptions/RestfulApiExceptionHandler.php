@@ -15,6 +15,11 @@ use Specialtactics\L5Api\APIBoilerplate;
 class RestfulApiExceptionHandler extends ExceptionHandler
 {
     /**
+     * @var array Original replacements array
+     */
+    protected $originalReplacements = [];
+
+    /**
      * Override prepare replacements function to add extra functionality
      *
      * @param Exception $exception
@@ -24,6 +29,15 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     {
         // Run parent
         $replacements = parent::prepareReplacements($exception);
+
+        // If the errors part is a MessageBag, turn it into an array so we can more easily handle it consistently
+        $errorKey = Config('api.errorFormat.errors');
+        if (array_key_exists($errorKey, $replacements) && ! is_array($replacements[$errorKey]) && is_object($replacements[$errorKey]) && $replacements[$errorKey] instanceof \Illuminate\Support\MessageBag) {
+            $replacements[$errorKey] = $replacements[$errorKey]->toArray();
+        }
+
+        // Save original replacements, in case it's needed downstream
+        $this->originalReplacements = $replacements;
 
         // Format error message field keys
         if ($exception instanceof \Illuminate\Validation\ValidationException || $exception instanceof \Dingo\Api\Exception\ResourceException) {
@@ -41,6 +55,16 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     }
 
     /**
+     * Get the original replacements array
+     *
+     * @return array
+     */
+    public function getOriginalReplacements()
+    {
+        return $this->originalReplacements;
+    }
+
+    /**
      * Formats the case of validation message keys, if response case is not snake-case
      *
      * @param array $replacements
@@ -52,21 +76,10 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         if (array_key_exists($errorKey, $replacements)) {
             $errorMessages = $replacements[$errorKey];
 
-            // Handle MessageBag situation
-            $usingMessageBag = false;
-            if (! is_array($errorMessages) && $errorMessages instanceof \Illuminate\Support\MessageBag) {
-                $errorMessages = $errorMessages->toArray();
-                $usingMessageBag = true;
-            }
-
             if (Config(APIBoilerplate::CASE_TYPE_CONFIG_PATH, APIBoilerplate::DEFAULT_CASE) == APIBoilerplate::CAMEL_CASE) {
                 $errorMessages = camel_case_array_keys($errorMessages);
             } else {
                 $errorMessages = snake_case_array_keys($errorMessages);
-            }
-
-            if ($usingMessageBag) {
-                $errorMessages = new \Illuminate\Support\MessageBag($errorMessages);
             }
 
             $replacements[$errorKey] = $errorMessages;

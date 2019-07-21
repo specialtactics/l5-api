@@ -92,11 +92,11 @@ class APIBoilerplate
             return static::formatCaseAccordingToResponseFormat($input);
         }
 
-        $caseFormat = APIBoilerplate::getResponseCaseType();
+        $caseFormat = static::getResponseCaseType();
 
-        if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
+        if ($caseFormat == static::CAMEL_CASE) {
             $transformed = camel_case_array_keys($input, $levels);
-        } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
+        } elseif ($caseFormat == static::SNAKE_CASE) {
             $transformed = snake_case_array_keys($input, $levels);
         } else {
             // Shouldn't happen

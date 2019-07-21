@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Tests\Unit;
 
-use App\Models\BaseModel;
 use Mockery;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Tests\TestCase;

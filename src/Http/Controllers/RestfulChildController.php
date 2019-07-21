@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Specialtactics\L5Api\Helpers;
 
 class RestfulChildController extends BaseRestfulController
 {
@@ -54,7 +55,7 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         $model = static::$model;
-        $resourceRelationName = model_relation_name($model);
+        $resourceRelationName = Helpers::modelRelationName($model);
 
         // Form model's with relations for parent query
         $withArray = [];
@@ -91,7 +92,7 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         $model = static::$model;
-        $resourceRelationName = model_relation_name($model, 'one');
+        $resourceRelationName = Helpers::modelRelationName($model, 'one');
 
         // Form model's with relations for parent query
         $withArray = [];

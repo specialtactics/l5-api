@@ -6,6 +6,7 @@ use Config;
 use Exception;
 use Dingo\Api\Exception\Handler as ExceptionHandler;
 use Specialtactics\L5Api\APIBoilerplate;
+use Specialtactics\L5Api\Helpers;
 
 /**
  * This class extends the Dingo API Exception Handler, and can be used to modify it's functionality, if required
@@ -47,7 +48,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
         // Format response object keys
         $updatedFormat = [];
         foreach ($this->format as $key => $value) {
-            $updatedFormat[APIBoilerplate::formatKeyCaseAccordingToReponseFormat($key)] = $value;
+            $updatedFormat[APIBoilerplate::formatCaseAccordingToResponseFormat($key)] = $value;
         }
         $this->format = $updatedFormat;
 
@@ -77,9 +78,9 @@ class RestfulApiExceptionHandler extends ExceptionHandler
             $errorMessages = $replacements[$errorKey];
 
             if (Config(APIBoilerplate::CASE_TYPE_CONFIG_PATH, APIBoilerplate::DEFAULT_CASE) == APIBoilerplate::CAMEL_CASE) {
-                $errorMessages = camel_case_array_keys($errorMessages);
+                $errorMessages = Helpers::camelCaseArrayKeys($errorMessages);
             } else {
-                $errorMessages = snake_case_array_keys($errorMessages);
+                $errorMessages = Helpers::snakeCaseArrayKeys($errorMessages);
             }
 
             $replacements[$errorKey] = $errorMessages;

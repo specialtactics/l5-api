@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api;
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Illuminate\Support\Str;
+use Specialtactics\L5Api\Helpers;
 
 class APIBoilerplate
 {
@@ -95,9 +96,9 @@ class APIBoilerplate
         $caseFormat = static::getResponseCaseType();
 
         if ($caseFormat == static::CAMEL_CASE) {
-            $transformed = camel_case_array_keys($input, $levels);
+            $transformed = Helpers::camelCaseArrayKeys($input, $levels);
         } elseif ($caseFormat == static::SNAKE_CASE) {
-            $transformed = snake_case_array_keys($input, $levels);
+            $transformed = Helpers::snakeCaseArrayKeys($input, $levels);
         } else {
             // Shouldn't happen
             $transformed = $input;

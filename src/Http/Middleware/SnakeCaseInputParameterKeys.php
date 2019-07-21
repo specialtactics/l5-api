@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Http\Middleware;
 
 use Closure;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Specialtactics\L5Api\Helpers;
 
 /**
  * Class SnakeCaseInputParameterKeys
@@ -61,7 +62,7 @@ class SnakeCaseInputParameterKeys
         $parameters = $bag->all();
 
         if (! empty($parameters) && count($parameters) > 0) {
-            $parameters = snake_case_array_keys($parameters);
+            $parameters = Helpers::snakeCaseArrayKeys($parameters);
 
             $bag->replace($parameters);
         }

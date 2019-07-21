@@ -118,7 +118,7 @@ class RestfulTransformer extends TransformerAbstract
         /**
          * Transform all keys to required case, to the specified number of levels (by default, infinite)
          */
-        $transformed = $this->formatKeyCase($transformed, $levels);
+        $transformed = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($transformed, $levels);
 
         /*
          * However, if the level is 1, we also want to transform the first level of keys in a json field which has been cast to array
@@ -127,11 +127,11 @@ class RestfulTransformer extends TransformerAbstract
             // Go through casted atrributes, figuring out what their new key name is to access them
             foreach ($this->model->getCasts() as $fieldName => $castType) {
                 if ($castType == 'array') {
-                    $fieldNameFormatted = $this->formatKeyCase($fieldName);
+                    $fieldNameFormatted = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($fieldName);
 
                     // Transform the keys of the array attribute
                     if (array_key_exists($fieldNameFormatted, $transformed) && ! empty($transformed[$fieldNameFormatted])) {
-                        $transformed[$fieldNameFormatted] = $this->formatKeyCase($transformed[$fieldNameFormatted]);
+                        $transformed[$fieldNameFormatted] = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($transformed[$fieldNameFormatted]);
                     }
                 }
             }
@@ -143,34 +143,14 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Formats case of the input array or scalar to desired case
      *
+     * @deprecated
      * @param array|string $input
      * @param int|null $levels How many levels of an array keys to transform - by default recurse infiniately (null)
      * @return array $transformed
      */
     protected function formatKeyCase($input, $levels = null)
     {
-        // Fail early in the event of special cases (such as a null which could be an array), to prevent unwanted casting
-        if (empty($input)) {
-            return $input;
-        }
-
-        $caseFormat = APIBoilerplate::getResponseCaseType();
-
-        if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
-            if (is_array($input)) {
-                $transformed = camel_case_array_keys($input, $levels);
-            } else {
-                $transformed = camel_case($input);
-            }
-        } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
-            if (is_array($input)) {
-                $transformed = snake_case_array_keys($input, $levels);
-            } else {
-                $transformed = snake_case($input);
-            }
-        }
-
-        return $transformed;
+        return APIBoilerplate::formatKeyCaseAccordingToResponseFormat($input, $levels);
     }
 
     /**
@@ -204,7 +184,7 @@ class RestfulTransformer extends TransformerAbstract
     {
         // Iterate through all relations
         foreach ($this->model->getRelations() as $relationKey => $relation) {
-            $transformedRelationKey = $this->formatKeyCase($relationKey);
+            $transformedRelationKey = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($relationKey);
 
             // Skip Pivot
             if ($relation instanceof \Illuminate\Database\Eloquent\Relations\Pivot) {

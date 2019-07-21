@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Tests;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use JWTAuth;
+use Specialtactics\L5Api\APIBoilerplate;
 use UserStorySeeder;
 
 class TestCase extends TestingSetup
@@ -53,5 +54,18 @@ class TestCase extends TestingSetup
         $user = User::where('email', UserStorySeeder::ADMIN_CREDENTIALS[0])->firstOrFail();
 
         return $this->actingAs($user);
+    }
+
+    /**
+     * Set the API key-case on the API boilerplate class
+     *
+     * @param $case
+     * @throws \ReflectionException
+     */
+    public function setAPIKeyCase($case)
+    {
+        $reflection = new \ReflectionProperty(APIBoilerplate::class, 'requestedKeyCaseFormat');
+        $reflection->setAccessible(true);
+        $reflection->setValue(null, $case);
     }
 }

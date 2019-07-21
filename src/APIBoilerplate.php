@@ -74,6 +74,39 @@ class APIBoilerplate
     }
 
     /**
+     * Formats case of the input array or scalar to desired case
+     *
+     * @param array|string $input
+     * @param int|null $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @return array|string $transformed
+     */
+    public static function formatKeyCaseAccordingToResponseFormat($input, $levels = null)
+    {
+        // Fail early in the event of special cases (such as a null which could be an array), to prevent unwanted casting
+        if (empty($input)) {
+            return $input;
+        }
+
+        // Use the other function for strings
+        if (! is_array($input)) {
+            return static::formatCaseAccordingToResponseFormat($input);
+        }
+
+        $caseFormat = APIBoilerplate::getResponseCaseType();
+
+        if ($caseFormat == APIBoilerplate::CAMEL_CASE) {
+            $transformed = camel_case_array_keys($input, $levels);
+        } elseif ($caseFormat == APIBoilerplate::SNAKE_CASE) {
+            $transformed = snake_case_array_keys($input, $levels);
+        } else {
+            // Shouldn't happen
+            $transformed = $input;
+        }
+
+        return $transformed;
+    }
+
+    /**
      * Format the provided string into the required case response format, for attributes (ie. keys)
      *
      * @param string $attributeString

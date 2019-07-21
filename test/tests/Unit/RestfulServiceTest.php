@@ -10,11 +10,12 @@ use Specialtactics\L5Api\Services\RestfulService;
 class RestfulServiceTest extends TestCase
 {
     /**
+     * Test validation when updating a resource, whereby validation has multi-level rule keys
+     *
      * @test
      */
     public function getRelevantValidationRulesConsidersMultiLevelRuleKeys()
     {
-        $this->markTestSkipped('temporary');
         $service = new RestfulService();
 
         // Example rules

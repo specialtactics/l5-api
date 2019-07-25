@@ -1,6 +1,6 @@
 <?php
 
-namespace DummyNamespace;
+namespace App\Models\Policies;
 
 use NamespacedDummyUserModel;
 use NamespacedDummyModel;

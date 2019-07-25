@@ -53,7 +53,8 @@ class MakeApiResource extends Command
 
         // Conditionally create policy
         if ($this->anticipate('Would you like to create a policy for this resource?', ['yes', 'no']) == 'yes') {
-            $this->call('make:policy', ['name' => $name.'Policy', '-m' => $name]);
+            $policyName = '../Models/Policies/' . $name . 'Policy';
+            $this->call('make:policy', ['name' => $policyName, '-m' => $name]);
         }
 
         //

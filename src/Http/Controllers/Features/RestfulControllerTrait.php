@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use App\Transformers\BaseTransformer;
 use Illuminate\Http\Request;
+use Specialtactics\L5Api\Helpers;
 
 trait RestfulControllerTrait
 {
@@ -111,14 +112,14 @@ trait RestfulControllerTrait
     protected function getChildRelationNameForParent($parent, $child)
     {
         // Try model plural name
-        $manyName = model_relation_name($child, 'many');
+        $manyName = Helpers::modelRelationName($child, 'many');
 
         if (method_exists($parent, $manyName)) {
             return $manyName;
         }
 
         // Try model singular name
-        $oneName = model_relation_name($child, 'one');
+        $oneName = Helpers::modelRelationName($child, 'one');
 
         if (method_exists($parent, $oneName)) {
             return $oneName;

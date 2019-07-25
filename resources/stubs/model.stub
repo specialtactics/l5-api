@@ -7,14 +7,20 @@ use App\Transformers\BaseTransformer;
 class DummyClass extends BaseModel
 {
     /**
-     * @var string UUID key
+     * @var string UUID key of the resource
      */
     public $primaryKey = '_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var null|array What relations should one model of this entity be returned with, from a relevant controller
      */
-    public static $localWith = [];
+    public static $itemWith = [];
+
+    /**
+     * @var null|array What relations should a collection of models of this entity be returned with, from a relevant controller
+     * If left null, then $itemWith will be used
+     */
+    public static $collectionWith = null;
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default

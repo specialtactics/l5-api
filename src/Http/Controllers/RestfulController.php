@@ -16,9 +16,11 @@ class RestfulController extends BaseRestfulController
      */
     public function getAll()
     {
+        $this->authorizeUserAction('viewAll');
+
         $model = new static::$model;
 
-        $query = $model::with($model::$localWith);
+        $query = $model::with($model::getCollectionWith());
         $this->qualifyCollectionQuery($query);
 
         // Handle pagination, if applicable
@@ -45,7 +47,7 @@ class RestfulController extends BaseRestfulController
     {
         $model = new static::$model;
 
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->first();
 
         if (! $resource) {
             throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
@@ -74,7 +76,7 @@ class RestfulController extends BaseRestfulController
         $resource = $this->restfulService->persistResource(new $model($request->input()));
 
         // Retrieve full model
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $resource->getKey())->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
@@ -85,8 +87,48 @@ class RestfulController extends BaseRestfulController
         return $response;
     }
 
-    public function put($object)
+    /**
+     * Request to create or replace a resource
+     *
+     * @param Request $request
+     * @param string $uuid
+     * @return \Dingo\Api\Http\Response
+     */
+    public function put(Request $request, $uuid)
     {
+        $model = static::$model::find($uuid);
+
+        if (! $model) {
+            // Doesn't exist - create
+            $this->authorizeUserAction('create');
+
+            $model = new static::$model;
+
+            $this->restfulService->validateResource($model, $request->input());
+            $resource = $this->restfulService->persistResource(new $model($request->input()));
+
+            $resource->loadMissing($model::getItemWith());
+
+            if ($this->shouldTransform()) {
+                $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
+            } else {
+                $response = $resource;
+            }
+        } else {
+            // Exists - replace
+            $this->authorizeUserAction('update', $model);
+
+            $this->restfulService->validateResourceUpdate($model, $request->input());
+            $this->restfulService->persistResource($model->fill($request->input()));
+
+            if ($this->shouldTransform()) {
+                $response = $this->response->item($model, $this->getTransformer())->setStatusCode(200);
+            } else {
+                $response = $model;
+            }
+        }
+
+        return $response;
     }
 
     /**

@@ -15,7 +15,8 @@ class DummyClass extends BasePolicy
      */
     public function create(DummyUser $user)
     {
-        //
+        //@todo
+        return true;
     }
 
     /**
@@ -28,6 +29,18 @@ class DummyClass extends BasePolicy
     public function view(DummyUser $user, DummyModel $dummyModel)
     {
         return $this->own($user, $dummyModel);
+    }
+
+    /**
+     * Determine whether the user can view the collection of DummyModel.
+     *
+     * @param  \NamespacedDummyUserModel  $user
+     * @return mixed
+     */
+    public function viewAll(DummyUser $user)
+    {
+        // @todo
+        return true;
     }
 
     /**
@@ -62,7 +75,8 @@ class DummyClass extends BasePolicy
      * @return mixed
      */
     public function own(DummyUser $user, DummyModel $dummyModel) {
-        //
+        // @todo
+        return true;
     }
 
     /**

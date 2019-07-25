@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Specialtactics\L5Api\Helpers;
 
 class RestfulChildController extends BaseRestfulController
 {
@@ -29,8 +30,9 @@ class RestfulChildController extends BaseRestfulController
      * @var array
      */
     public $parentAbilitiesRequired = [
-        'create' => 'update',
-        'view'    => 'own',
+        'create'    => 'update',
+        'view'      => 'view',
+        'viewAll'   => 'view',
         'update'    => 'own',
         'delete'    => 'own',
     ];
@@ -44,6 +46,8 @@ class RestfulChildController extends BaseRestfulController
      */
     public function getAll($uuid, Request $request)
     {
+        $this->authorizeUserAction('viewAll');
+
         $parentModel = static::$parentModel;
         $parentResource = $parentModel::findOrFail($uuid);
 
@@ -51,11 +55,11 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         $model = static::$model;
-        $resourceRelationName = model_relation_name($model);
+        $resourceRelationName = Helpers::modelRelationName($model);
 
         // Form model's with relations for parent query
         $withArray = [];
-        foreach ($model::$localWith as $modelRelation) {
+        foreach ($model::getCollectionWith() as $modelRelation) {
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
         }
 
@@ -88,11 +92,11 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         $model = static::$model;
-        $resourceRelationName = model_relation_name($model, 'one');
+        $resourceRelationName = Helpers::modelRelationName($model, 'one');
 
         // Form model's with relations for parent query
         $withArray = [];
-        foreach ($model::$localWith as $modelRelation) {
+        foreach ($model::getItemWith() as $modelRelation) {
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
         }
 
@@ -131,7 +135,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Get resource
         $model = new static::$model;
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->firstOrFail();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->firstOrFail();
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
@@ -185,7 +189,7 @@ class RestfulChildController extends BaseRestfulController
         $resource = $this->restfulService->persistResource($resource);
 
         // Retrieve full model
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $resource->getKey())->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
@@ -233,7 +237,7 @@ class RestfulChildController extends BaseRestfulController
         $this->restfulService->patch($resource, $request->input());
 
         // Get updated resource
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer());

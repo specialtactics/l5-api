@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api;
 
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Illuminate\Support\Str;
 
 class APIBoilerplate
 {
@@ -73,21 +74,66 @@ class APIBoilerplate
     }
 
     /**
-     * Format the provided key string into the required case response format
+     * Formats case of the input array or scalar to desired case
      *
-     * @param string $key
+     * @param array|string $input
+     * @param int|null $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @return array|string $transformed
+     */
+    public static function formatKeyCaseAccordingToResponseFormat($input, $levels = null)
+    {
+        // Fail early in the event of special cases (such as a null which could be an array), to prevent unwanted casting
+        if (empty($input)) {
+            return $input;
+        }
+
+        // Use the other function for strings
+        if (! is_array($input)) {
+            return static::formatCaseAccordingToResponseFormat($input);
+        }
+
+        $caseFormat = static::getResponseCaseType();
+
+        if ($caseFormat == static::CAMEL_CASE) {
+            $transformed = Helpers::camelCaseArrayKeys($input, $levels);
+        } elseif ($caseFormat == static::SNAKE_CASE) {
+            $transformed = Helpers::snakeCaseArrayKeys($input, $levels);
+        } else {
+            // Shouldn't happen
+            $transformed = $input;
+        }
+
+        return $transformed;
+    }
+
+    /**
+     * Format the provided string into the required case response format, for attributes (ie. keys)
+     *
+     * @param string $attributeString
      * @return string
      */
-    public static function formatKeyCaseAccordingToReponseFormat($key)
+    public static function formatCaseAccordingToResponseFormat($attributeString)
     {
         $format = static::getResponseCaseType();
 
         if ($format == static::CAMEL_CASE) {
-            $key = camel_case($key);
+            $attributeString = Str::camel($attributeString);
         } else {
-            $key = snake_case($key);
+            $attributeString = Str::snake($attributeString);
         }
 
-        return $key;
+        return $attributeString;
+    }
+
+    /**
+     * Format the provided key string into the required case response format
+     *
+     * @deprecated Use the updated function name
+     * @param string $key
+     * @return string
+     */
+    public static function formatKeyCaseAccordingToReponseFormat($value)
+    {
+        return self::formatCaseAccordingToResponseFormat($value);
     }
 }

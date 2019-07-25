@@ -47,18 +47,19 @@ class RestfulModel extends Model
     public static $localWith = null;
 
     /**
-     * What relations should one model of this entity be returned with, from a relevant controller?
+     * What relations should one model of this entity be returned with, from a relevant controller
      *
      * @var null|array
      */
-    protected $itemWith = [];
+    public static $itemWith = [];
 
     /**
-     * What relations should a collection of models of this entity be returned with, from a relevant controller?
+     * What relations should a collection of models of this entity be returned with, from a relevant controller
+     * If left null, then $itemWith will be used
      *
-     * @var null
+     * @var null|array
      */
-    protected $collectionWith = null;
+    public static $collectionWith = null;
 
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer
@@ -171,10 +172,10 @@ class RestfulModel extends Model
      *
      * @return array
      */
-    public function getItemWith()
+    public static function getItemWith()
     {
         if (is_null(static::$localWith)) {
-            return $this->itemWith;
+            return static::$itemWith;
         } else {
             return static::$localWith;
         }
@@ -187,13 +188,13 @@ class RestfulModel extends Model
      *
      * @return array
      */
-    public function getCollectionWith()
+    public static function getCollectionWith()
     {
         if (is_null(static::$localWith)) {
-            if (! is_null($this->collectionWith)) {
-                return $this->collectionWith;
+            if (! is_null(static::$collectionWith)) {
+                return static::$collectionWith;
             } else {
-                return $this->itemWith;
+                return static::$itemWith;
             }
         } else {
             return static::$localWith;

@@ -59,7 +59,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Form model's with relations for parent query
         $withArray = [];
-        foreach ($model::$localWith as $modelRelation) {
+        foreach ($model::getCollectionWith() as $modelRelation) {
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
         }
 
@@ -96,7 +96,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Form model's with relations for parent query
         $withArray = [];
-        foreach ($model::$localWith as $modelRelation) {
+        foreach ($model::getItemWith() as $modelRelation) {
             $withArray[] = $resourceRelationName . '.' . $modelRelation;
         }
 
@@ -135,7 +135,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Get resource
         $model = new static::$model;
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->firstOrFail();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->firstOrFail();
 
         // Check resource belongs to parent
         if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
@@ -189,7 +189,7 @@ class RestfulChildController extends BaseRestfulController
         $resource = $this->restfulService->persistResource($resource);
 
         // Retrieve full model
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $resource->getKey())->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $resource->getKey())->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer())->setStatusCode(201);
@@ -237,7 +237,7 @@ class RestfulChildController extends BaseRestfulController
         $this->restfulService->patch($resource, $request->input());
 
         // Get updated resource
-        $resource = $model::with($model::$localWith)->where($model->getKeyName(), '=', $uuid)->first();
+        $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->first();
 
         if ($this->shouldTransform()) {
             $response = $this->response->item($resource, $this->getTransformer());

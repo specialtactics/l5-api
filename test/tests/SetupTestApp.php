@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Tests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use JWTAuth;
 use Mockery;
 
@@ -12,7 +11,7 @@ use Mockery;
  * Class TestingSetup
  * @package Specialtactics\L5Api\Tests
  */
-class TestingSetup extends BaseTestCase
+class SetupTestApp extends BaseTestCase
 {
     /**
      * Set up the testing environment

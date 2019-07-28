@@ -9,7 +9,7 @@ use JWTAuth;
 use Specialtactics\L5Api\APIBoilerplate;
 use UserStorySeeder;
 
-class TestCase extends TestingSetup
+class AppTestCase extends SetupTestApp
 {
     use DatabaseTransactions;
 

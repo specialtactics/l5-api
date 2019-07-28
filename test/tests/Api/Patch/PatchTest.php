@@ -2,9 +2,9 @@
 
 namespace Specialtactics\L5Api\Tests\Api\Patch;
 
-use Specialtactics\L5Api\Tests\TestCase;
+use Specialtactics\L5Api\Tests\AppTestCase;
 
-class PatchTest extends TestCase
+class PatchTest extends AppTestCase
 {
     /**
      * @testdox Updating a forum description

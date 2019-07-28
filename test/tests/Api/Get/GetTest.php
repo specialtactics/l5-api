@@ -2,9 +2,9 @@
 
 namespace Specialtactics\L5Api\Tests\Api\Get;
 
-use Specialtactics\L5Api\Tests\TestCase;
+use Specialtactics\L5Api\Tests\AppTestCase;
 
-class GetTest extends TestCase
+class GetTest extends AppTestCase
 {
     public function testGet()
     {

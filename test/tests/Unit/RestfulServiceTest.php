@@ -4,10 +4,10 @@ namespace Specialtactics\L5Api\Tests\Unit;
 
 use App\Models\BaseModel;
 use Mockery;
-use Specialtactics\L5Api\Tests\TestCase;
+use Specialtactics\L5Api\Tests\BaseTestCase;
 use Specialtactics\L5Api\Services\RestfulService;
 
-class RestfulServiceTest extends TestCase
+class RestfulServiceTest extends BaseTestCase
 {
     /**
      * Test validation when updating a resource, whereby validation has multi-level rule keys

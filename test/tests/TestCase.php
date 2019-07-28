@@ -4,12 +4,15 @@ namespace Specialtactics\L5Api\Tests;
 
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use JWTAuth;
 use Specialtactics\L5Api\APIBoilerplate;
 use UserStorySeeder;
 
 class TestCase extends TestingSetup
 {
+    use DatabaseTransactions;
+
     /**
      * Set the currently logged in user for the application and Authorization headers for API request
      *

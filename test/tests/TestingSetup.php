@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Tests;
 
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use JWTAuth;
 use Mockery;
@@ -22,12 +21,13 @@ class TestingSetup extends BaseTestCase
     {
         parent::setUp();
 
-        // Do migrations for tests
+        // Load migrations for tests
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        $factory = app(EloquentFactory::class);
-        $factory->load(__DIR__ . '/../database/factories');
+        // Load factories for tests
+        $this->withFactories(__DIR__ . '/../database/factories');
 
+        // Migrate and seed
         $this->artisan('migrate', ['--database' => 'testing', '--seed' => true]);
     }
 

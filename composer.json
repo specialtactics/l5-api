@@ -49,6 +49,9 @@
       ]
     }
   },
+  "archive": {
+    "exclude": ["/test"]
+  },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {

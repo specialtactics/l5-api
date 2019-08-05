@@ -21,8 +21,12 @@ class Helpers
             $value = &$array[$key];
             unset($array[$key]);
 
-            // Transform key
-            $transformedKey = Str::camel($key);
+            // Transform key - but we probably don't want to transform all uppercase keys
+            if (strtoupper($key) !== $key) {
+                $transformedKey = Str::camel($key);
+            } else {
+                $transformedKey = $key;
+            }
 
             // Recurse
             if (is_array($value) && (is_null($levels) || --$levels > 0)) {
@@ -54,8 +58,12 @@ class Helpers
             $value = &$array[$key];
             unset($array[$key]);
 
-            // Transform key
-            $transformedKey = Str::snake($key);
+            // Transform key - but we probably don't want to transform all uppercase keys
+            if (strtoupper($key) !== $key) {
+                $transformedKey = Str::snake($key);
+            } else {
+                $transformedKey = $key;
+            }
 
             // Recurse
             if (is_array($value) && (is_null($levels) || --$levels > 0)) {

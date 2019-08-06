@@ -117,9 +117,9 @@ class APIBoilerplate
         $format = static::getResponseCaseType();
 
         if ($format == static::CAMEL_CASE) {
-            $attributeString = Str::camel($attributeString);
+            $attributeString = Helpers::camel($attributeString);
         } else {
-            $attributeString = Str::snake($attributeString);
+            $attributeString = Helpers::snake($attributeString);
         }
 
         return $attributeString;

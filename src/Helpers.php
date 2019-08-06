@@ -21,12 +21,8 @@ class Helpers
             $value = &$array[$key];
             unset($array[$key]);
 
-            // Transform key - but we probably don't want to transform all uppercase keys
-            if (strtoupper($key) !== $key) {
-                $transformedKey = Str::camel($key);
-            } else {
-                $transformedKey = $key;
-            }
+            // Transform key
+            $transformedKey = static::camel($key);
 
             // Recurse
             if (is_array($value) && (is_null($levels) || --$levels > 0)) {
@@ -58,12 +54,8 @@ class Helpers
             $value = &$array[$key];
             unset($array[$key]);
 
-            // Transform key - but we probably don't want to transform all uppercase keys
-            if (strtoupper($key) !== $key) {
-                $transformedKey = Str::snake($key);
-            } else {
-                $transformedKey = $key;
-            }
+            // Transform key
+            $transformedKey = static::snake($key);
 
             // Recurse
             if (is_array($value) && (is_null($levels) || --$levels > 0)) {
@@ -78,6 +70,46 @@ class Helpers
         }
 
         return $array;
+    }
+
+    /**
+     * Str::camel wrapper - for specific extra functionality
+     * Note this is generally only applicable when dealing with API input/output key case
+     *
+     * @param string $value
+     * @return string
+     */
+    public static function camel($value)
+    {
+        // Preserve all caps
+        if (strtoupper($value) === $value) {
+            return $value;
+        }
+
+        return Str::camel($value);
+    }
+
+    /**
+     * Str::snake wrapper - for specific extra functionality
+     * Note this is generally only applicable when dealing with API input/output key case
+     *
+     * @param string $value
+     * @return mixed|string|string[]|null
+     */
+    public static function snake($value)
+    {
+        // Preserve all caps
+        if (strtoupper($value) === $value) {
+            return $value;
+        }
+
+        $value = Str::snake($value);
+
+        // Extra things which Str::snake doesn't do, but maybe should
+        $value = str_replace('-', '_', $value);
+        $value = preg_replace('/__+/', '_', $value);
+
+        return $value;
     }
 
     /**

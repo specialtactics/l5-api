@@ -4,7 +4,6 @@ namespace Specialtactics\L5Api;
 
 use Config;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Illuminate\Support\Str;
 
 class APIBoilerplate
 {

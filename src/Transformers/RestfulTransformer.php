@@ -89,7 +89,9 @@ class RestfulTransformer extends TransformerAbstract
             ['id' => $model->getKey()],
             $transformed
         );
-        unset($transformed[$model->getKeyName()]);
+        if ($model->getKeyName() != 'id') {
+            unset($transformed[$model->getKeyName()]);
+        }
 
         /*
          * Transform the model keys' case

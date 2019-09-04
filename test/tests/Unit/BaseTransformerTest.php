@@ -2,7 +2,9 @@
 
 namespace Specialtactics\L5Api\Tests\Unit;
 
+use Ramsey\Uuid\Uuid;
 use Specialtactics\L5Api\Tests\AppTestCase;
+use Specialtactics\L5Api\Tests\Fixtures\Models\ModelWithCasts;
 use Specialtactics\L5Api\Tests\Fixtures\Models\ModelWithIdPK;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
@@ -25,9 +27,29 @@ class BaseTransformerTest extends AppTestCase
         $this->assertEquals($transformed['exampleAttribute'], 'abc123');
     }
 
-
     /**
-     * @todo: Test for the situation of an attribute casted as array being null, and being converted to string inadvertently on transformation
+     * Make sure that an array cast attribute is transformed correctly, in situations when it's blank
+     *
+     * @test
      */
+    public function nullArrayCastWillBeEmptyArray()
+    {
+        //
+        // Array attribute is null
+        $model = new ModelWithCasts(['model_with_casts_id' => Uuid::uuid4()->toString(), 'array_attribute' => null]);
 
+        $transformed = (new RestfulTransformer)->transform($model);
+
+        $this->assertArrayHasKey('arrayAttribute', $transformed);
+        $this->assertNull($transformed['arrayAttribute']);
+
+        //
+        // Array attribute is empty
+        $model = new ModelWithCasts(['model_with_casts_id' => Uuid::uuid4()->toString(), 'array_attribute' => []]);
+
+        $transformed = (new RestfulTransformer)->transform($model);
+
+        $this->assertArrayHasKey('arrayAttribute', $transformed);
+        $this->assertCount(0, $transformed['arrayAttribute']);
+    }
 }

@@ -86,6 +86,7 @@ class RestfulTransformer extends TransformerAbstract
          * Primary Key transformation - all PKs to be called "id"
          */
         unset($transformed[$model->getKeyName()]);
+
         $transformed = array_merge(
             ['id' => $model->getKey()],
             $transformed

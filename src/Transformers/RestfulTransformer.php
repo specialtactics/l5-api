@@ -82,7 +82,7 @@ class RestfulTransformer extends TransformerAbstract
             }
         }
 
-        /**
+        /*
          * Primary Key transformation - all PKs to be called "id"
          */
         unset($transformed[$model->getKeyName()]);

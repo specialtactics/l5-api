@@ -68,6 +68,10 @@ class RestfulModel extends Model
      */
     public static $transformer = null;
 
+    public static $allowedSorts = null;
+
+    public static $allowedFilters = null;
+
     /**
      * Return the validation rules for this model
      *
@@ -198,6 +202,20 @@ class RestfulModel extends Model
             }
         } else {
             return static::$localWith;
+        }
+    }
+
+    public static function getAllowedSorts()
+    {
+        if (!is_null(static::$allowedSorts)){
+            return static::$allowedSorts;
+        }
+    }
+
+    public static function getAllowedFilters()
+    {
+        if (!is_null(static::$allowedFilters)) {
+            return static::$allowedFilters;
         }
     }
 

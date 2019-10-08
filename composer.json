@@ -13,7 +13,7 @@
     "php": "^7.2",
     "dingo/api": "^2.4",
     "tymon/jwt-auth": "^1.0",
-    "illuminate/support": "^6",
+    "illuminate/support": "^6 || ^5.8",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",
     "atehnix/laravel-stubs": "~6.0"
@@ -25,7 +25,7 @@
     "mockery/mockery": "^1.0",
     "nunomaduro/collision": "^2.0",
     "phpunit/phpunit": "^7.5 || ^8.3",
-    "orchestra/testbench": "^4",
+    "orchestra/testbench": "^4 || ^3",
     "fideloper/proxy": "^4.0"
   },
   "autoload": {

@@ -40,6 +40,17 @@ class BaseRestfulController extends Controller
     public static $transformer = null;
 
     /**
+     * Whether to cache the getAll() function results from the DB
+     * Default value of `false` disables functionality - to enable, specify the TTL in seconds
+     *
+     * WARNING: If you are implementing permissions logic with `qualifyCollectionQuery()`, you should not use this.
+     * It is best suited to unprivileged data which changes infrequently (eg. countries, currencies, locales, etc)
+     *
+     * @var bool|int
+     */
+    public static $cacheGetAll = false;
+
+    /**
      * RestfulController constructor.
      *
      * @param RestfulService $restfulService

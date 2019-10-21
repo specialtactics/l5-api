@@ -30,7 +30,7 @@ class RestfulController extends BaseRestfulController
             if (request()->has('per_page')) {
                 $perPage = intval(request()->input('per_page'));
             }
-            
+
             $paginator = $query->paginate($perPage);
 
             return $this->response->paginator($paginator, $this->getTransformer());

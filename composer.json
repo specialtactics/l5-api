@@ -23,9 +23,9 @@
     "beyondcode/laravel-dump-server": "^1.0",
     "fzaninotto/faker": "^1.4",
     "mockery/mockery": "^1.0",
-    "nunomaduro/collision": "^2.0",
-    "phpunit/phpunit": "^7.5 || ^8.3",
-    "orchestra/testbench": "^4 || ^3",
+    "nunomaduro/collision": "^3.0",
+    "phpunit/phpunit": "^8.3",
+    "orchestra/testbench": "^4",
     "fideloper/proxy": "^4.0"
   },
   "autoload": {

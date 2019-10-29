@@ -15,7 +15,6 @@ class DummyClass extends BasePolicy
      */
     public function create(DummyUser $user)
     {
-        //@todo
         return true;
     }
 
@@ -39,7 +38,6 @@ class DummyClass extends BasePolicy
      */
     public function viewAll(DummyUser $user)
     {
-        // @todo
         return true;
     }
 
@@ -74,8 +72,8 @@ class DummyClass extends BasePolicy
      * @param  \NamespacedDummyModel  $dummyModel
      * @return mixed
      */
-    public function own(DummyUser $user, DummyModel $dummyModel) {
-        // @todo
+    public function own(DummyUser $user, DummyModel $dummyModel)
+    {
         return true;
     }
 

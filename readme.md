@@ -3,6 +3,6 @@
 [![Github All Releases](https://img.shields.io/packagist/dt/specialtactics/l5-api.svg)]()
 [![Github All Releases](https://img.shields.io/packagist/dm/specialtactics/l5-api.svg)]()
 
-## Laravel 5 API
+## Laravel API Boilerplate Dependency Package
 
-This is a supporting / dependency package used by the [Laravel 5 API Boilerplate](https://github.com/specialtactics/l5-api-boilerplate). Please have a look at that project for all documentation.
+This is a supporting / dependency package used by the [Laravel API Boilerplate](https://github.com/specialtactics/laravel-api-boilerplate). Please have a look at that project for all documentation.

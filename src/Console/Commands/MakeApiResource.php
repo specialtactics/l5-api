@@ -2,8 +2,8 @@
 
 namespace Specialtactics\L5Api\Console\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 class MakeApiResource extends Command

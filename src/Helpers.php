@@ -7,7 +7,6 @@ namespace Specialtactics\L5Api;
  * directly without having to alias
  *
  * Class Helpers
- * @package Specialtactics\L5Api
  */
 class Helpers extends APIHelpers
 {

@@ -6,9 +6,29 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Cache;
 
 class RestfulController extends BaseRestfulController
 {
+    /**
+     * Cache key for getAll() function - all of a collection's resources
+     */
+    const CACHE_KEY_GET_ALL = '%s_getAll';
+
+    /**
+     * @var bool Cache setting for collection / getAll endpoint
+     *
+     * If enabled, the get collection endpoint is cached - but NOTE that this will bypass specific user qualification
+     * of the query, and any other query params - such as pagination. It can be used for SIMPLE resources that
+     * change infrequently
+     */
+    public static $cacheAll = false;
+
+    /**
+     * @var int Cache expiry timeout (24 hours by default)
+     */
+    public static $cacheExpiresIn = 86400;
+
     /**
      * Request to retrieve a collection of all items of this resource
      *
@@ -19,6 +39,13 @@ class RestfulController extends BaseRestfulController
         $this->authorizeUserAction('viewAll');
 
         $model = new static::$model;
+
+        // If we are caching the endpont, do a simple get all resources
+        if (static::$cacheAll) {
+            return $this->response->collection(Cache::remember(static::getCacheKey(), static::$cacheExpiresIn, function () use ($model) {
+                return $model::with($model::getCollectionWith())->get();
+            }), $this->getTransformer());
+        }
 
         $query = $model::with($model::getCollectionWith());
         $this->qualifyCollectionQuery($query);
@@ -183,5 +210,20 @@ class RestfulController extends BaseRestfulController
         }
 
         return $this->response->noContent()->setStatusCode(204);
+    }
+
+    /**
+     * Get the cache key for a given endpoint in this controller
+     *
+     * @param string $endpoint
+     * @return string $cacheKey
+     */
+    public static function getCacheKey(string $endpoint = 'getAll') : ?string
+    {
+        if ($endpoint == 'getAll') {
+            return sprintf(static::CACHE_KEY_GET_ALL, static::$model);
+        }
+
+        return null;
     }
 }

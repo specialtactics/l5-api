@@ -119,7 +119,7 @@ class KeyCaseTest extends AppTestCase
     public function camelCaseArrayKeys()
     {
         $result = Helpers::camelCaseArrayKeys(self::MIXED_CASES);
-        $this->assertEquals($result, self::AFTER_CAMEL, 0.0, self::MAX_DEPTH);
+        $this->assertEqualsWithDelta($result, self::AFTER_CAMEL, self::MAX_DEPTH);
     }
 
     /**
@@ -128,7 +128,7 @@ class KeyCaseTest extends AppTestCase
     public function snakeCaseArrayKeys()
     {
         $result = Helpers::snakeCaseArrayKeys(self::MIXED_CASES);
-        $this->assertEquals($result, self::AFTER_SNAKE, 0.0, self::MAX_DEPTH);
+        $this->assertEqualsWithDelta($result, self::AFTER_SNAKE, self::MAX_DEPTH);
     }
 
     /**
@@ -137,7 +137,7 @@ class KeyCaseTest extends AppTestCase
     public function keyCaseFiltersShouldProduceConsistentResults()
     {
         $result = Helpers::camelCaseArrayKeys(Helpers::snakeCaseArrayKeys(Helpers::camelCaseArrayKeys(Helpers::snakeCaseArrayKeys(self::MIXED_CASES))));
-        $this->assertEquals($result, self::AFTER_CAMEL, 0.0, self::MAX_DEPTH);
+        $this->assertEqualsWithDelta($result, self::AFTER_CAMEL, self::MAX_DEPTH);
     }
 
 }

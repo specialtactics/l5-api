@@ -16,7 +16,8 @@
     "illuminate/support": "^6 || ^5.8",
     "webpatser/laravel-uuid": "^3.0",
     "ramsey/uuid": "^3.0",
-    "atehnix/laravel-stubs": "~6.0"
+    "atehnix/laravel-stubs": "~6.0",
+    "spatie/laravel-query-builder": "^2.7"
   },
   "require-dev": {
     "ext-json": "*",

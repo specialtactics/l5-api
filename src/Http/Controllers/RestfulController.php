@@ -4,6 +4,9 @@ namespace Specialtactics\L5Api\Http\Controllers;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -20,8 +23,12 @@ class RestfulController extends BaseRestfulController
 
         $model = new static::$model;
 
-        $query = $model::with($model::getCollectionWith());
+        $query = QueryBuilder::for($model::with($model::getCollectionWith()));
         $this->qualifyCollectionQuery($query);
+
+        $query->allowedSorts($model::getAllowedSorts());
+
+        $query->allowedFilters($model::getAllowedFilters());
 
         // Handle pagination, if applicable
         $perPage = $model->getPerPage();

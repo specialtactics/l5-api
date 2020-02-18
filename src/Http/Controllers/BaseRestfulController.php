@@ -40,6 +40,11 @@ class BaseRestfulController extends Controller
     public static $transformer = null;
 
     /**
+     * @var array|string|\Spatie\QueryBuilder\Sorts\Sort
+     */
+    public static $allowedSorts = null;
+
+    /**
      * RestfulController constructor.
      *
      * @param RestfulService $restfulService

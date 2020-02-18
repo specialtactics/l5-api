@@ -207,14 +207,14 @@ class RestfulModel extends Model
 
     public static function getAllowedSorts()
     {
-        if (!is_null(static::$allowedSorts)){
+        if (! is_null(static::$allowedSorts)) {
             return static::$allowedSorts;
         }
     }
 
     public static function getAllowedFilters()
     {
-        if (!is_null(static::$allowedFilters)) {
+        if (! is_null(static::$allowedFilters)) {
             return static::$allowedFilters;
         }
     }

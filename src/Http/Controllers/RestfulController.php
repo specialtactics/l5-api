@@ -225,7 +225,7 @@ class RestfulController extends BaseRestfulController
      * @param string $endpoint
      * @return string $cacheKey
      */
-    public static function getCacheKey(string $endpoint = 'getAll') : ?string
+    public static function getCacheKey(string $endpoint = 'getAll'): ?string
     {
         if ($endpoint == 'getAll') {
             return sprintf(static::CACHE_KEY_GET_ALL, static::$model);

@@ -3,7 +3,7 @@
 
 $sourceDir = '/www/laravel/bp-demo';
 $migrationsDir = './database/migrations';
-$configsToCopy = ['api.php', 'auth.php', 'jwt.php'];
+$configsToCopy = ['api.php', 'auth.php', 'jwt.php', 'query-builder.php'];
 
 // Copy over database dir
 echo `rm -rf ./database/*`;

@@ -58,6 +58,7 @@ class SetupTestApp extends BaseTestCase
         $app['config']->set('api', include __DIR__ . '/../config/api.php');
         $app['config']->set('auth', include __DIR__ . '/../config/auth.php');
         $app['config']->set('jwt', include __DIR__ . '/../config/jwt.php');
+        $app['config']->set('query-builder', include __DIR__ . '/../config/query-builder.php');
     }
 
     /**
@@ -74,6 +75,7 @@ class SetupTestApp extends BaseTestCase
             \Specialtactics\L5Api\L5ApiServiceProvider::class,
             \Specialtactics\L5Api\Test\Mocks\AppServiceProvider::class,
             \Specialtactics\L5Api\Test\Mocks\RouteServiceProvider::class,
+            \Spatie\QueryBuilder\QueryBuilderServiceProvider::class,
         ];
     }
 

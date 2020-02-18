@@ -32,6 +32,16 @@ class User extends BaseModel implements
     public static $localWith = ['primaryRole', 'roles'];
 
     /**
+     * @var array Sortable attributes
+     */
+    public static $allowedSorts = ['name'];
+
+    /**
+     * @var array attribute filters
+     */
+    public static $allowedFilters = ['email'];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

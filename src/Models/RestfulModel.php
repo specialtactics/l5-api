@@ -113,7 +113,7 @@ class RestfulModel extends Model
             // If the PK(s) are missing, generate them
             $uuidKeyName = $model->getKeyName();
 
-            if (! is_array($uuidKeyName) && ! array_key_exists($uuidKeyName, $model->getAttributes())) {
+            if ($uuidKeyName && ! is_array($uuidKeyName) && ! array_key_exists($uuidKeyName, $model->getAttributes())) {
                 $model->$uuidKeyName = Uuid::uuid4()->toString();
             }
         });

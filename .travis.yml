@@ -6,11 +6,13 @@ matrix:
     - php: 7.2
       env: LARAVEL_VERSION=5.8.*
     - php: 7.2
-      env: LARAVEL_VERSION=6.0.*
+      env: LARAVEL_VERSION=6.*
     - php: 7.3
       env: LARAVEL_VERSION=5.8.*
     - php: 7.3
-      env: LARAVEL_VERSION=6.0.*
+      env: LARAVEL_VERSION=6.*
+    - php: 7.3
+      env: LARAVEL_VERSION=7.*
 
 sudo: false
 

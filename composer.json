@@ -15,8 +15,7 @@
     "tymon/jwt-auth": "^1.0",
     "illuminate/support": "^7.0",
     "webpatser/laravel-uuid": "^3.0",
-    "ramsey/uuid": "^3.0",
-    "atehnix/laravel-stubs": "~6.0"
+    "ramsey/uuid": "^3.0"
   },
   "require-dev": {
     "ext-json": "*",

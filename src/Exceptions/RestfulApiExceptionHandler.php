@@ -3,7 +3,7 @@
 namespace Specialtactics\L5Api\Exceptions;
 
 use Config;
-use Exception;
+use Throwable;
 use Dingo\Api\Exception\Handler as ExceptionHandler;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Helpers;
@@ -23,7 +23,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     /**
      * Override prepare replacements function to add extra functionality
      *
-     * @param Exception $exception
+     * @param Throwable $exception
      * @return array
      */
     protected function prepareReplacements(Throwable $exception)

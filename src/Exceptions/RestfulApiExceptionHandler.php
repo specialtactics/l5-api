@@ -26,7 +26,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
      * @param Exception $exception
      * @return array
      */
-    protected function prepareReplacements(Exception $exception)
+    protected function prepareReplacements(Throwable $exception)
     {
         // Run parent
         $replacements = parent::prepareReplacements($exception);

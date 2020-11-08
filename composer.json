@@ -15,8 +15,7 @@
     "tymon/jwt-auth": "^1.0",
     "illuminate/support": "^6 || ^5.8",
     "webpatser/laravel-uuid": "^3.0",
-    "ramsey/uuid": "^3.0",
-    "atehnix/laravel-stubs": "~6.0"
+    "ramsey/uuid": "^3.0"
   },
   "require-dev": {
     "ext-json": "*",
@@ -42,12 +41,6 @@
     },
     "classmap": ["test/database/seeds/", "test/database/factories/"]
   },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/LaravelRUS/laravel-stubs.git"
-    }
-  ],
   "extra": {
     "laravel": {
       "providers": [

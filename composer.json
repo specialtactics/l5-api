@@ -42,6 +42,12 @@
     },
     "classmap": ["test/database/seeds/", "test/database/factories/"]
   },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/LaravelRUS/laravel-stubs.git"
+    }
+  ],
   "extra": {
     "laravel": {
       "providers": [

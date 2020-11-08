@@ -73,16 +73,34 @@ trait RestfulControllerTrait
      * This method determines whether the resource returned should undergo transformation or not.
      * The reason is, sometimes it is useful to return the untransformed resource (for example - for internal calls)
      *
+     * Changed recently due to https://github.com/laravel/framework/pull/34884
+     *
      * @return bool
      */
     protected function shouldTransform()
     {
-        // If we are not called by this function, then we are not called by the router
-        if (debug_backtrace()[2]['function'] != 'call_user_func_array') {
-            return false;
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+        // We're going to check up to the top 20 calls (first 3-5 should be more than enough for almost any situation)
+        $numberOfCallsToCheck = 20;
+        $callsToCheck = [];
+
+        for ($i = 0; $i < sizeof($trace) && $numberOfCallsToCheck > 0; ++$i) {
+            // We only want function calls
+            if (array_key_exists('file', $trace[$i])) {
+                $callsToCheck[] = $trace[$i];
+                --$numberOfCallsToCheck;
+            }
         }
 
-        return true;
+        // This should work for both the new and old scenarios
+        if (basename($callsToCheck[1]['file']) == 'Controller.php' &&
+            basename($callsToCheck[2]['file']) == 'ControllerDispatcher.php' &&
+            $callsToCheck[2]['function'] == 'callAction') {
+            return true;
+        }
+
+        return false;
     }
 
     /**

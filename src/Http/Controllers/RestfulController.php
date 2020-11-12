@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Http\Controllers;
 
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Cache;
@@ -47,8 +48,16 @@ class RestfulController extends BaseRestfulController
             }), $this->getTransformer());
         }
 
-        $query = $model::with($model::getCollectionWith());
+        $query = QueryBuilder::for($model::with($model::getCollectionWith()), Request());
         $this->qualifyCollectionQuery($query);
+
+        if ($sorts = $model::getAllowedSorts()) {
+            $query = $query->allowedSorts($sorts);
+        }
+
+        if ($filters = $model::getAllowedFilters()) {
+            $query = $query->allowedFilters($filters);
+        }
 
         // Handle pagination, if applicable
         $perPage = $model->getPerPage();
@@ -58,7 +67,7 @@ class RestfulController extends BaseRestfulController
                 $perPage = intval(request()->input('per_page'));
             }
 
-            $paginator = $query->paginate($perPage);
+            $paginator = $query->paginate($perPage)->appends(request()->only(['filter', 'sort']));
 
             return $this->response->paginator($paginator, $this->getTransformer());
         } else {

@@ -22,6 +22,10 @@ class GetTest extends AppTestCase
         $jsonResponse->assertStatus(200);
 
 
+        $jsonResponse = $this->actingAsAdmin()
+            ->json('GET', '/users?sort=-name&filter[email]=admin.com');
+
+        $jsonResponse->assertStatus(200);
 
     }
 }

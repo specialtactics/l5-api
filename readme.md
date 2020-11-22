@@ -6,3 +6,13 @@
 ## Laravel API Boilerplate Dependency Package
 
 This is a supporting / dependency package used by the [Laravel API Boilerplate](https://github.com/specialtactics/laravel-api-boilerplate). Please have a look at that project for all documentation.
+
+## Quick reference for versions
+
+Please go to [The boilerplate wiki](https://github.com/specialtactics/laravel-api-boilerplate/wiki) for full info.
+
+| Laravel Version | Boilerplate Version | Minimum PHP Version | Support Status |
+|-----------------|---------------------|---------------------|----------------|
+| 6.x             | 1.1.x               | 7.2                 | Supported      |
+| 7.x             | 2.x.x               | 7.2.5               | Supported      |
+| 8.x             | 3.x.x               | 7.3                 | Supported      |

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace App\Models\Policies;
 
 use Specialtactics\L5Api\Policies\RestfulModelPolicy;
 use App\Models\User;

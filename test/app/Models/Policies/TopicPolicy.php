@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Policies;
+namespace App\Models\Policies;
 
 use App\Models\User;
-use App\Models\Post;
+use App\Models\Topic;
 
-class PostPolicy extends BasePolicy
+class TopicPolicy extends BasePolicy
 {
     /**
-     * Determine whether the user can create Post.
+     * Determine whether the user can create Topic.
      *
      * @param  \App\Models\User  $user
      * @return mixed
@@ -19,50 +19,50 @@ class PostPolicy extends BasePolicy
     }
 
     /**
-     * Determine whether the user can view the Post.
+     * Determine whether the user can view the Topic.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Topic  $topic
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view(User $user, Topic $topic)
     {
-        return $this->own($user, $post);
+        return $this->own($user, $topic);
     }
 
     /**
-     * Determine whether the user can update the Post.
+     * Determine whether the user can update the Topic.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Topic  $topic
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Topic $topic)
     {
-        return $this->own($user, $post);
+        return $this->own($user, $topic);
     }
 
     /**
-     * Determine whether the user can delete the Post.
+     * Determine whether the user can delete the Topic.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Topic  $topic
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, Topic $topic)
     {
-        return $this->own($user, $post);
+        return $this->own($user, $topic);
     }
 
     /**
-     * Determine whether the user owns the Post.
+     * Determine whether the user owns the Topic.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Topic  $topic
      * @return mixed
      */
-    public function own(User $user, Post $post) {
-        return $post->author_id == $user->user_id;
+    public function own(User $user, Topic $topic) {
+        return true;
     }
 
     /**

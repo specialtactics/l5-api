@@ -2,7 +2,7 @@
 
 namespace Specialtactics\L5Api\Http\Controllers\Features;
 
-use Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -87,7 +87,7 @@ trait AuthorizesUserActionsOnModelsTrait
             $model = $arguments;
         }
 
-        $modelPolicy = Gate::getPolicyFor($model);
+        $modelPolicy = app(Gate::class)->getPolicyFor($model);
 
         // If no policy exists for this model, then there's nothing to check
         if (is_null($modelPolicy)) {

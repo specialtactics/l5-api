@@ -8,20 +8,9 @@ class GetTest extends AppTestCase
 {
     public function testGet()
     {
-
-
-
         $jsonResponse = $this->actingAsAdmin()
             ->json('GET', '/users');
 
-
-        //var_dump($jsonResponse->status());
-
-
-
         $jsonResponse->assertStatus(200);
-
-
-
     }
 }

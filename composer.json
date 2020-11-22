@@ -14,7 +14,6 @@
     "dingo/api": "^3.0.0",
     "tymon/jwt-auth": "^1.0.1",
     "illuminate/support": "^8.0",
-    "webpatser/laravel-uuid": "^3.0.2",
     "ramsey/uuid": "^4.1"
   },
   "require-dev": {

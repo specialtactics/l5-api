@@ -22,7 +22,9 @@ class PatchTest extends AppTestCase
                 'description' => $description,
             ]);
 
-        $forumId = $jsonResponse->decodeResponseJson('data.id');
+        $jsonResponse->assertStatus(201);
+
+        $forumId = $jsonResponse->decodeResponseJson()->json('data.id');
 
         // Do the patch test
         $jsonResponse = $this->actingAsAdmin()

@@ -1,67 +1,78 @@
 <?php
 
-namespace App\Policies;
+namespace App\Models\Policies;
 
 use App\Models\User;
-use App\Models\Topic;
+use App\Models\Forum;
 
-class TopicPolicy extends BasePolicy
+class ForumPolicy extends BasePolicy
 {
     /**
-     * Determine whether the user can create Topic.
+     * Determine whether the user can create Forum.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
+        //
+    }
+
+    /**
+     * Determine whether the user can create Forum.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function viewAll(User $user)
+    {
         return true;
     }
 
     /**
-     * Determine whether the user can view the Topic.
+     * Determine whether the user can view the Forum.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Topic  $topic
+     * @param  \App\Models\Forum  $forum
      * @return mixed
      */
-    public function view(User $user, Topic $topic)
+    public function view(User $user, Forum $forum)
     {
-        return $this->own($user, $topic);
+        return $this->own($user, $forum);
     }
 
     /**
-     * Determine whether the user can update the Topic.
+     * Determine whether the user can update the Forum.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Topic  $topic
+     * @param  \App\Models\Forum  $forum
      * @return mixed
      */
-    public function update(User $user, Topic $topic)
+    public function update(User $user, Forum $forum)
     {
-        return $this->own($user, $topic);
+        return $this->own($user, $forum);
     }
 
     /**
-     * Determine whether the user can delete the Topic.
+     * Determine whether the user can delete the Forum.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Topic  $topic
+     * @param  \App\Models\Forum  $forum
      * @return mixed
      */
-    public function delete(User $user, Topic $topic)
+    public function delete(User $user, Forum $forum)
     {
-        return $this->own($user, $topic);
+        return $this->own($user, $forum);
     }
 
     /**
-     * Determine whether the user owns the Topic.
+     * Determine whether the user owns the Forum.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Topic  $topic
+     * @param  \App\Models\Forum  $forum
      * @return mixed
      */
-    public function own(User $user, Topic $topic) {
+    public function own(User $user, Forum $forum) {
         return true;
     }
 

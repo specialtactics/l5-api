@@ -1,81 +1,68 @@
 <?php
 
-namespace App\Policies;
+namespace App\Models\Policies;
 
 use App\Models\User;
-use App\Models\Forum;
+use App\Models\Post;
 
-class ForumPolicy extends BasePolicy
+class PostPolicy extends BasePolicy
 {
-    public function before(User $user, $ability) {}
-
     /**
-     * Determine whether the user can create Forum.
+     * Determine whether the user can create Post.
      *
      * @param  \App\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can create Forum.
-     *
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function viewAll(User $user)
-    {
         return true;
     }
 
     /**
-     * Determine whether the user can view the Forum.
+     * Determine whether the user can view the Post.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forum  $forum
+     * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function view(User $user, Forum $forum)
+    public function view(User $user, Post $post)
     {
-        return $this->own($user, $forum);
+        return $this->own($user, $post);
     }
 
     /**
-     * Determine whether the user can update the Forum.
+     * Determine whether the user can update the Post.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forum  $forum
+     * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function update(User $user, Forum $forum)
+    public function update(User $user, Post $post)
     {
-        return $this->own($user, $forum);
+        return $this->own($user, $post);
     }
 
     /**
-     * Determine whether the user can delete the Forum.
+     * Determine whether the user can delete the Post.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forum  $forum
+     * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function delete(User $user, Forum $forum)
+    public function delete(User $user, Post $post)
     {
-        return $this->own($user, $forum);
+        return $this->own($user, $post);
     }
 
     /**
-     * Determine whether the user owns the Forum.
+     * Determine whether the user owns the Post.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forum  $forum
+     * @param  \App\Models\Post  $post
      * @return mixed
      */
-    public function own(User $user, Forum $forum) {
-        return true;
+    public function own(User $user, Post $post) {
+        return $post->author_id == $user->user_id;
     }
 
     /**

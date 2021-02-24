@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Transformers;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 class RestfulTransformer extends TransformerAbstract
 {
@@ -22,7 +23,7 @@ class RestfulTransformer extends TransformerAbstract
      */
     public function transform($object)
     {
-        if (is_object($object) && $object instanceof RestfulModel) {
+        if (is_object($object) && $object instanceof EloquentModel) {
             $transformed = $this->transformRestfulModel($object);
         } elseif (is_object($object) && $object instanceof \stdClass) {
             $transformed = $this->transformStdClass($object);
@@ -54,10 +55,10 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform an eloquent object into a jsonable array
      *
-     * @param RestfulModel $model
+     * @param EloquentModel $model
      * @return array
      */
-    public function transformRestfulModel(RestfulModel $model)
+    public function transformRestfulModel(EloquentModel $model)
     {
         $this->model = $model;
 

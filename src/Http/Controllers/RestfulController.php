@@ -36,7 +36,7 @@ class RestfulController extends BaseRestfulController
      */
     public function getAll()
     {
-        $this->authorizeUserAction('viewAll');
+        $this->authorizeUserAction('viewAny');
 
         $model = new static::$model;
 

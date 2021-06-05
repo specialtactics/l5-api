@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Exceptions;
 
-use Config;
 use Throwable;
 use Dingo\Api\Exception\Handler as ExceptionHandler;
 use Specialtactics\L5Api\APIBoilerplate;

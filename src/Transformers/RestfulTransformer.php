@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Transformers;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 class RestfulTransformer extends TransformerAbstract
 {
@@ -22,10 +23,16 @@ class RestfulTransformer extends TransformerAbstract
      */
     public function transform($object)
     {
-        if (is_object($object) && $object instanceof RestfulModel) {
-            $transformed = $this->transformRestfulModel($object);
-        } elseif (is_object($object) && $object instanceof \stdClass) {
-            $transformed = $this->transformStdClass($object);
+        if (is_object($object)) {
+            if ($object instanceof RestfulModel) {
+                $transformed = $this->transformRestfulModel($object);
+            } else if ($object instanceof EloquentModel) {
+                $transformed = $this->transformEloquentModel($object);
+            } elseif ($object instanceof \stdClass) {
+                $transformed = $this->transformStdClass($object);
+            } else {
+                throw new \Exception('Unexpected object type encountered in transformer');
+            }
         } else {
             throw new \Exception('Unexpected object type encountered in transformer');
         }
@@ -52,12 +59,12 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Transform an eloquent object into a jsonable array
+     * Transform a restful model object into a jsonable array
      *
      * @param RestfulModel $model
      * @return array
      */
-    public function transformRestfulModel(RestfulModel $model)
+    public function transformRestfulModel(EloquentModel $model)
     {
         $this->model = $model;
 
@@ -103,6 +110,18 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = $this->transformRelations($transformed);
 
         return $transformed;
+    }
+
+    /**
+     * At the moment, there is no difference in implementation between this and the more specific Restfulmodel,
+     * however in the future there may be
+     *
+     * @param EloquentModel $model
+     * @return array
+     */
+    public function transformEloquentModel(EloquentModel $model)
+    {
+        return $this->transformRestfulModel($model);
     }
 
     /**

@@ -26,7 +26,7 @@ class RestfulTransformer extends TransformerAbstract
         if (is_object($object)) {
             if ($object instanceof RestfulModel) {
                 $transformed = $this->transformRestfulModel($object);
-            } else if ($object instanceof EloquentModel) {
+            } elseif ($object instanceof EloquentModel) {
                 $transformed = $this->transformEloquentModel($object);
             } elseif ($object instanceof \stdClass) {
                 $transformed = $this->transformStdClass($object);

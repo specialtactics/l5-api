@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^7.3",
+    "php": "^7.3|^8.0",
     "dingo/api": "^3.0.0",
     "tymon/jwt-auth": "^1.0.1",
     "illuminate/support": "^8.0",

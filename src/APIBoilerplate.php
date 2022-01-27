@@ -75,8 +75,8 @@ class APIBoilerplate
     /**
      * Formats case of the input array or scalar to desired case
      *
-     * @param array|string $input
-     * @param int|null $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @param  array|string  $input
+     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array|string $transformed
      */
     public static function formatKeyCaseAccordingToResponseFormat($input, $levels = null)
@@ -108,7 +108,7 @@ class APIBoilerplate
     /**
      * Format the provided string into the required case response format, for attributes (ie. keys)
      *
-     * @param string $attributeString
+     * @param  string  $attributeString
      * @return string
      */
     public static function formatCaseAccordingToResponseFormat($attributeString)
@@ -128,7 +128,8 @@ class APIBoilerplate
      * Format the provided key string into the required case response format
      *
      * @deprecated Use the updated function name
-     * @param string $key
+     *
+     * @param  string  $key
      * @return string
      */
     public static function formatKeyCaseAccordingToReponseFormat($value)

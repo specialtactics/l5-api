@@ -32,7 +32,7 @@ class L5ApiServiceProvider extends LaravelServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param \Illuminate\Routing\Router $router
+     * @param  \Illuminate\Routing\Router  $router
      */
     public function boot(Router $router, Dispatcher $event)
     {

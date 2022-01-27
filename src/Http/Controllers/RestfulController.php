@@ -71,8 +71,9 @@ class RestfulController extends BaseRestfulController
     /**
      * Request to retrieve a single item of this resource
      *
-     * @param string $uuid UUID of the resource
+     * @param  string  $uuid  UUID of the resource
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function get($uuid)
@@ -93,8 +94,9 @@ class RestfulController extends BaseRestfulController
     /**
      * Request to create a new resource
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException|QueryException
      */
     public function post(Request $request)
@@ -122,8 +124,8 @@ class RestfulController extends BaseRestfulController
     /**
      * Request to create or replace a resource
      *
-     * @param Request $request
-     * @param string $uuid
+     * @param  Request  $request
+     * @param  string  $uuid
      * @return \Dingo\Api\Http\Response
      */
     public function put(Request $request, $uuid)
@@ -166,9 +168,10 @@ class RestfulController extends BaseRestfulController
     /**
      * Request to update the specified resource
      *
-     * @param string $uuid UUID of the resource
-     * @param Request $request
+     * @param  string  $uuid  UUID of the resource
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function patch($uuid, Request $request)
@@ -193,8 +196,9 @@ class RestfulController extends BaseRestfulController
     /**
      * Deletes a resource by UUID
      *
-     * @param string $uuid UUID of the resource
+     * @param  string  $uuid  UUID of the resource
      * @return \Dingo\Api\Http\Response
+     *
      * @throws NotFoundHttpException
      */
     public function delete($uuid)
@@ -215,7 +219,7 @@ class RestfulController extends BaseRestfulController
     /**
      * Get the cache key for a given endpoint in this controller
      *
-     * @param string $endpoint
+     * @param  string  $endpoint
      * @return string $cacheKey
      */
     public static function getCacheKey(string $endpoint = 'getAll'): ?string

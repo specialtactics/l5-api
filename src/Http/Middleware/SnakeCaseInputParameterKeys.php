@@ -55,7 +55,7 @@ class SnakeCaseInputParameterKeys
     /**
      * Process parameters within a ParameterBag to snake_case the keys
      *
-     * @param ParameterBag $bag
+     * @param  ParameterBag  $bag
      */
     protected function processParamBag(ParameterBag $bag)
     {

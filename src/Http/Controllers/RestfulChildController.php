@@ -40,8 +40,8 @@ class RestfulChildController extends BaseRestfulController
     /**
      * Request to retrieve a collection of all items owned by the parent of this resource
      *
-     * @param string $uuid
-     * @param Request $request
+     * @param  string  $uuid
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
      */
     public function getAll($uuid, Request $request)
@@ -79,8 +79,8 @@ class RestfulChildController extends BaseRestfulController
     /**
      * Request to retrieve a single child owned by the parent of this resource (hasOne relationship)
      *
-     * @param string $uuid
-     * @param Request $request
+     * @param  string  $uuid
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
      */
     public function getOneFromParent($uuid, Request $request)
@@ -119,9 +119,10 @@ class RestfulChildController extends BaseRestfulController
     /**
      * Request to retrieve a single item of this resource
      *
-     * @param string $parentUuid UUID of the parent resource
-     * @param string $uuid UUID of the resource
+     * @param  string  $parentUuid  UUID of the parent resource
+     * @param  string  $uuid  UUID of the resource
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function get($parentUuid, $uuid)
@@ -157,8 +158,10 @@ class RestfulChildController extends BaseRestfulController
      * Request to create the child resource owned by the parent resource
      *
      * @oaram string $parentUuid Parent's UUID
-     * @param Request $request
+     *
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function post($parentUuid, Request $request)
@@ -203,10 +206,11 @@ class RestfulChildController extends BaseRestfulController
     /**
      * Request to update the specified child resource
      *
-     * @param string $parentUuid UUID of the parent resource
-     * @param string $uuid UUID of the child resource
-     * @param Request $request
+     * @param  string  $parentUuid  UUID of the parent resource
+     * @param  string  $uuid  UUID of the child resource
+     * @param  Request  $request
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function patch($parentUuid, $uuid, Request $request)
@@ -251,9 +255,10 @@ class RestfulChildController extends BaseRestfulController
     /**
      * Deletes a child resource by UUID
      *
-     * @param string $parentUuid UUID of the parent resource
-     * @param string $uuid UUID of the child resource
+     * @param  string  $parentUuid  UUID of the parent resource
+     * @param  string  $uuid  UUID of the child resource
      * @return \Dingo\Api\Http\Response
+     *
      * @throws HttpException
      */
     public function delete($parentUuid, $uuid)

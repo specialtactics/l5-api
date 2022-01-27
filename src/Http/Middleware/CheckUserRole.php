@@ -13,7 +13,7 @@ class CheckUserRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param array|string $roles Roles to check for
+     * @param  array|string  $roles  Roles to check for
      * @return mixed
      */
     public function handle($request, Closure $next, ...$roles)

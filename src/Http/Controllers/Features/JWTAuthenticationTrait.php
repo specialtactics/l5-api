@@ -11,7 +11,7 @@ trait JWTAuthenticationTrait
     /**
      * Get a JWT via given credentials.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function token(Request $request)
@@ -71,7 +71,7 @@ trait JWTAuthenticationTrait
     /**
      * Get the token array structure.
      *
-     * @param string $token
+     * @param  string  $token
      * @return Response
      */
     protected function respondWithToken($token)

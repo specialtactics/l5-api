@@ -9,8 +9,7 @@ class Json extends \Dingo\Api\Http\Response\Format\Json
     /**
      * Format an array or instance implementing Arrayable.
      *
-     * @param array|\Illuminate\Contracts\Support\Arrayable $content
-     *
+     * @param  array|\Illuminate\Contracts\Support\Arrayable  $content
      * @return string
      */
     public function formatArray($content)

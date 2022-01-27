@@ -28,7 +28,7 @@ class RestfulService
     /**
      * RestfulService constructor.
      *
-     * @param RestfulModel|null $model The model this service will be concerned with
+     * @param  RestfulModel|null  $model  The model this service will be concerned with
      */
     public function __construct($model = null)
     {
@@ -38,7 +38,7 @@ class RestfulService
     /**
      * Set model to be used in the service
      *
-     * @param string|null $model
+     * @param  string|null  $model
      * @return $this
      */
     public function setModel($model)
@@ -70,9 +70,11 @@ class RestfulService
      * Patch a resource of the given model, with the given request
      *
      * @deprecated Use persistResource() instead
-     * @param RestfulModel $model
-     * @param array $data
+     *
+     * @param  RestfulModel  $model
+     * @param  array  $data
      * @return bool
+     *
      * @throws HttpException
      */
     public function patch($model, array $data)
@@ -141,8 +143,9 @@ class RestfulService
     /**
      * Validates a given resource (Restful Model) against a given data set, and throws an API exception on failure
      *
-     * @param RestfulModel $resource
-     * @param array $data
+     * @param  RestfulModel  $resource
+     * @param  array  $data
+     *
      * @throws StoreResourceFailedException
      */
     public function validateResource($resource, array $data = null)
@@ -163,8 +166,9 @@ class RestfulService
      * Validates a given resource (Restful Model) against a given data set in the update context - ie. validating
      * only the fields updated in the provided data set, and throws an API exception on failure
      *
-     * @param RestfulModel $resource model resource
-     * @param array $data Data we are validating against
+     * @param  RestfulModel  $resource  model resource
+     * @param  array  $data  Data we are validating against
+     *
      * @throws StoreResourceFailedException
      */
     public function validateResourceUpdate($resource, array $data)
@@ -179,8 +183,8 @@ class RestfulService
     /**
      * For a given RestfulModel resource and request's data, get the relevant validation rules for updating that resource
      *
-     * @param RestfulModel $resource model resource
-     * @param array $data Data we are validating against
+     * @param  RestfulModel  $resource  model resource
+     * @param  array  $data  Data we are validating against
      * @return array The relevant rules
      */
     public function getRelevantValidationRules($resource, array $data)

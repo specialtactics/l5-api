@@ -42,6 +42,7 @@ class RestfulModel extends Model
      *  always loaded in various service functions, for performance reasons
      *
      * @deprecated Use  getItemWith() and getCollectionWith()
+     *
      * @var array Relations to load implicitly by Restful controllers
      */
     public static $localWith = null;

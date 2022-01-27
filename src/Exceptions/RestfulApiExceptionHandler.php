@@ -22,7 +22,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     /**
      * Override prepare replacements function to add extra functionality
      *
-     * @param Throwable $exception
+     * @param  Throwable  $exception
      * @return array
      */
     protected function prepareReplacements(Throwable $exception)
@@ -67,7 +67,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     /**
      * Formats the case of validation message keys, if response case is not snake-case
      *
-     * @param array $replacements
+     * @param  array  $replacements
      * @return array
      */
     protected function formatCaseOfValidationMessages($replacements)

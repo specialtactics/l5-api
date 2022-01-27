@@ -42,7 +42,7 @@ class BaseRestfulController extends Controller
     /**
      * RestfulController constructor.
      *
-     * @param RestfulService $restfulService
+     * @param  RestfulService  $restfulService
      */
     public function __construct(RestfulService $restfulService)
     {

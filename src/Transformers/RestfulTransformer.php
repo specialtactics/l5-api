@@ -17,8 +17,9 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform an object into a jsonable array
      *
-     * @param mixed $model
+     * @param  mixed  $model
      * @return array
+     *
      * @throws \Exception
      */
     public function transform($object)
@@ -43,7 +44,7 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform an arbitrary stdClass
      *
-     * @param \stdClass $object
+     * @param  \stdClass  $object
      * @return array
      */
     public function transformStdClass($object)
@@ -61,7 +62,7 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform a restful model object into a jsonable array
      *
-     * @param RestfulModel $model
+     * @param  RestfulModel  $model
      * @return array
      */
     public function transformRestfulModel(EloquentModel $model)
@@ -116,7 +117,7 @@ class RestfulTransformer extends TransformerAbstract
      * At the moment, there is no difference in implementation between this and the more specific Restfulmodel,
      * however in the future there may be
      *
-     * @param EloquentModel $model
+     * @param  EloquentModel  $model
      * @return array
      */
     public function transformEloquentModel(EloquentModel $model)
@@ -127,7 +128,7 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Transform the keys of the object to the correct case as required
      *
-     * @param array $transformed
+     * @param  array  $transformed
      * @return array $transformed
      */
     protected function transformKeysCase(array $transformed)
@@ -164,8 +165,9 @@ class RestfulTransformer extends TransformerAbstract
      * Formats case of the input array or scalar to desired case
      *
      * @deprecated
-     * @param array|string $input
-     * @param int|null $levels How many levels of an array keys to transform - by default recurse infiniately (null)
+     *
+     * @param  array|string  $input
+     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infiniately (null)
      * @return array $transformed
      */
     protected function formatKeyCase($input, $levels = null)
@@ -197,7 +199,7 @@ class RestfulTransformer extends TransformerAbstract
     /**
      * Do relation transformations
      *
-     * @param array $transformed
+     * @param  array  $transformed
      * @return array $transformed
      */
     protected function transformRelations(array $transformed)

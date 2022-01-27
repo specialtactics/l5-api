@@ -107,7 +107,7 @@ trait RestfulControllerTrait
      * Prepend a Response message with a custom message
      * Useful for adding error info to internal request responses before returning them
      *
-     * @param \Dingo\Api\Http\Response $response
+     * @param  \Dingo\Api\Http\Response  $response
      * @param $message
      * @return \Dingo\Api\Http\Response
      */

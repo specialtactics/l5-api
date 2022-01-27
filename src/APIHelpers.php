@@ -10,7 +10,7 @@ class APIHelpers
      * Recursively camel-case an array's keys
      *
      * @param $array
-     * @param int|null $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */
     public static function camelCaseArrayKeys($array, $levels = null)
@@ -43,7 +43,7 @@ class APIHelpers
      * Recursively snake-case an array's keys
      *
      * @param $array
-     * @param int|null $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */
     public static function snakeCaseArrayKeys(array $array, $levels = null)
@@ -76,7 +76,7 @@ class APIHelpers
      * Str::camel wrapper - for specific extra functionality
      * Note this is generally only applicable when dealing with API input/output key case
      *
-     * @param string $value
+     * @param  string  $value
      * @return string
      */
     public static function camel($value)
@@ -93,7 +93,7 @@ class APIHelpers
      * Str::snake wrapper - for specific extra functionality
      * Note this is generally only applicable when dealing with API input/output key case
      *
-     * @param string $value
+     * @param  string  $value
      * @return mixed|string|string[]|null
      */
     public static function snake($value)
@@ -125,8 +125,8 @@ class APIHelpers
     /**
      * Converts the name of a model class to the name of the relation of this resource on another model
      *
-     * @param string $resourceName The name of the resource we are dealing with
-     * @param string $relationType The type of relation - ie.. one to.. X ('one', 'many')
+     * @param  string  $resourceName  The name of the resource we are dealing with
+     * @param  string  $relationType  The type of relation - ie.. one to.. X ('one', 'many')
      * @return string The name of the relation, as it would appear inside an eloquent model
      */
     public static function modelRelationName($resourceName, $relationType = 'many')

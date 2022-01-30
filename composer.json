@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^7.4|8.0",
+    "php": "^7.4|^8.0",
     "api-ecosystem-for-laravel/dingo-api": "^3.1",
     "php-open-source-saver/jwt-auth": "^1.4",
     "illuminate/support": "^8.0",

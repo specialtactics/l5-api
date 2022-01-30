@@ -19,7 +19,7 @@
   "require-dev": {
     "ext-json": "*",
     "beyondcode/laravel-dump-server": "^1.6",
-    "fzaninotto/faker": "^1.8",
+    "fakerphp/faker": "^1.18",
     "mockery/mockery": "^1.4",
     "nunomaduro/collision": "^4.2",
     "phpunit/phpunit": "^9",

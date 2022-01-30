@@ -69,7 +69,7 @@ class SetupTestApp extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+            \PHPOpenSourceSaver\JWTAuth\Providers\LaravelServiceProvider::class,
             \Dingo\Api\Provider\LaravelServiceProvider::class,
             \Specialtactics\L5Api\L5ApiServiceProvider::class,
             \Specialtactics\L5Api\Test\Mocks\AppServiceProvider::class,
@@ -86,7 +86,7 @@ class SetupTestApp extends BaseTestCase
     protected function getPackageAliases($app) {
         return [
             'API' => \Dingo\Api\Facade\API::class,
-            'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
+            'JWTAuth' => \PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth::class,
         ];
     }
 

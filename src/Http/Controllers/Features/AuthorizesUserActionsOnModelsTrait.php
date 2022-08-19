@@ -20,8 +20,9 @@ trait AuthorizesUserActionsOnModelsTrait
      *
      * Only checks if a policy exists for that model.
      *
-     * @param string $ability
-     * @param array|mixed $arguments
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     *
      * @throws AccessDeniedHttpException
      */
     public function authorizeUserAction($ability, $arguments = [])
@@ -40,7 +41,7 @@ trait AuthorizesUserActionsOnModelsTrait
      * This function can be used to add conditions to the query builder,
      * which will specify the currently logged in user's ownership of the model
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder|null
      */
     public function qualifyCollectionQuery($query)
@@ -103,7 +104,7 @@ trait AuthorizesUserActionsOnModelsTrait
         // If not, check if we have a custom Response object, and if so, utilise it
         // @var $response \Illuminate\Auth\Access\Response
         $response = app(Gate::class)->forUser($user)->inspect($ability, $arguments);
-        if (!empty($response->message())) {
+        if (! empty($response->message())) {
             throw new HttpException($response->code(), $response->message());
         }
 

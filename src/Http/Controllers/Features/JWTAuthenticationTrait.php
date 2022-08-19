@@ -76,7 +76,7 @@ trait JWTAuthenticationTrait
      */
     protected function respondWithToken($token)
     {
-        $tokenReponse = new \Stdclass;
+        $tokenReponse = new \stdClass;
 
         $tokenReponse->jwt = $token;
         $tokenReponse->token_type = 'bearer';

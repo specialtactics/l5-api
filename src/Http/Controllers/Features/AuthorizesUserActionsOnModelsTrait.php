@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Trait AuthorizesUsersActionsAgainstModelsTrait
@@ -98,6 +99,13 @@ trait AuthorizesUserActionsOnModelsTrait
         // Check if the authenticated user has the required ability for the model
         if ($user->can($ability, $arguments)) {
             return true;
+        }
+
+        // If not, check if we have a custom Response object, and if so, utilise it
+        // @var $response \Illuminate\Auth\Access\Response
+        $response = app(Gate::class)->forUser($user)->inspect($ability, $arguments);
+        if (! empty($response->message())) {
+            throw new HttpException($response->code(), $response->message());
         }
 
         return false;

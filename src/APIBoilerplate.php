@@ -145,11 +145,10 @@ class APIBoilerplate
         return self::formatCaseAccordingToResponseFormat($value);
     }
 
-
     /**
      * Set a custom logger
      *
-     * @param LoggerInterface $logger
+     * @param  LoggerInterface  $logger
      * @return void
      */
     public static function setLogger(LoggerInterface $logger)

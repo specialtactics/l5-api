@@ -2,6 +2,7 @@
 
 namespace Specialtactics\L5Api\Services;
 
+use Specialtactics\L5Api\APIBoilerplate;
 use Validator;
 use Config;
 use Illuminate\Http\Request;
@@ -87,16 +88,20 @@ class RestfulService
             if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
                     throw new ConflictHttpException('The resource already exists: ' . class_basename($model));
-                } elseif (Config::get('api.debug') === true) {
+                } elseif (config::get('api.debug') === true) {
                     throw $e;
+                } else {
+                    APIBoilerplate::getLogger()->debug($e->getMessage());
                 }
             }
 
             // Default HTTP exception to use for storage errors
             $errorMessage = 'Unexpected error trying to store this resource.';
 
-            if (Config::get('api.debug') === true) {
+            if (config::get('api.debug') === true) {
                 $errorMessage .= ' ' . $e->getMessage();
+            } else {
+                APIBoilerplate::getLogger()->debug($errorMessage . ' ' . $e->getMessage());
             }
 
             throw new UnprocessableEntityHttpException($errorMessage);
@@ -124,6 +129,8 @@ class RestfulService
                     throw new ConflictHttpException('The resource already exists: ' . class_basename($resource));
                 } elseif (Config::get('api.debug') === true) {
                     throw $e;
+                } else {
+                    APIBoilerplate::getLogger()->debug($e->getMessage());
                 }
             }
 
@@ -132,6 +139,8 @@ class RestfulService
 
             if (Config::get('api.debug') === true) {
                 $errorMessage .= ' ' . $e->getMessage();
+            } else {
+                APIBoilerplate::getLogger()->debug($errorMessage . ' ' . $e->getMessage());
             }
 
             throw new UnprocessableEntityHttpException($errorMessage);

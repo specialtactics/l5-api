@@ -3,6 +3,7 @@
 namespace Specialtactics\L5Api;
 
 use Config;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class APIBoilerplate
@@ -13,6 +14,13 @@ class APIBoilerplate
     const CAMEL_CASE = 'camel-case';
     const SNAKE_CASE = 'snake-case';
     const DEFAULT_CASE = self::CAMEL_CASE;
+
+    /**
+     * The logger to be used by the boilerplate
+     *
+     * @var LoggerInterface $logger
+     */
+    protected static $logger;
 
     /**
      * Case type config path
@@ -135,5 +143,27 @@ class APIBoilerplate
     public static function formatKeyCaseAccordingToReponseFormat($value)
     {
         return self::formatCaseAccordingToResponseFormat($value);
+    }
+
+
+    /**
+     * Set a custom logger
+     *
+     * @param LoggerInterface $logger
+     * @return void
+     */
+    public static function setLogger(LoggerInterface $logger)
+    {
+        static::$logger = $logger;
+    }
+
+    /**
+     * Return the logger we are using
+     *
+     * @return LoggerInterface
+     */
+    public static function getLogger(): LoggerInterface
+    {
+        return static::$logger;
     }
 }

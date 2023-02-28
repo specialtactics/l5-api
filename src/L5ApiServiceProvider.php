@@ -27,6 +27,9 @@ class L5ApiServiceProvider extends LaravelServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands(Console\Commands\MakeApiResource::class);
         }
+
+        // Set the logger instance to the laravel's default to begin with
+        APIBoilerplate::setLogger(\Log::getLogger());
     }
 
     /**

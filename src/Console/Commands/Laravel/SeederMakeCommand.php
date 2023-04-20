@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Console\Commands\Laravel;
 
-
 class SeederMakeCommand extends \Illuminate\Database\Console\Seeds\SeederMakeCommand
 {
     /**

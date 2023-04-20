@@ -57,7 +57,6 @@ trait RestfulControllerTrait
 
         // Check that the top-level of the body is an array
         if (is_array($input) && count($input) > 0) {
-
             // Check if the first element is an array (json object)
             $firstChild = array_shift($input);
 

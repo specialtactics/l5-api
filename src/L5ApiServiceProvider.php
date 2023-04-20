@@ -25,7 +25,7 @@ class L5ApiServiceProvider extends LaravelServiceProvider
         $loader->alias('APIRoute', \Dingo\Api\Facade\Route::class);
 
         if ($this->app->runningInConsole()) {
-            $this->commands(Console\Commands\MakeApiResource::class);
+            $this->setupGenerators();
         }
     }
 
@@ -36,5 +36,21 @@ class L5ApiServiceProvider extends LaravelServiceProvider
      */
     public function boot(Router $router, Dispatcher $event)
     {
+    }
+
+    public function setupGenerators()
+    {
+        $this->commands(Console\Commands\MakeApiResource::class);
+
+        //
+        // Override relevant artisan stubs
+        // Controller-Model-Policy
+        $this->commands(Console\Commands\Laravel\ControllerMakeCommand::class);
+        $this->commands(Console\Commands\Laravel\ModelMakeCommand::class);
+        $this->commands(Console\Commands\Laravel\PolicyMakeCommand::class);
+
+        // Database - Migration and Seeder
+        //$this->commands(Console\Commands\ControllerMakeCommand::class);
+        $this->commands(Console\Commands\Laravel\SeederMakeCommand::class);
     }
 }

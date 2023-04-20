@@ -139,7 +139,7 @@ class RestfulChildController extends BaseRestfulController
         $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->firstOrFail();
 
         // Check resource belongs to parent
-        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+        if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
             throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }
@@ -227,7 +227,7 @@ class RestfulChildController extends BaseRestfulController
         $resource = static::$model::findOrFail($uuid);
 
         // Check resource belongs to parent
-        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+        if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
             throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }
@@ -275,7 +275,7 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction('delete', $resource);
 
         // Check resource belongs to parent
-        if ($resource->getAttribute(($parentResource->getKeyName())) != $parentResource->getKey()) {
+        if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
             throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
                 'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
         }

@@ -3,6 +3,8 @@
 namespace DummyNamespace;
 
 use Illuminate\Http\Request;
+use App\Transformers\BaseTransformer;
+use App\Models\BaseModel;
 
 class DummyClass extends Controller
 {

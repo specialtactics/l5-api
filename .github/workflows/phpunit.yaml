@@ -47,8 +47,8 @@ jobs:
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
       - name: Prepare the application
+        # php -r "file_exists('.env') || copy('.env.example', '.env');"
         run: |
-          # php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
       - name: Clear Config
         run: |

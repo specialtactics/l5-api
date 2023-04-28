@@ -14,6 +14,6 @@ class PolicyMakeCommand extends \Illuminate\Foundation\Console\PolicyMakeCommand
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__. '/../../../resources' .$stub;
+            : __DIR__. '/../../../../resources' .$stub;
     }
 }

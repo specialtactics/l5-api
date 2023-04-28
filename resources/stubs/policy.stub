@@ -2,77 +2,80 @@
 
 namespace App\Models\Policies;
 
-use NamespacedDummyUserModel;
-use NamespacedDummyModel;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use {{ namespacedModel }};
+use {{ namespacedUserModel }};
 
-class DummyClass extends BasePolicy
+class {{ class }} extends BasePolicy
 {
+    use HandlesAuthorization;
+
     /**
-     * Determine whether the user can create DummyModel.
+     * Determine whether the user can create {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(DummyUser $user)
+    public function create({{ user }} $user)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can view the DummyModel.
+     * Determine whether the user can view the {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(DummyUser $user, DummyModel $dummyModel)
+    public function view({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        return $this->own($user, $dummyModel);
+        return $this->own($user, ${{ modelVariable }});
     }
 
     /**
-     * Determine whether the user can view the collection of DummyModel.
+     * Determine whether the user can view the collection of {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAll(DummyUser $user)
+    public function viewAll({{ user }} $user)
     {
         return true;
     }
 
     /**
-     * Determine whether the user can update the DummyModel.
+     * Determine whether the user can update the {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(DummyUser $user, DummyModel $dummyModel)
+    public function update({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        return $this->own($user, $dummyModel);
+        return $this->own($user, ${{ modelVariable }});
     }
 
     /**
-     * Determine whether the user can delete the DummyModel.
+     * Determine whether the user can delete the {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(DummyUser $user, DummyModel $dummyModel)
+    public function delete({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
-        return $this->own($user, $dummyModel);
+        return $this->own($user, ${{ modelVariable }});
     }
 
     /**
-     * Determine whether the user owns the DummyModel.
+     * Determine whether the user owns the {{ model }}.
      *
-     * @param  \NamespacedDummyUserModel  $user
-     * @param  \NamespacedDummyModel  $dummyModel
-     * @return mixed
+     * @param  \{{ namespacedUserModel }}  $user
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function own(DummyUser $user, DummyModel $dummyModel)
+    public function own({{ user }} $user, {{ model }} ${{ modelVariable }})
     {
         return true;
     }
@@ -81,11 +84,11 @@ class DummyClass extends BasePolicy
      * This function can be used to add conditions to the query builder,
      * which will specify the user's ownership of the model for the get collection query of this model
      *
-     * @param \App\Models\User $user A user object against which to construct the query. By default, the currently logged in user is used.
+     * @param  \{{ namespacedUserModel }}  $user A user object against which to construct the query. By default, the currently logged in user is used.
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder|null
      */
-    public function qualifyCollectionQueryWithUser(User $user, $query)
+    public function qualifyCollectionQueryWithUser({{ user }} $user, $query)
     {
         return $query;
     }

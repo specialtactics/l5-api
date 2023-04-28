@@ -12,8 +12,10 @@ class SeederMakeCommand extends \Illuminate\Database\Console\Seeds\SeederMakeCom
      */
     protected function resolveStubPath($stub)
     {
+        $boilerplateStub = __DIR__. '/../../../../resources' .$stub;
+
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__. '/../../../../resources' .$stub;
+            : (file_exists($boilerplateStub) ? $boilerplateStub : parent::resolveStubPath($stub));
     }
 }

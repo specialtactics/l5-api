@@ -1,94 +1,25 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use DummyFullModelClass;
-use ParentDummyFullModelClass;
 use Illuminate\Http\Request;
-use DummyRootNamespaceHttp\Controllers\Controller;
+use {{ rootNamespace }}Transformers\BaseTransformer;
+use {{ namespacedModel }};
 
-class DummyClass extends Controller
+class {{ class }} extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @return \Illuminate\Http\Response
+     * @var {{ model }} The primary model associated with this controller
      */
-    public function index(ParentDummyModelClass $ParentDummyModelVariable)
-    {
-        //
-    }
+    public static $model = {{ model }}::class;
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @return \Illuminate\Http\Response
+     * @var {{ parentModel }} The parent model of the model, in the case of a child rest controller
      */
-    public function create(ParentDummyModelClass $ParentDummyModelVariable)
-    {
-        //
-    }
+    public static $parentModel = {{ parentModel }}::class;
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @return \Illuminate\Http\Response
+     * @var null|BaseTransformer The transformer this controller should use, if overriding the model & default
      */
-    public function store(Request $request, ParentDummyModelClass $ParentDummyModelVariable)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @param  \DummyFullModelClass  $DummyModelVariable
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @param  \DummyFullModelClass  $DummyModelVariable
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @param  \DummyFullModelClass  $DummyModelVariable
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \ParentDummyFullModelClass  $ParentDummyModelVariable
-     * @param  \DummyFullModelClass  $DummyModelVariable
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ParentDummyModelClass $ParentDummyModelVariable, DummyModelClass $DummyModelVariable)
-    {
-        //
-    }
+    public static $transformer = null;
 }

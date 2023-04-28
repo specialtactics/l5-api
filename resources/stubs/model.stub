@@ -1,11 +1,14 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Transformers\BaseTransformer;
 
-class DummyClass extends BaseModel
+class {{ class }} extends BaseModel
 {
+    use HasFactory;
+
     /**
      * @var string UUID key of the resource
      */

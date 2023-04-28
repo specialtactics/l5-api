@@ -1,22 +1,17 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
 use Illuminate\Http\Request;
-use App\Transformers\BaseTransformer;
-use App\Models\BaseModel;
+use {{ rootNamespace }}Transformers\BaseTransformer;
+use {{ namespacedModel }};
 
-class DummyClass extends Controller
+class {{ class }} extends Controller
 {
     /**
-     * @var BaseModel The primary model associated with this controller
+     * @var {{ model }} The primary model associated with this controller
      */
-    public static $model = BaseModel::class;
-
-    /**
-     * @var BaseModel The parent model of the model, in the case of a child rest controller
-     */
-    public static $parentModel = null;
+    public static $model = {{ model }}::class;
 
     /**
      * @var null|BaseTransformer The transformer this controller should use, if overriding the model & default

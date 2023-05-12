@@ -2,7 +2,6 @@
 
 namespace Specialtactics\L5Api\Http\Response\Format;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Specialtactics\L5Api\APIBoilerplate;
 

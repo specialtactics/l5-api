@@ -113,7 +113,7 @@ trait RestfulControllerTrait
     protected function prependResponseMessage($response, $message)
     {
         $content = $response->getOriginalContent();
-        $content['message'] = $message . $content['message'];
+        $content['message'] = $message . \Illuminate\Support\Arr::get($content, 'message', '');
         $response->setContent($content);
 
         return $response;

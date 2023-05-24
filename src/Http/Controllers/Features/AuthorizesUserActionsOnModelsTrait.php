@@ -105,7 +105,8 @@ trait AuthorizesUserActionsOnModelsTrait
         // @var $response \Illuminate\Auth\Access\Response
         $response = app(Gate::class)->forUser($user)->inspect($ability, $arguments);
         if (! empty($response->message())) {
-            throw new HttpException($response->code(), $response->message());
+            $responseCode = $response->code() ?? 403;
+            throw new HttpException($responseCode, $response->message());
         }
 
         return false;

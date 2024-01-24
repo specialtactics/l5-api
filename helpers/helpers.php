@@ -15,7 +15,7 @@ if (! function_exists('camel_case_array_keys')) {
      *
      * @deprecated Use Helpers.php
      *
-     * @param $array
+     * @param  $array
      * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */
@@ -31,7 +31,7 @@ if (! function_exists('snake_case_array_keys')) {
      *
      * @deprecated Use Helpers.php
      *
-     * @param $array
+     * @param  $array
      * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */

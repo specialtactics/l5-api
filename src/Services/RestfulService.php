@@ -7,6 +7,7 @@ use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
@@ -82,6 +83,9 @@ class RestfulService
         try {
             $resource = $model->update($data);
         } catch (\Exception $e) {
+            // Log this as an unexpected exception, useful if API debug is off
+            Log::error('Error updating resource ' . get_class($model) . ': ' . $e->getMessage());
+
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
             if ($e instanceof QueryException) {
@@ -117,6 +121,9 @@ class RestfulService
         try {
             $resource->save();
         } catch (\Exception $e) {
+            // Log this as an unexpected exception, useful if API debug is off
+            Log::error('Error persisting resource ' . get_class($resource) . ': ' . $e->getMessage());
+
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
             if ($e instanceof QueryException) {

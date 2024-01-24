@@ -9,7 +9,7 @@ class APIHelpers
     /**
      * Recursively camel-case an array's keys
      *
-     * @param $array
+     * @param  $array
      * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */
@@ -42,7 +42,7 @@ class APIHelpers
     /**
      * Recursively snake-case an array's keys
      *
-     * @param $array
+     * @param  $array
      * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
      * @return array $array
      */

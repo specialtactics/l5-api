@@ -52,8 +52,8 @@ class RestfulService
     /**
      * Deletes resources of the given model and uuid(s)
      *
-     * @param $model string Model class name
-     * @param $uuid string|array The UUID(s) of the models to remove
+     * @param  $model  string Model class name
+     * @param  $uuid  string|array The UUID(s) of the models to remove
      * @return mixed
      */
     public function delete($model, $uuid)
@@ -112,8 +112,8 @@ class RestfulService
     /**
      * Create model in the database
      *
-     * @param $model
-     * @param $data
+     * @param  $model
+     * @param  $data
      * @return mixed
      */
     public function persistResource(RestfulModel $resource)

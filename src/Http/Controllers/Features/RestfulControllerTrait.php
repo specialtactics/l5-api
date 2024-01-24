@@ -107,7 +107,7 @@ trait RestfulControllerTrait
      * Useful for adding error info to internal request responses before returning them
      *
      * @param  \Dingo\Api\Http\Response  $response
-     * @param $message
+     * @param  $message
      * @return \Dingo\Api\Http\Response
      */
     protected function prependResponseMessage($response, $message)
@@ -122,8 +122,8 @@ trait RestfulControllerTrait
     /**
      * Try to find the relation name of the child model in the parent model
      *
-     * @param $parent Object Parent model instance
-     * @param $child string Child model name
+     * @param  $parent  Object Parent model instance
+     * @param  $child  string Child model name
      * @return null|string
      */
     protected function getChildRelationNameForParent($parent, $child)

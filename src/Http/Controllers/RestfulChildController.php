@@ -30,11 +30,11 @@ class RestfulChildController extends BaseRestfulController
      * @var array
      */
     public $parentAbilitiesRequired = [
-        'create'    => 'update',
-        'view'      => 'view',
-        'viewAll'   => 'view',
-        'update'    => 'own',
-        'delete'    => 'own',
+        'create' => 'update',
+        'view' => 'view',
+        'viewAll' => 'view',
+        'update' => 'own',
+        'delete' => 'own',
     ];
 
     /**

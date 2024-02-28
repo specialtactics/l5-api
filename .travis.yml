@@ -2,7 +2,6 @@ dist: bionic
 language: php
 
 php:
-  - 8.0
   - 8.1.0
 
 env:
@@ -10,7 +9,7 @@ env:
     - setup=basic
     - xdebug=false
   jobs:
-    - LARAVEL_VERSION=9.*
+    - LARAVEL_VERSION=10.*
 
 cache:
   directories:

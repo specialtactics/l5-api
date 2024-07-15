@@ -2,36 +2,34 @@
 
 namespace Specialtactics\L5Api\Tests;
 
-use JWTAuth;
 use Mockery;
 
 /**
- * This class sets up the necessary testing infrastructure
+ * This class sets up the necessary testing infrastructure.
  *
  * Class TestingSetup
- * @package Specialtactics\L5Api\Tests
  */
 class SetupTestApp extends BaseTestCase
 {
     /**
-     * Set up the testing environment
+     * Set up the testing environment.
      */
     protected function setUp(): void
     {
         parent::setUp();
 
         // Load migrations for tests
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Load factories for tests
-        $this->withFactories(__DIR__ . '/../database/factories');
+        $this->withFactories(__DIR__.'/../database/factories');
 
         // Migrate and seed
         $this->artisan('migrate', ['--database' => 'testing', '--seed' => true]);
     }
 
     /**
-     * Tear down the testing environment
+     * Tear down the testing environment.
      */
     public function tearDown(): void
     {
@@ -41,7 +39,8 @@ class SetupTestApp extends BaseTestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
+     *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
@@ -55,15 +54,16 @@ class SetupTestApp extends BaseTestCase
         ]);
 
         // Set the testing config files to be used by the test app
-        $app['config']->set('api', include __DIR__ . '/../config/api.php');
-        $app['config']->set('auth', include __DIR__ . '/../config/auth.php');
-        $app['config']->set('jwt', include __DIR__ . '/../config/jwt.php');
+        $app['config']->set('api', include __DIR__.'/../config/api.php');
+        $app['config']->set('auth', include __DIR__.'/../config/auth.php');
+        $app['config']->set('jwt', include __DIR__.'/../config/jwt.php');
     }
 
     /**
-     * Specify which service providers to use for the testing app
+     * Specify which service providers to use for the testing app.
      *
      * @param \Illuminate\Foundation\Application $app
+     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -78,14 +78,16 @@ class SetupTestApp extends BaseTestCase
     }
 
     /**
-     * Specify aliases/facades for the testing app
+     * Specify aliases/facades for the testing app.
      *
      * @param \Illuminate\Foundation\Application $app
+     *
      * @return array
      */
-    protected function getPackageAliases($app) {
+    protected function getPackageAliases($app)
+    {
         return [
-            'API' => \Dingo\Api\Facade\API::class,
+            'API'     => \Dingo\Api\Facade\API::class,
             'JWTAuth' => \PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth::class,
         ];
     }
@@ -93,7 +95,8 @@ class SetupTestApp extends BaseTestCase
     /**
      * Resolve application HTTP Kernel implementation.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
+     *
      * @return void
      */
     protected function resolveApplicationHttpKernel($app)

@@ -53,7 +53,7 @@ class MakeApiResource extends Command
 
         // Conditionally create policy
         if ($this->anticipate('Would you like to create a policy for this resource?', ['yes', 'no']) == 'yes') {
-            $policyName = '../Models/Policies/' . $name . 'Policy';
+            $policyName = '../Models/Policies/'.$name.'Policy';
             $this->call('make:policy', ['name' => $policyName, '-m' => $name]);
         }
 
@@ -67,12 +67,12 @@ class MakeApiResource extends Command
 
         // Conditionally create seeder
         if ($this->anticipate('Would you like to create a Seeder for this resource?', ['yes', 'no']) == 'yes') {
-            $seederName = Str::plural($name) . 'Seeder';
+            $seederName = Str::plural($name).'Seeder';
 
             $this->call('make:seeder', ['name' => $seederName]);
 
             $this->line('Please add the following to your DatabaseSeeder.php file', 'important');
-            $this->line('$this->call('. $seederName .'::class);', 'code');
+            $this->line('$this->call('.$seederName.'::class);', 'code');
             $this->line(PHP_EOL);
         }
 
@@ -84,25 +84,25 @@ class MakeApiResource extends Command
 
         $sectionName = Str::pluralStudly($name);
         $routePrefix = Str::plural(Str::kebab($name));
-        $controllerName = $name . 'Controller';
+        $controllerName = $name.'Controller';
 
         $exampleRoutes =
-            '/*' . PHP_EOL .
-            ' * ' . $sectionName . PHP_EOL .
-            ' */' . PHP_EOL .
-            '$api->group([\'prefix\' => \''. $routePrefix .'\'], function (Router $api) {' . PHP_EOL .
-            '    $api->get(\'/\', \'App\Http\Controllers\\'. $controllerName .'@getAll\');' . PHP_EOL .
-            '    $api->get(\'/{uuid}\', \'App\Http\Controllers\\'. $controllerName .'@get\');' . PHP_EOL .
-            '    $api->post(\'/\', \'App\Http\Controllers\\'. $controllerName .'@post\');' . PHP_EOL .
-            '    $api->patch(\'/{uuid}\', \'App\Http\Controllers\\'. $controllerName .'@patch\');' . PHP_EOL .
-            '    $api->delete(\'/{uuid}\', \'App\Http\Controllers\\'. $controllerName .'@delete\');' . PHP_EOL .
+            '/*'.PHP_EOL.
+            ' * '.$sectionName.PHP_EOL.
+            ' */'.PHP_EOL.
+            '$api->group([\'prefix\' => \''.$routePrefix.'\'], function (Router $api) {'.PHP_EOL.
+            '    $api->get(\'/\', \'App\Http\Controllers\\'.$controllerName.'@getAll\');'.PHP_EOL.
+            '    $api->get(\'/{uuid}\', \'App\Http\Controllers\\'.$controllerName.'@get\');'.PHP_EOL.
+            '    $api->post(\'/\', \'App\Http\Controllers\\'.$controllerName.'@post\');'.PHP_EOL.
+            '    $api->patch(\'/{uuid}\', \'App\Http\Controllers\\'.$controllerName.'@patch\');'.PHP_EOL.
+            '    $api->delete(\'/{uuid}\', \'App\Http\Controllers\\'.$controllerName.'@delete\');'.PHP_EOL.
             '});';
 
         $this->line($exampleRoutes, 'code');
     }
 
     /**
-     * Setup styles for command
+     * Setup styles for command.
      */
     protected function setupStyles()
     {

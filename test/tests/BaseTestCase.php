@@ -2,19 +2,19 @@
 
 namespace Specialtactics\L5Api\Tests;
 
-use Specialtactics\L5Api\APIBoilerplate;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Specialtactics\L5Api\APIBoilerplate;
 
 /**
- * Class BaseTestCase
- * @package Specialtactics\L5Api\Tests
+ * Class BaseTestCase.
  */
 class BaseTestCase extends OrchestraTestCase
 {
     /**
-     * Set the API key-case on the API boilerplate class
+     * Set the API key-case on the API boilerplate class.
      *
      * @param $case
+     *
      * @throws \ReflectionException
      */
     public function setAPIKeyCase($case)

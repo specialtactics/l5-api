@@ -9,7 +9,7 @@ use Specialtactics\L5Api\Helpers;
 trait RestfulControllerTrait
 {
     /**
-     * Figure out which transformer to use
+     * Figure out which transformer to use.
      *
      * Order of precedence:
      *  - Controller specified
@@ -23,16 +23,16 @@ trait RestfulControllerTrait
         $transformer = null;
 
         // Check if controller specifies a resource
-        if (! is_null(static::$transformer)) {
+        if (!is_null(static::$transformer)) {
             $transformer = static::$transformer;
         }
 
         // Otherwise, check if model is specified
         else {
             // If it is, check if the controller's model specifies the transformer
-            if (! is_null(static::$model)) {
+            if (!is_null(static::$model)) {
                 // If it does, use it
-                if (! is_null((static::$model)::$transformer)) {
+                if (!is_null((static::$model)::$transformer)) {
                     $transformer = (static::$model)::$transformer;
                 }
             }
@@ -43,11 +43,11 @@ trait RestfulControllerTrait
             $transformer = BaseTransformer::class;
         }
 
-        return new $transformer;
+        return new $transformer();
     }
 
     /**
-     * Check if this request's body input is a collection of objects or not
+     * Check if this request's body input is a collection of objects or not.
      *
      * @return bool
      */
@@ -70,7 +70,7 @@ trait RestfulControllerTrait
 
     /**
      * This method determines whether the resource returned should undergo transformation or not.
-     * The reason is, sometimes it is useful to return the untransformed resource (for example - for internal calls)
+     * The reason is, sometimes it is useful to return the untransformed resource (for example - for internal calls).
      *
      * Changed recently due to https://github.com/laravel/framework/pull/34884
      *
@@ -84,11 +84,11 @@ trait RestfulControllerTrait
         $numberOfCallsToCheck = 20;
         $callsToCheck = [];
 
-        for ($i = 0; $i < sizeof($trace) && $numberOfCallsToCheck > 0; ++$i) {
+        for ($i = 0; $i < sizeof($trace) && $numberOfCallsToCheck > 0; $i++) {
             // We only want function calls
             if (array_key_exists('file', $trace[$i])) {
                 $callsToCheck[] = $trace[$i];
-                --$numberOfCallsToCheck;
+                $numberOfCallsToCheck--;
             }
         }
 
@@ -104,26 +104,28 @@ trait RestfulControllerTrait
 
     /**
      * Prepend a Response message with a custom message
-     * Useful for adding error info to internal request responses before returning them
+     * Useful for adding error info to internal request responses before returning them.
      *
-     * @param  \Dingo\Api\Http\Response  $response
-     * @param  $message
+     * @param \Dingo\Api\Http\Response $response
+     * @param                          $message
+     *
      * @return \Dingo\Api\Http\Response
      */
     protected function prependResponseMessage($response, $message)
     {
         $content = $response->getOriginalContent();
-        $content['message'] = $message . \Illuminate\Support\Arr::get($content, 'message', '');
+        $content['message'] = $message.\Illuminate\Support\Arr::get($content, 'message', '');
         $response->setContent($content);
 
         return $response;
     }
 
     /**
-     * Try to find the relation name of the child model in the parent model
+     * Try to find the relation name of the child model in the parent model.
      *
-     * @param  $parent  Object Parent model instance
-     * @param  $child  string Child model name
+     * @param $parent Object Parent model instance
+     * @param $child  string Child model name
+     *
      * @return null|string
      */
     protected function getChildRelationNameForParent($parent, $child)

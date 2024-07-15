@@ -4,18 +4,18 @@ namespace Specialtactics\L5Api\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Specialtactics\L5Api\Helpers;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Specialtactics\L5Api\Helpers;
 
 class RestfulChildController extends BaseRestfulController
 {
     /**
      * Specify the parent model that you want to be associated with this controller. This is the parent model of the
-     * primary model the controller deals with
+     * primary model the controller deals with.
      *
-     * @var \App\Models\BaseModel $model
+     * @var \App\Models\BaseModel
      */
     public static $parentModel = null;
 
@@ -30,18 +30,19 @@ class RestfulChildController extends BaseRestfulController
      * @var array
      */
     public $parentAbilitiesRequired = [
-        'create' => 'update',
-        'view' => 'view',
+        'create'  => 'update',
+        'view'    => 'view',
         'viewAll' => 'view',
-        'update' => 'own',
-        'delete' => 'own',
+        'update'  => 'own',
+        'delete'  => 'own',
     ];
 
     /**
-     * Request to retrieve a collection of all items owned by the parent of this resource
+     * Request to retrieve a collection of all items owned by the parent of this resource.
      *
-     * @param  string  $uuid
-     * @param  Request  $request
+     * @param string  $uuid
+     * @param Request $request
+     *
      * @return \Dingo\Api\Http\Response
      */
     public function getAll($uuid, Request $request)
@@ -60,7 +61,7 @@ class RestfulChildController extends BaseRestfulController
         // Form model's with relations for parent query
         $withArray = [];
         foreach ($model::getCollectionWith() as $modelRelation) {
-            $withArray[] = $resourceRelationName . '.' . $modelRelation;
+            $withArray[] = $resourceRelationName.'.'.$modelRelation;
         }
 
         $withArray = array_merge([$resourceRelationName], $withArray);
@@ -77,10 +78,11 @@ class RestfulChildController extends BaseRestfulController
     }
 
     /**
-     * Request to retrieve a single child owned by the parent of this resource (hasOne relationship)
+     * Request to retrieve a single child owned by the parent of this resource (hasOne relationship).
      *
-     * @param  string  $uuid
-     * @param  Request  $request
+     * @param string  $uuid
+     * @param Request $request
+     *
      * @return \Dingo\Api\Http\Response
      */
     public function getOneFromParent($uuid, Request $request)
@@ -97,7 +99,7 @@ class RestfulChildController extends BaseRestfulController
         // Form model's with relations for parent query
         $withArray = [];
         foreach ($model::getItemWith() as $modelRelation) {
-            $withArray[] = $resourceRelationName . '.' . $modelRelation;
+            $withArray[] = $resourceRelationName.'.'.$modelRelation;
         }
 
         $withArray = array_merge([$resourceRelationName], $withArray);
@@ -107,7 +109,7 @@ class RestfulChildController extends BaseRestfulController
 
         // Make sure it exists, and if so, authorize view action
         if ($resource == null) {
-            throw new NotFoundHttpException('Can not find a "' . $resourceRelationName . '" attached to this ' . (new \ReflectionClass($parentModel))->getShortName());
+            throw new NotFoundHttpException('Can not find a "'.$resourceRelationName.'" attached to this '.(new \ReflectionClass($parentModel))->getShortName());
         } else {
             // Authorize ability to view this model
             $this->authorizeUserAction('view', $resource);
@@ -117,13 +119,14 @@ class RestfulChildController extends BaseRestfulController
     }
 
     /**
-     * Request to retrieve a single item of this resource
+     * Request to retrieve a single item of this resource.
      *
-     * @param  string  $parentUuid  UUID of the parent resource
-     * @param  string  $uuid  UUID of the resource
-     * @return \Dingo\Api\Http\Response
+     * @param string $parentUuid UUID of the parent resource
+     * @param string $uuid       UUID of the resource
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function get($parentUuid, $uuid)
     {
@@ -135,17 +138,17 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['view'], $parentResource);
 
         // Get resource
-        $model = new static::$model;
+        $model = new static::$model();
         $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->firstOrFail();
 
         // Check resource belongs to parent
         if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
-            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
-                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+            throw new AccessDeniedHttpException('Resource \''.class_basename(static::$model).'\' with given UUID '.$uuid.' does not belong to '.
+                'resource \''.class_basename(static::$parentModel).'\' with given UUID '.$parentUuid.'; ');
         }
 
-        if (! $resource) {
-            throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
+        if (!$resource) {
+            throw new NotFoundHttpException('Resource \''.class_basename(static::$model).'\' with given UUID '.$uuid.' not found');
         }
 
         // Authorize ability to create this model
@@ -155,14 +158,15 @@ class RestfulChildController extends BaseRestfulController
     }
 
     /**
-     * Request to create the child resource owned by the parent resource
+     * Request to create the child resource owned by the parent resource.
      *
      * @oaram string $parentUuid Parent's UUID
      *
-     * @param  Request  $request
-     * @return \Dingo\Api\Http\Response
+     * @param Request $request
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function post($parentUuid, Request $request)
     {
@@ -177,7 +181,7 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction('create');
 
         $requestData = $request->input();
-        $model = new static::$model;
+        $model = new static::$model();
 
         // Validate
         $this->restfulService->validateResource($model, $requestData);
@@ -204,14 +208,15 @@ class RestfulChildController extends BaseRestfulController
     }
 
     /**
-     * Request to update the specified child resource
+     * Request to update the specified child resource.
      *
-     * @param  string  $parentUuid  UUID of the parent resource
-     * @param  string  $uuid  UUID of the child resource
-     * @param  Request  $request
-     * @return \Dingo\Api\Http\Response
+     * @param string  $parentUuid UUID of the parent resource
+     * @param string  $uuid       UUID of the child resource
+     * @param Request $request
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function patch($parentUuid, $uuid, Request $request)
     {
@@ -223,13 +228,13 @@ class RestfulChildController extends BaseRestfulController
         $this->authorizeUserAction($this->parentAbilitiesRequired['update'], $parentResource);
 
         // Get resource
-        $model = new static::$model;
+        $model = new static::$model();
         $resource = static::$model::findOrFail($uuid);
 
         // Check resource belongs to parent
         if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
-            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
-                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+            throw new AccessDeniedHttpException('Resource \''.class_basename(static::$model).'\' with given UUID '.$uuid.' does not belong to '.
+                'resource \''.class_basename(static::$parentModel).'\' with given UUID '.$parentUuid.'; ');
         }
 
         $this->authorizeUserAction('update', $resource);
@@ -253,13 +258,14 @@ class RestfulChildController extends BaseRestfulController
     }
 
     /**
-     * Deletes a child resource by UUID
+     * Deletes a child resource by UUID.
      *
-     * @param  string  $parentUuid  UUID of the parent resource
-     * @param  string  $uuid  UUID of the child resource
-     * @return \Dingo\Api\Http\Response
+     * @param string $parentUuid UUID of the parent resource
+     * @param string $uuid       UUID of the child resource
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function delete($parentUuid, $uuid)
     {
@@ -276,8 +282,8 @@ class RestfulChildController extends BaseRestfulController
 
         // Check resource belongs to parent
         if ($resource->getAttribute($parentResource->getKeyName()) != $parentResource->getKey()) {
-            throw new AccessDeniedHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' does not belong to ' .
-                'resource \'' . class_basename(static::$parentModel) . '\' with given UUID ' . $parentUuid . '; ');
+            throw new AccessDeniedHttpException('Resource \''.class_basename(static::$model).'\' with given UUID '.$uuid.' does not belong to '.
+                'resource \''.class_basename(static::$parentModel).'\' with given UUID '.$parentUuid.'; ');
         }
 
         $deletedCount = $resource->delete();

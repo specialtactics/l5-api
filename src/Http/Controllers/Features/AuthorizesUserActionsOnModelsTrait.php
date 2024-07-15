@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
- * Trait AuthorizesUsersActionsAgainstModelsTrait
+ * Trait AuthorizesUsersActionsAgainstModelsTrait.
  *
  * These are wrappers for Illuminate\Foundation\Auth\Access\Authorizable from the perspective of a RESTful controller
  * authorizing the access of authenticated users on a given resource model
@@ -16,12 +16,12 @@ trait AuthorizesUserActionsOnModelsTrait
 {
     /**
      * Shorthand function which checks the currently logged in user against an action for the controller's model,
-     * and throws a 403 if unauthorized
+     * and throws a 403 if unauthorized.
      *
      * Only checks if a policy exists for that model.
      *
-     * @param  string  $ability
-     * @param  array|mixed  $arguments
+     * @param string      $ability
+     * @param array|mixed $arguments
      *
      * @throws AccessDeniedHttpException
      */
@@ -32,16 +32,17 @@ trait AuthorizesUserActionsOnModelsTrait
             return true;
         }
 
-        if (! $this->userCan($ability, $arguments)) {
+        if (!$this->userCan($ability, $arguments)) {
             throw new AccessDeniedHttpException('Unauthorized action');
         }
     }
 
     /**
      * This function can be used to add conditions to the query builder,
-     * which will specify the currently logged in user's ownership of the model
+     * which will specify the currently logged in user's ownership of the model.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder|null
      */
     public function qualifyCollectionQuery($query)
@@ -69,8 +70,9 @@ trait AuthorizesUserActionsOnModelsTrait
      *
      * Only checks if a policy exists for that model.
      *
-     * @param  string  $ability
-     * @param  array|mixed  $arguments
+     * @param string      $ability
+     * @param array|mixed $arguments
+     *
      * @return bool
      */
     public function userCan($ability, $arguments = [])
@@ -104,8 +106,9 @@ trait AuthorizesUserActionsOnModelsTrait
         // If not, check if we have a custom Response object, and if so, utilise it
         // @var $response \Illuminate\Auth\Access\Response
         $response = app(Gate::class)->forUser($user)->inspect($ability, $arguments);
-        if (! empty($response->message())) {
+        if (!empty($response->message())) {
             $responseCode = $response->code() ?? 403;
+
             throw new HttpException($responseCode, $response->message());
         }
 
@@ -113,22 +116,24 @@ trait AuthorizesUserActionsOnModelsTrait
     }
 
     /**
-     * Determine if the user does not have a given ability for the model
+     * Determine if the user does not have a given ability for the model.
      *
-     * @param  string  $ability
-     * @param  array|mixed  $arguments
+     * @param string      $ability
+     * @param array|mixed $arguments
+     *
      * @return bool
      */
     public function userCant($ability, $arguments = [])
     {
-        return ! $this->userCan($ability, $arguments);
+        return !$this->userCan($ability, $arguments);
     }
 
     /**
-     * Determine if the user does not have a given ability for the model
+     * Determine if the user does not have a given ability for the model.
      *
-     * @param  string  $ability
-     * @param  array|mixed  $arguments
+     * @param string      $ability
+     * @param array|mixed $arguments
+     *
      * @return bool
      */
     public function userCannot($ability, $arguments = [])

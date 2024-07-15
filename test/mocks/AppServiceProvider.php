@@ -2,9 +2,8 @@
 
 namespace Specialtactics\L5Api\Test\Mocks;
 
-use Illuminate\Support\ServiceProvider;
 use App\Exceptions\ApiExceptionHandler;
-use Config;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the exception handler - extends the Dingo one
+     * Register the exception handler - extends the Dingo one.
      *
      * @return void
      */
@@ -27,11 +26,11 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('api.exception', function ($app) {
             return new ApiExceptionHandler($app['Illuminate\Contracts\Debug\ExceptionHandler'], Config('api.errorFormat', [
-                'message' => ':message',
-                'errors' => ':errors',
-                'code' => ':code',
+                'message'    => ':message',
+                'errors'     => ':errors',
+                'code'       => ':code',
                 'statusCode' => ':status_code',
-                'debug' => ':debug',
+                'debug'      => ':debug',
             ]), Config('api.debug', true));
         });
     }

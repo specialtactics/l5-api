@@ -2,8 +2,8 @@
 
 namespace Specialtactics\L5Api\Http\Controllers\Features;
 
-use Illuminate\Http\Request;
 use Dingo\Api\Http\Response;
+use Illuminate\Http\Request;
 use Specialtactics\L5Api\Exceptions\UnauthorizedHttpException;
 
 trait JWTAuthenticationTrait
@@ -11,7 +11,8 @@ trait JWTAuthenticationTrait
     /**
      * Get a JWT via given credentials.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return Response
      */
     public function token(Request $request)
@@ -29,7 +30,7 @@ trait JWTAuthenticationTrait
         [$login, $password] = explode(':', $credentials, 2);
 
         // Do auth
-        if (! $token = auth()->attempt(['email' => $login, 'password' => $password])) {
+        if (!$token = auth()->attempt(['email' => $login, 'password' => $password])) {
             throw new UnauthorizedHttpException('Unauthorized login');
         }
 
@@ -49,7 +50,7 @@ trait JWTAuthenticationTrait
     }
 
     /**
-     * Refreshes a jwt (ie. extends it's TTL)
+     * Refreshes a jwt (ie. extends it's TTL).
      *
      * @return Response
      */
@@ -65,18 +66,19 @@ trait JWTAuthenticationTrait
      */
     public function getUser()
     {
-        return $this->api->raw()->get('users/' . $this->auth->user()->getKey());
+        return $this->api->raw()->get('users/'.$this->auth->user()->getKey());
     }
 
     /**
      * Get the token array structure.
      *
-     * @param  string  $token
+     * @param string $token
+     *
      * @return Response
      */
     protected function respondWithToken($token)
     {
-        $tokenReponse = new \stdClass;
+        $tokenReponse = new \stdClass();
 
         $tokenReponse->jwt = $token;
         $tokenReponse->token_type = 'bearer';

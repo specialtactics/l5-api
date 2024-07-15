@@ -3,9 +3,9 @@
 namespace Specialtactics\L5Api;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Illuminate\Foundation\AliasLoader;
 
 class L5ApiServiceProvider extends LaravelServiceProvider
 {
@@ -16,7 +16,7 @@ class L5ApiServiceProvider extends LaravelServiceProvider
     {
         // Set API Transformer Adapter & properties
         $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
-            return new \Dingo\Api\Transformer\Adapter\Fractal(new \League\Fractal\Manager, 'include', ',');
+            return new \Dingo\Api\Transformer\Adapter\Fractal(new \League\Fractal\Manager(), 'include', ',');
         });
 
         // Register Fascades
@@ -32,7 +32,7 @@ class L5ApiServiceProvider extends LaravelServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
      */
     public function boot(Router $router, Dispatcher $event)
     {

@@ -8,7 +8,6 @@ use App\Models\Topic;
 use App\Policies\ForumPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\TopicPolicy;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider

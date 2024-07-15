@@ -32,7 +32,7 @@ class Tag extends BaseModel
     protected $hidden = [];
 
     /**
-     * Return the validation rules for this model
+     * Return the validation rules for this model.
      *
      * @return array Rules
      */
@@ -40,5 +40,4 @@ class Tag extends BaseModel
     {
         return [];
     }
-
 }

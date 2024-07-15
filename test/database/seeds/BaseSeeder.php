@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-class BaseSeeder extends Seeder {
+class BaseSeeder extends Seeder
+{
     /**
      * @var null Faker instance
      */
@@ -37,42 +38,47 @@ class BaseSeeder extends Seeder {
     }
 
     /**
-     * Run fake seeds - for non production environments
+     * Run fake seeds - for non production environments.
      *
      * @return void
      */
-    public function runFake() {
+    public function runFake()
+    {
     }
 
     /**
-     * Run seeds to be ran only on production environments
+     * Run seeds to be ran only on production environments.
      *
      * @return void
      */
-    public function runProduction() {
+    public function runProduction()
+    {
     }
 
     /**
-     * Run seeds to be ran on every environment (including production)
+     * Run seeds to be ran on every environment (including production).
      *
      * @return void
      */
-    public function runAlways() {
+    public function runAlways()
+    {
     }
 
     /**
-     * Run before all any seeding
+     * Run before all any seeding.
      *
      * @return void
      */
-    public function before() {
+    public function before()
+    {
     }
 
     /**
-     * Run after all seeding
+     * Run after all seeding.
      *
      * @return void
      */
-    public function after() {
+    public function after()
+    {
     }
 }

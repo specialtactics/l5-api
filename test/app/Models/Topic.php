@@ -32,7 +32,7 @@ class Topic extends BaseModel
     protected $hidden = [];
 
     /**
-     * Return the validation rules for this model
+     * Return the validation rules for this model.
      *
      * @return array Rules
      */
@@ -59,7 +59,7 @@ class Topic extends BaseModel
     }
 
     /**
-     * Boot the model
+     * Boot the model.
      *
      * Add various functionality in the model lifecycle hooks
      */

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Forum;
 use App\Models\Post;
+use App\Models\Topic;
+use App\Services\PostService;
 use App\Services\RestfulService;
 use Illuminate\Http\Request;
-use App\Models\Topic;
-use App\Models\Forum;
-use App\Services\PostService;
 
 class TopicController extends ChildController
 {
@@ -33,8 +33,9 @@ class TopicController extends ChildController
 
     /**
      * TopicController constructor.
+     *
      * @param RestfulService $restfulService
-     * @param PostService $postService
+     * @param PostService    $postService
      */
     public function __construct(RestfulService $restfulService, PostService $postService)
     {
@@ -44,8 +45,9 @@ class TopicController extends ChildController
     }
 
     /**
-     * @param $parentUuid
+     * @param         $parentUuid
      * @param Request $request
+     *
      * @return \Dingo\Api\Http\Response
      */
     /*

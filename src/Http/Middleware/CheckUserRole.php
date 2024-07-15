@@ -11,9 +11,10 @@ class CheckUserRole
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  array|string  $roles  Roles to check for
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param array|string             $roles   Roles to check for
+     *
      * @return mixed
      */
     public function handle($request, Closure $next, ...$roles)
@@ -25,7 +26,7 @@ class CheckUserRole
             throw new UnauthorizedHttpException('Unauthorized - not logged in!');
         }
 
-        if (! is_array($roles)) {
+        if (!is_array($roles)) {
             $roles = [$roles];
         }
 

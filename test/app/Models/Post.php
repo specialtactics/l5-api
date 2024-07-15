@@ -32,7 +32,7 @@ class Post extends BaseModel
     protected $hidden = [];
 
     /**
-     * Return the validation rules for this model
+     * Return the validation rules for this model.
      *
      * @return array Rules
      */
@@ -44,7 +44,7 @@ class Post extends BaseModel
     }
 
     /**
-     * Boot the model
+     * Boot the model.
      *
      * Add various functionality in the model lifecycle hooks
      */

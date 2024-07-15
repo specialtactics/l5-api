@@ -4,13 +4,13 @@ namespace Specialtactics\L5Api\Tests\Unit;
 
 use App\Models\BaseModel;
 use Mockery;
-use Specialtactics\L5Api\Tests\BaseTestCase;
 use Specialtactics\L5Api\Services\RestfulService;
+use Specialtactics\L5Api\Tests\BaseTestCase;
 
 class RestfulServiceTest extends BaseTestCase
 {
     /**
-     * Test validation when updating a resource, whereby validation has multi-level rule keys
+     * Test validation when updating a resource, whereby validation has multi-level rule keys.
      *
      * @test
      */
@@ -21,16 +21,16 @@ class RestfulServiceTest extends BaseTestCase
         // Example rules
         $mockedModel = Mockery::Mock(BaseModel::class)->makePartial();
         $mockedModel->shouldReceive('getValidationRulesUpdating')->andReturn([
-            'unrelated_attribute' => 'required',
-            'array_attribute' => 'required|array',
-            'array_attribute.uuid_key' => 'required|uuid'
+            'unrelated_attribute'      => 'required',
+            'array_attribute'          => 'required|array',
+            'array_attribute.uuid_key' => 'required|uuid',
         ]);
 
         // Example request data
         $data = [
             'array_attribute' => [
-                'uuid_key' => 'clearly not a uuid'
-            ]
+                'uuid_key' => 'clearly not a uuid',
+            ],
         ];
 
         $rules = $service->getRelevantValidationRules($mockedModel, $data);

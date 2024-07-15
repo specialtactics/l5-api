@@ -5,7 +5,7 @@ namespace App\Models;
 class Role extends BaseModel
 {
     /**
-     * Role constants
+     * Role constants.
      */
     public const ROLE_ADMIN = 'admin';
     public const ROLE_REGULAR = 'regular';

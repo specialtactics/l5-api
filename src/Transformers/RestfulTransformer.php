@@ -2,10 +2,10 @@
 
 namespace Specialtactics\L5Api\Transformers;
 
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
-use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 class RestfulTransformer extends TransformerAbstract
 {
@@ -15,12 +15,13 @@ class RestfulTransformer extends TransformerAbstract
     protected $model = null;
 
     /**
-     * Transform an object into a jsonable array
+     * Transform an object into a jsonable array.
      *
-     * @param  mixed  $model
-     * @return array
+     * @param mixed $model
      *
      * @throws \Exception
+     *
+     * @return array
      */
     public function transform($object)
     {
@@ -42,9 +43,10 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Transform an arbitrary stdClass
+     * Transform an arbitrary stdClass.
      *
-     * @param  \stdClass  $object
+     * @param \stdClass $object
+     *
      * @return array
      */
     public function transformStdClass($object)
@@ -52,7 +54,7 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = (array) $object;
 
         /**
-         * Transform all keys to correct case, recursively
+         * Transform all keys to correct case, recursively.
          */
         $transformed = $this->transformKeysCase($transformed);
 
@@ -60,9 +62,10 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Transform a restful model object into a jsonable array
+     * Transform a restful model object into a jsonable array.
      *
-     * @param  RestfulModel  $model
+     * @param RestfulModel $model
+     *
      * @return array
      */
     public function transformRestfulModel(EloquentModel $model)
@@ -73,19 +76,19 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = $model->toArray();
 
         /**
-         * Filter out attributes we don't want to expose to the API
+         * Filter out attributes we don't want to expose to the API.
          */
         $filterOutAttributes = $this->getFilteredOutAttributes();
 
         $transformed = array_filter($transformed, function ($key) use ($filterOutAttributes) {
-            return ! in_array($key, $filterOutAttributes);
+            return !in_array($key, $filterOutAttributes);
         }, ARRAY_FILTER_USE_KEY);
 
         /*
          * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
          */
         foreach ($model->getDates() as $dateColumn) {
-            if (! empty($model->$dateColumn) && ! in_array($dateColumn, $filterOutAttributes)) {
+            if (!empty($model->$dateColumn) && !in_array($dateColumn, $filterOutAttributes)) {
                 $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
             }
         }
@@ -106,7 +109,7 @@ class RestfulTransformer extends TransformerAbstract
         $transformed = $this->transformKeysCase($transformed);
 
         /**
-         * Get the relations for this object and transform them
+         * Get the relations for this object and transform them.
          */
         $transformed = $this->transformRelations($transformed);
 
@@ -115,9 +118,10 @@ class RestfulTransformer extends TransformerAbstract
 
     /**
      * At the moment, there is no difference in implementation between this and the more specific Restfulmodel,
-     * however in the future there may be
+     * however in the future there may be.
      *
-     * @param  EloquentModel  $model
+     * @param EloquentModel $model
+     *
      * @return array
      */
     public function transformEloquentModel(EloquentModel $model)
@@ -126,9 +130,10 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Transform the keys of the object to the correct case as required
+     * Transform the keys of the object to the correct case as required.
      *
-     * @param  array  $transformed
+     * @param array $transformed
+     *
      * @return array $transformed
      */
     protected function transformKeysCase(array $transformed)
@@ -137,21 +142,21 @@ class RestfulTransformer extends TransformerAbstract
         $levels = config('api.formatsOptions.transform_keys_levels', null);
 
         /**
-         * Transform all keys to required case, to the specified number of levels (by default, infinite)
+         * Transform all keys to required case, to the specified number of levels (by default, infinite).
          */
         $transformed = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($transformed, $levels);
 
         /*
          * However, if the level is 1, we also want to transform the first level of keys in a json field which has been cast to array
          */
-        if ($levels == 1 && ! is_null($this->model)) {
+        if ($levels == 1 && !is_null($this->model)) {
             // Go through casted atrributes, figuring out what their new key name is to access them
             foreach ($this->model->getCasts() as $fieldName => $castType) {
                 if ($castType == 'array') {
                     $fieldNameFormatted = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($fieldName);
 
                     // Transform the keys of the array attribute
-                    if (array_key_exists($fieldNameFormatted, $transformed) && ! empty($transformed[$fieldNameFormatted])) {
+                    if (array_key_exists($fieldNameFormatted, $transformed) && !empty($transformed[$fieldNameFormatted])) {
                         $transformed[$fieldNameFormatted] = APIBoilerplate::formatKeyCaseAccordingToResponseFormat($transformed[$fieldNameFormatted]);
                     }
                 }
@@ -162,12 +167,13 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Formats case of the input array or scalar to desired case
+     * Formats case of the input array or scalar to desired case.
      *
      * @deprecated
      *
-     * @param  array|string  $input
-     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infiniately (null)
+     * @param array|string $input
+     * @param int|null     $levels How many levels of an array keys to transform - by default recurse infiniately (null)
+     *
      * @return array $transformed
      */
     protected function formatKeyCase($input, $levels = null)
@@ -176,7 +182,7 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Filter out some attributes immediately
+     * Filter out some attributes immediately.
      *
      * Some attributes we never want to expose to an API consumer, for security and separation of concerns reasons
      * Feel free to override this function as necessary
@@ -197,9 +203,10 @@ class RestfulTransformer extends TransformerAbstract
     }
 
     /**
-     * Do relation transformations
+     * Do relation transformations.
      *
-     * @param  array  $transformed
+     * @param array $transformed
+     *
      * @return array $transformed
      */
     protected function transformRelations(array $transformed)

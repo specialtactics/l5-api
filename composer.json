@@ -10,10 +10,10 @@
     }
   ],
   "require": {
-    "php": "^8.0",
-    "api-ecosystem-for-laravel/dingo-api": "^4.0",
-    "php-open-source-saver/jwt-auth": "^1.4|^2.0",
-    "illuminate/support": "^9.0",
+    "php": "^8.1",
+    "api-ecosystem-for-laravel/dingo-api": "^4.1",
+    "php-open-source-saver/jwt-auth": "^2.1",
+    "illuminate/support": "^10.0",
     "ramsey/uuid": "^4.3"
   },
   "require-dev": {
@@ -21,8 +21,8 @@
     "beyondcode/laravel-dump-server": "^1.8",
     "fakerphp/faker": "^1.18",
     "mockery/mockery": "^1.5",
-    "nunomaduro/collision": "^6.2",
-    "phpunit/phpunit": "^9.4",
+    "nunomaduro/collision": "^7.0",
+    "phpunit/phpunit": "^10.1",
     "orchestra/testbench": "^7.6",
     "laravel/legacy-factories": "^1.0"
   },

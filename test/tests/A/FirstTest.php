@@ -8,6 +8,7 @@ class FirstTest extends BaseTestCase
 {
     /**
      * @testdox Consumes testing bootstrap time
+     *
      * @test
      */
     public function testBootstrapTime()

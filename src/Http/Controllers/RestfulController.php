@@ -2,16 +2,16 @@
 
 namespace Specialtactics\L5Api\Http\Controllers;
 
+use Cache;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Cache;
 
 class RestfulController extends BaseRestfulController
 {
     /**
-     * Cache key for getAll() function - all of a collection's resources
+     * Cache key for getAll() function - all of a collection's resources.
      */
     const CACHE_KEY_GET_ALL = '%s_getAll';
 
@@ -30,7 +30,7 @@ class RestfulController extends BaseRestfulController
     public static $cacheExpiresIn = 86400;
 
     /**
-     * Request to retrieve a collection of all items of this resource
+     * Request to retrieve a collection of all items of this resource.
      *
      * @return \Dingo\Api\Http\Response
      */
@@ -38,7 +38,7 @@ class RestfulController extends BaseRestfulController
     {
         $this->authorizeUserAction('viewAll');
 
-        $model = new static::$model;
+        $model = new static::$model();
 
         // If we are caching the endpont, do a simple get all resources
         if (static::$cacheAll) {
@@ -69,21 +69,22 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Request to retrieve a single item of this resource
+     * Request to retrieve a single item of this resource.
      *
-     * @param  string  $uuid  UUID of the resource
-     * @return \Dingo\Api\Http\Response
+     * @param string $uuid UUID of the resource
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function get($uuid)
     {
-        $model = new static::$model;
+        $model = new static::$model();
 
         $resource = $model::with($model::getItemWith())->where($model->getKeyName(), '=', $uuid)->first();
 
-        if (! $resource) {
-            throw new NotFoundHttpException('Resource \'' . class_basename(static::$model) . '\' with given UUID ' . $uuid . ' not found');
+        if (!$resource) {
+            throw new NotFoundHttpException('Resource \''.class_basename(static::$model).'\' with given UUID '.$uuid.' not found');
         }
 
         $this->authorizeUserAction('view', $resource);
@@ -92,18 +93,19 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Request to create a new resource
+     * Request to create a new resource.
      *
-     * @param  Request  $request
-     * @return \Dingo\Api\Http\Response
+     * @param Request $request
      *
      * @throws HttpException|QueryException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function post(Request $request)
     {
         $this->authorizeUserAction('create');
 
-        $model = new static::$model;
+        $model = new static::$model();
 
         $this->restfulService->validateResource($model, $request->input());
 
@@ -122,21 +124,22 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Request to create or replace a resource
+     * Request to create or replace a resource.
      *
-     * @param  Request  $request
-     * @param  string  $uuid
+     * @param Request $request
+     * @param string  $uuid
+     *
      * @return \Dingo\Api\Http\Response
      */
     public function put(Request $request, $uuid)
     {
         $model = static::$model::find($uuid);
 
-        if (! $model) {
+        if (!$model) {
             // Doesn't exist - create
             $this->authorizeUserAction('create');
 
-            $model = new static::$model;
+            $model = new static::$model();
 
             $this->restfulService->validateResource($model, $request->input());
             $resource = $this->restfulService->persistResource(new $model($request->input()));
@@ -166,13 +169,14 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Request to update the specified resource
+     * Request to update the specified resource.
      *
-     * @param  string  $uuid  UUID of the resource
-     * @param  Request  $request
-     * @return \Dingo\Api\Http\Response
+     * @param string  $uuid    UUID of the resource
+     * @param Request $request
      *
      * @throws HttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function patch($uuid, Request $request)
     {
@@ -194,12 +198,13 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Deletes a resource by UUID
+     * Deletes a resource by UUID.
      *
-     * @param  string  $uuid  UUID of the resource
-     * @return \Dingo\Api\Http\Response
+     * @param string $uuid UUID of the resource
      *
      * @throws NotFoundHttpException
+     *
+     * @return \Dingo\Api\Http\Response
      */
     public function delete($uuid)
     {
@@ -217,9 +222,10 @@ class RestfulController extends BaseRestfulController
     }
 
     /**
-     * Get the cache key for a given endpoint in this controller
+     * Get the cache key for a given endpoint in this controller.
      *
-     * @param  string  $endpoint
+     * @param string $endpoint
+     *
      * @return string $cacheKey
      */
     public static function getCacheKey(string $endpoint = 'getAll'): ?string

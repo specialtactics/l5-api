@@ -12,7 +12,7 @@ class BaseTransformerTest extends AppTestCase
 {
     /**
      * Check that if a model has a primary key called "id", that it will be transformed correctly,
-     * rather than being unset
+     * rather than being unset.
      *
      * @test
      */
@@ -20,7 +20,7 @@ class BaseTransformerTest extends AppTestCase
     {
         $model = new ModelWithIdPK(['example_attribute' => 'abc123']);
 
-        $transformed = (new RestfulTransformer)->transform($model);
+        $transformed = (new RestfulTransformer())->transform($model);
 
         $this->assertArrayHasKey('id', $transformed);
         $this->assertArrayHasKey('exampleAttribute', $transformed);
@@ -28,7 +28,7 @@ class BaseTransformerTest extends AppTestCase
     }
 
     /**
-     * Make sure that an array cast attribute is transformed correctly, in situations when it's blank
+     * Make sure that an array cast attribute is transformed correctly, in situations when it's blank.
      *
      * @test
      */
@@ -38,7 +38,7 @@ class BaseTransformerTest extends AppTestCase
         // Array attribute is null
         $model = new ModelWithCasts(['model_with_casts_id' => Uuid::uuid4()->toString(), 'array_attribute' => null]);
 
-        $transformed = (new RestfulTransformer)->transform($model);
+        $transformed = (new RestfulTransformer())->transform($model);
 
         $this->assertArrayHasKey('arrayAttribute', $transformed);
         $this->assertNull($transformed['arrayAttribute']);
@@ -47,7 +47,7 @@ class BaseTransformerTest extends AppTestCase
         // Array attribute is empty
         $model = new ModelWithCasts(['model_with_casts_id' => Uuid::uuid4()->toString(), 'array_attribute' => []]);
 
-        $transformed = (new RestfulTransformer)->transform($model);
+        $transformed = (new RestfulTransformer())->transform($model);
 
         $this->assertArrayHasKey('arrayAttribute', $transformed);
         $this->assertCount(0, $transformed['arrayAttribute']);

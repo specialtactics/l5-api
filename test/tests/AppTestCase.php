@@ -14,24 +14,26 @@ class AppTestCase extends SetupTestApp
     use DatabaseTransactions;
 
     /**
-     * Set the currently logged in user for the application and Authorization headers for API request
+     * Set the currently logged in user for the application and Authorization headers for API request.
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable
-     * @param  string|null  $driver
+     * @param string|null $driver
+     *
      * @return $this
      */
     public function actingAs(UserContract $user, $driver = null)
     {
         parent::actingAs($user, $driver);
 
-        return $this->withHeader('Authorization', 'Bearer ' . JWTAuth::fromUser($user));
+        return $this->withHeader('Authorization', 'Bearer '.JWTAuth::fromUser($user));
     }
 
     /**
      * API Test case helper function for setting up
-     * the request auth header as supplied user
+     * the request auth header as supplied user.
      *
      * @param array $credentials
+     *
      * @return $this
      */
     public function actingAsUser($credentials)
@@ -48,7 +50,7 @@ class AppTestCase extends SetupTestApp
     }
 
     /**
-     * API Test case helper function for setting up the request as a logged in admin user
+     * API Test case helper function for setting up the request as a logged in admin user.
      *
      * @return $this
      */
@@ -60,9 +62,10 @@ class AppTestCase extends SetupTestApp
     }
 
     /**
-     * Set the API key-case on the API boilerplate class
+     * Set the API key-case on the API boilerplate class.
      *
      * @param $case
+     *
      * @throws \ReflectionException
      */
     public function setAPIKeyCase($case)

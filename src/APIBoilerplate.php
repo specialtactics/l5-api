@@ -8,19 +8,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class APIBoilerplate
 {
     /**
-     * Case type constants for configuring responses
+     * Case type constants for configuring responses.
      */
     const CAMEL_CASE = 'camel-case';
     const SNAKE_CASE = 'snake-case';
     const DEFAULT_CASE = self::CAMEL_CASE;
 
     /**
-     * Case type config path
+     * Case type config path.
      */
     const CASE_TYPE_CONFIG_PATH = 'api.formatsOptions.caseType';
 
     /**
-     * The header which can be used to override config provided case type
+     * The header which can be used to override config provided case type.
      */
     const CASE_TYPE_HEADER = 'X-Accept-Case-Type';
 
@@ -30,7 +30,7 @@ class APIBoilerplate
     protected static $requestedKeyCaseFormat = null;
 
     /**
-     * Get the required 'case type' for transforming response data
+     * Get the required 'case type' for transforming response data.
      *
      * @return string
      */
@@ -38,13 +38,13 @@ class APIBoilerplate
     {
         $format = static::$requestedKeyCaseFormat;
 
-        if (! is_null($format)) {
+        if (!is_null($format)) {
             return $format;
         }
 
         // See if the client is requesting a specific case type
         $caseFormat = request()->header(static::CASE_TYPE_HEADER, null);
-        if (! is_null($caseFormat)) {
+        if (!is_null($caseFormat)) {
             if ($caseFormat == static::CAMEL_CASE) {
                 $format = static::CAMEL_CASE;
             } elseif ($caseFormat == static::SNAKE_CASE) {
@@ -73,10 +73,11 @@ class APIBoilerplate
     }
 
     /**
-     * Formats case of the input array or scalar to desired case
+     * Formats case of the input array or scalar to desired case.
      *
-     * @param  array|string  $input
-     * @param  int|null  $levels  How many levels of an array keys to transform - by default recurse infinitely (null)
+     * @param array|string $input
+     * @param int|null     $levels How many levels of an array keys to transform - by default recurse infinitely (null)
+     *
      * @return array|string $transformed
      */
     public static function formatKeyCaseAccordingToResponseFormat($input, $levels = null)
@@ -87,7 +88,7 @@ class APIBoilerplate
         }
 
         // Use the other function for strings
-        if (! is_array($input)) {
+        if (!is_array($input)) {
             return static::formatCaseAccordingToResponseFormat($input);
         }
 
@@ -106,9 +107,10 @@ class APIBoilerplate
     }
 
     /**
-     * Format the provided string into the required case response format, for attributes (ie. keys)
+     * Format the provided string into the required case response format, for attributes (ie. keys).
      *
-     * @param  string  $attributeString
+     * @param string $attributeString
+     *
      * @return string
      */
     public static function formatCaseAccordingToResponseFormat($attributeString)
@@ -125,11 +127,12 @@ class APIBoilerplate
     }
 
     /**
-     * Format the provided key string into the required case response format
+     * Format the provided key string into the required case response format.
      *
      * @deprecated Use the updated function name
      *
-     * @param  string  $key
+     * @param string $key
+     *
      * @return string
      */
     public static function formatKeyCaseAccordingToReponseFormat($value)

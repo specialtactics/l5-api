@@ -6,11 +6,12 @@ use App\Models\User;
 class UserStorySeeder extends BaseSeeder
 {
     /**
-     * Credentials
+     * Credentials.
      */
     const ADMIN_CREDENTIALS = ['admin@admin.com', 'secret'];
 
-    public function runFake() {
+    public function runFake()
+    {
         // Grab all roles for reference
         $roles = Role::all();
 
@@ -33,15 +34,14 @@ class UserStorySeeder extends BaseSeeder
         $fakeRolesToAssign = RoleTableSeeder::getRandomRoles($fakeRolesToAssignCount);
 
         // Assign fake roles to users
-        for ($i = 0; $i < 5; ++$i) {
+        for ($i = 0; $i < 5; $i++) {
             $user = factory(App\Models\User::class)->create([
                 'primary_role' => $roles->random()->role_id,
             ]);
 
-            for ($j = 0; $j < count($fakeRolesToAssign); ++$j) {
+            for ($j = 0; $j < count($fakeRolesToAssign); $j++) {
                 $user->roles()->save($fakeRolesToAssign->shift());
             }
         }
-
     }
 }

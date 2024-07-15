@@ -17,14 +17,14 @@ foreach ($migrationsIterator as $migration) {
 
         // Rename file
         $newFileName = str_replace('_create_', '_create_test_', $filename);
-        rename($migrationsDir . '/' . $filename, $migrationsDir . '/' . $newFileName);
+        rename($migrationsDir.'/'.$filename, $migrationsDir.'/'.$newFileName);
 
         // Rename class
-        $contents = file_get_contents($migrationsDir . '/' . $newFileName);
+        $contents = file_get_contents($migrationsDir.'/'.$newFileName);
 
         // Get classname
         $newContents = str_replace('class Create', 'class CreateTest', $contents);
-        file_put_contents($migrationsDir . '/' . $newFileName, $newContents);
+        file_put_contents($migrationsDir.'/'.$newFileName, $newContents);
     }
 }
 

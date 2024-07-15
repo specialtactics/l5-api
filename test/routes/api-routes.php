@@ -18,12 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 /**
- * Welcome route - link to any public API documentation here
+ * Welcome route - link to any public API documentation here.
  */
 Route::get('/', function () {
     echo 'Welcome to our API';
 });
-
 
 /**
  * @var $api \Dingo\Api\Routing\Router
@@ -31,7 +30,7 @@ Route::get('/', function () {
 $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', ['middleware' => ['api']], function ($api) {
     /**
-     * Authentication
+     * Authentication.
      */
     $api->group(['prefix' => 'auth'], function ($api) {
         $api->group(['prefix' => 'jwt'], function ($api) {
@@ -40,7 +39,7 @@ $api->version('v1', ['middleware' => ['api']], function ($api) {
     });
 
     /**
-     * Test
+     * Test.
      */
     $api->group(['prefix' => 'posts'], function ($api) {
         $api->get('/', 'App\Http\Controllers\PostController@getAll');
@@ -51,13 +50,12 @@ $api->version('v1', ['middleware' => ['api']], function ($api) {
         $api->get('/', 'App\Http\Controllers\ForumController@getAll');
     });
 
-
     /**
-     * Authenticated routes
+     * Authenticated routes.
      */
     $api->group(['middleware' => ['api.auth']], function ($api) {
         /**
-         * Authentication
+         * Authentication.
          */
         $api->group(['prefix' => 'auth'], function ($api) {
             $api->group(['prefix' => 'jwt'], function ($api) {
@@ -69,7 +67,7 @@ $api->version('v1', ['middleware' => ['api']], function ($api) {
         });
 
         /**
-         * Users
+         * Users.
          */
         $api->group(['prefix' => 'users', 'middleware' => 'check_role:admin'], function ($api) {
             $api->get('/', 'App\Http\Controllers\UserController@getAll');
@@ -81,7 +79,7 @@ $api->version('v1', ['middleware' => ['api']], function ($api) {
         });
 
         /**
-         * Roles
+         * Roles.
          */
         $api->group(['prefix' => 'roles'], function ($api) {
             $api->get('/', 'App\Http\Controllers\RoleController@getAll');

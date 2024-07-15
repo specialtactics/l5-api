@@ -7,7 +7,7 @@ use App\Transformers\BaseTransformer;
 class Forum extends BaseModel
 {
     /**
-     * Types of "forum" entity
+     * Types of "forum" entity.
      */
     const TYPE_FORUM = 'forum';
     const TYPE_CATEGORY = 'category';
@@ -38,14 +38,14 @@ class Forum extends BaseModel
     protected $hidden = [];
 
     /**
-     * Return the validation rules for this model
+     * Return the validation rules for this model.
      *
      * @return array Rules
      */
     public function getValidationRules()
     {
         return [
-            'name' => 'required|string|unique:forums',
+            'name'        => 'required|string|unique:forums',
             'description' => 'string',
         ];
     }

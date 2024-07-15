@@ -2,34 +2,34 @@
 
 namespace Specialtactics\L5Api\Services;
 
-use Validator;
 use Config;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Dingo\Api\Exception\StoreResourceFailedException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Specialtactics\L5Api\Models\RestfulModel;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
-use Dingo\Api\Exception\StoreResourceFailedException;
-use Specialtactics\L5Api\Models\RestfulModel;
+use Validator;
 
 /**
- * This class contains logic for processing restful requests
+ * This class contains logic for processing restful requests.
  *
  * Class RestfulService
  */
 class RestfulService
 {
     /**
-     * @var string $model The Model Class name
+     * @var string The Model Class name
      */
     protected $model = null;
 
     /**
      * RestfulService constructor.
      *
-     * @param  RestfulModel|null  $model  The model this service will be concerned with
+     * @param RestfulModel|null $model The model this service will be concerned with
      */
     public function __construct($model = null)
     {
@@ -37,9 +37,10 @@ class RestfulService
     }
 
     /**
-     * Set model to be used in the service
+     * Set model to be used in the service.
      *
-     * @param  string|null  $model
+     * @param string|null $model
+     *
      * @return $this
      */
     public function setModel($model)
@@ -50,10 +51,11 @@ class RestfulService
     }
 
     /**
-     * Deletes resources of the given model and uuid(s)
+     * Deletes resources of the given model and uuid(s).
      *
-     * @param  $model  string Model class name
-     * @param  $uuid  string|array The UUID(s) of the models to remove
+     * @param $model string Model class name
+     * @param $uuid  string|array The UUID(s) of the models to remove
+     *
      * @return mixed
      */
     public function delete($model, $uuid)
@@ -68,15 +70,16 @@ class RestfulService
     }
 
     /**
-     * Patch a resource of the given model, with the given request
+     * Patch a resource of the given model, with the given request.
      *
      * @deprecated Use persistResource() instead
      *
-     * @param  RestfulModel  $model
-     * @param  array  $data
-     * @return bool
+     * @param RestfulModel $model
+     * @param array        $data
      *
      * @throws HttpException
+     *
+     * @return bool
      */
     public function patch($model, array $data)
     {
@@ -84,13 +87,13 @@ class RestfulService
             $resource = $model->update($data);
         } catch (\Exception $e) {
             // Log this as an unexpected exception, useful if API debug is off
-            Log::error('Error updating resource ' . get_class($model) . ': ' . $e->getMessage());
+            Log::error('Error updating resource '.get_class($model).': '.$e->getMessage());
 
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
             if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('The resource already exists: ' . class_basename($model));
+                    throw new ConflictHttpException('The resource already exists: '.class_basename($model));
                 } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }
@@ -100,7 +103,7 @@ class RestfulService
             $errorMessage = 'Unexpected error trying to store this resource.';
 
             if (Config::get('api.debug') === true) {
-                $errorMessage .= ' ' . $e->getMessage();
+                $errorMessage .= ' '.$e->getMessage();
             }
 
             throw new UnprocessableEntityHttpException($errorMessage);
@@ -110,10 +113,11 @@ class RestfulService
     }
 
     /**
-     * Create model in the database
+     * Create model in the database.
      *
-     * @param  $model
-     * @param  $data
+     * @param $model
+     * @param $data
+     *
      * @return mixed
      */
     public function persistResource(RestfulModel $resource)
@@ -122,13 +126,13 @@ class RestfulService
             $resource->save();
         } catch (\Exception $e) {
             // Log this as an unexpected exception, useful if API debug is off
-            Log::error('Error persisting resource ' . get_class($resource) . ': ' . $e->getMessage());
+            Log::error('Error persisting resource '.get_class($resource).': '.$e->getMessage());
 
             // Check for QueryException - if so, we may want to display a more meaningful message, or help with
             // development debugging
             if ($e instanceof QueryException) {
                 if (stristr($e->getMessage(), 'duplicate')) {
-                    throw new ConflictHttpException('The resource already exists: ' . class_basename($resource));
+                    throw new ConflictHttpException('The resource already exists: '.class_basename($resource));
                 } elseif (Config::get('api.debug') === true) {
                     throw $e;
                 }
@@ -138,7 +142,7 @@ class RestfulService
             $errorMessage = 'Unexpected error trying to store this resource.';
 
             if (Config::get('api.debug') === true) {
-                $errorMessage .= ' ' . $e->getMessage();
+                $errorMessage .= ' '.$e->getMessage();
             }
 
             throw new UnprocessableEntityHttpException($errorMessage);
@@ -148,10 +152,10 @@ class RestfulService
     }
 
     /**
-     * Validates a given resource (Restful Model) against a given data set, and throws an API exception on failure
+     * Validates a given resource (Restful Model) against a given data set, and throws an API exception on failure.
      *
-     * @param  RestfulModel  $resource
-     * @param  array  $data
+     * @param RestfulModel $resource
+     * @param array        $data
      *
      * @throws StoreResourceFailedException
      */
@@ -171,10 +175,10 @@ class RestfulService
 
     /**
      * Validates a given resource (Restful Model) against a given data set in the update context - ie. validating
-     * only the fields updated in the provided data set, and throws an API exception on failure
+     * only the fields updated in the provided data set, and throws an API exception on failure.
      *
-     * @param  RestfulModel  $resource  model resource
-     * @param  array  $data  Data we are validating against
+     * @param RestfulModel $resource model resource
+     * @param array        $data     Data we are validating against
      *
      * @throws StoreResourceFailedException
      */
@@ -188,10 +192,11 @@ class RestfulService
     }
 
     /**
-     * For a given RestfulModel resource and request's data, get the relevant validation rules for updating that resource
+     * For a given RestfulModel resource and request's data, get the relevant validation rules for updating that resource.
      *
-     * @param  RestfulModel  $resource  model resource
-     * @param  array  $data  Data we are validating against
+     * @param RestfulModel $resource model resource
+     * @param array        $data     Data we are validating against
+     *
      * @return array The relevant rules
      */
     public function getRelevantValidationRules($resource, array $data)

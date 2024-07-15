@@ -8,6 +8,7 @@ class PatchTest extends AppTestCase
 {
     /**
      * @testdox Updating a forum description
+     *
      * @test
      */
     public function patchForumDescription()
@@ -18,7 +19,7 @@ class PatchTest extends AppTestCase
         // First create a forum
         $jsonResponse = $this->actingAsAdmin()
             ->json('POST', '/forums', [
-                'name' => 'New Forum',
+                'name'        => 'New Forum',
                 'description' => $description,
             ]);
 
@@ -28,7 +29,7 @@ class PatchTest extends AppTestCase
 
         // Do the patch test
         $jsonResponse = $this->actingAsAdmin()
-            ->json('PATCH', '/forums/' . $forumId, [
+            ->json('PATCH', '/forums/'.$forumId, [
                 'description' => $differentDescription,
             ]);
 

@@ -7,12 +7,13 @@ class ModelMakeCommand extends \Illuminate\Foundation\Console\ModelMakeCommand
     /**
      * Resolve the fully-qualified path to the stub.
      *
-     * @param  string  $stub
+     * @param string $stub
+     *
      * @return string
      */
     protected function resolveStubPath($stub)
     {
-        $boilerplateStub = __DIR__. '/../../../../resources' .$stub;
+        $boilerplateStub = __DIR__.'/../../../../resources'.$stub;
 
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath

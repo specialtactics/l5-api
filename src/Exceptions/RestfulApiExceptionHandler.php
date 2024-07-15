@@ -2,13 +2,13 @@
 
 namespace Specialtactics\L5Api\Exceptions;
 
-use Throwable;
 use Dingo\Api\Exception\Handler as ExceptionHandler;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Helpers;
+use Throwable;
 
 /**
- * This class extends the Dingo API Exception Handler, and can be used to modify it's functionality, if required
+ * This class extends the Dingo API Exception Handler, and can be used to modify it's functionality, if required.
  *
  * Class ApiHandler
  */
@@ -20,9 +20,10 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     protected $originalReplacements = [];
 
     /**
-     * Override prepare replacements function to add extra functionality
+     * Override prepare replacements function to add extra functionality.
      *
-     * @param  Throwable  $exception
+     * @param Throwable $exception
+     *
      * @return array
      */
     protected function prepareReplacements(Throwable $exception)
@@ -32,7 +33,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
 
         // If the errors part is a MessageBag, turn it into an array so we can more easily handle it consistently
         $errorKey = Config('api.errorFormat.errors');
-        if (array_key_exists($errorKey, $replacements) && ! is_array($replacements[$errorKey]) && is_object($replacements[$errorKey]) && $replacements[$errorKey] instanceof \Illuminate\Support\MessageBag) {
+        if (array_key_exists($errorKey, $replacements) && !is_array($replacements[$errorKey]) && is_object($replacements[$errorKey]) && $replacements[$errorKey] instanceof \Illuminate\Support\MessageBag) {
             $replacements[$errorKey] = $replacements[$errorKey]->toArray();
         }
 
@@ -55,7 +56,7 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     }
 
     /**
-     * Get the original replacements array
+     * Get the original replacements array.
      *
      * @return array
      */
@@ -65,9 +66,10 @@ class RestfulApiExceptionHandler extends ExceptionHandler
     }
 
     /**
-     * Formats the case of validation message keys, if response case is not snake-case
+     * Formats the case of validation message keys, if response case is not snake-case.
      *
-     * @param  array  $replacements
+     * @param array $replacements
+     *
      * @return array
      */
     protected function formatCaseOfValidationMessages($replacements)

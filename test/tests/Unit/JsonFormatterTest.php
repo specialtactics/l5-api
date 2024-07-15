@@ -2,30 +2,29 @@
 
 namespace Specialtactics\L5Api\Tests\Unit;
 
-use Mockery;
 use Specialtactics\L5Api\APIBoilerplate;
-use Specialtactics\L5Api\Tests\AppTestCase;
 use Specialtactics\L5Api\Http\Response\Format\Json;
+use Specialtactics\L5Api\Tests\AppTestCase;
 
 class JsonFormatterTest extends AppTestCase
 {
     /**
-     * Check that the JSON Formatter, formats the meta key case correctly
+     * Check that the JSON Formatter, formats the meta key case correctly.
      *
      * @test
      */
     public function formatMetaArrayKeysAccordingToFormat()
     {
-        $jsonFormatter = new Json;
+        $jsonFormatter = new Json();
 
         // Camel
         $this->setAPIKeyCase(APIBoilerplate::CAMEL_CASE);
 
         $content = [
             'do_not_change' => 'Unchanged',
-            'meta' => [
+            'meta'          => [
                 'needs_to_change' => true,
-            ]
+            ],
         ];
 
         $json = $jsonFormatter->formatArray($content);

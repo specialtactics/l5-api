@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\Topic;
 use App\Models\Post;
+use App\Models\Topic;
 
 class PostService
 {
@@ -14,6 +14,7 @@ class PostService
 
     /**
      * PostService constructor.
+     *
      * @param RestfulService $restfulService
      */
     public function __construct(RestfulService $restfulService)
@@ -22,17 +23,18 @@ class PostService
     }
 
     /**
-     * Creates a new post, and returns it
+     * Creates a new post, and returns it.
      *
      * @param Topic $topic
      * @param array $data
+     *
      * @return Post $post
      */
     public function createPost(Topic $topic, array $data)
     {
         $fillData = $data + [$topic->getKeyName() => $topic->getKey()];
 
-        $post = new Post;
+        $post = new Post();
 
         $this->restfulService->validateResource($post, $fillData);
 

@@ -20,6 +20,6 @@ class ModelWithCasts extends RestfulModel
      * @var array Casts
      */
     protected $casts = [
-        'array_attribute' => 'array'
+        'array_attribute' => 'array',
     ];
 }

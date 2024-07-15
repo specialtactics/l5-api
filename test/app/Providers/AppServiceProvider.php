@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Exceptions\ApiExceptionHandler;
-use Config;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the exception handler - extends the Dingo one
+     * Register the exception handler - extends the Dingo one.
      *
      * @return void
      */

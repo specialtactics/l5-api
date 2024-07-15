@@ -4,22 +4,24 @@ use App\Models\Role;
 
 class RoleTableSeeder extends BaseSeeder
 {
-    public function runAlways() {
+    public function runAlways()
+    {
         Role::firstOrCreate([
-            'name' => 'admin',
+            'name'        => 'admin',
             'description' => 'Administrator Users',
         ]);
 
         Role::firstOrCreate([
-            'name' => 'regular',
+            'name'        => 'regular',
             'description' => 'Regular Users',
         ]);
     }
 
-    public function runFake() {
-        for ($i = 0; $i < 10; ++$i) {
+    public function runFake()
+    {
+        for ($i = 0; $i < 10; $i++) {
             Role::firstOrCreate([
-                'name' => $this->faker->unique()->word(),
+                'name'        => $this->faker->unique()->word(),
                 'description' => $this->faker->sentence(),
             ]);
         }
@@ -27,19 +29,21 @@ class RoleTableSeeder extends BaseSeeder
 
     /**
      * Get a collection of random roles
-     * Remove duplicates to prevent SQL errors, also prevent infinite loop in case of not enough roles
+     * Remove duplicates to prevent SQL errors, also prevent infinite loop in case of not enough roles.
      *
      * @param $count int How many roles to get
+     *
      * @return Illuminate\Support\Collection
      */
-    public static function getRandomRoles($count) {
+    public static function getRandomRoles($count)
+    {
         $roles = Role::all();
 
         $fakeRoles = [];
         $i = 0;
 
         do {
-            ++$i;
+            $i++;
             $fakeRoles[] = $roles->whereNotIn('name', ['admin'])->random();
             $fakeRoles = array_unique($fakeRoles);
         } while (count($fakeRoles) < $count && $i < 50); // Iteration limit

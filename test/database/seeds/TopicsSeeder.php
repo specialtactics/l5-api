@@ -3,29 +3,29 @@
 class TopicsSeeder extends BaseSeeder
 {
     /**
-     * Run fake seeds - for non production environments
+     * Run fake seeds - for non production environments.
      *
      * @return mixed
      */
-    public function runFake() {
-
+    public function runFake()
+    {
     }
 
     /**
-     * Run seeds to be ran only on production environments
+     * Run seeds to be ran only on production environments.
      *
      * @return mixed
      */
-    public function runProduction() {
-
+    public function runProduction()
+    {
     }
 
     /**
-     * Run seeds to be ran on every environment (including production)
+     * Run seeds to be ran on every environment (including production).
      *
      * @return mixed
      */
-    public function runAlways() {
-
+    public function runAlways()
+    {
     }
 }

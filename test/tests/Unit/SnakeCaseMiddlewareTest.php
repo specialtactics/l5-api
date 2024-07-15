@@ -3,14 +3,13 @@
 namespace Specialtactics\L5Api\Tests\Unit;
 
 use Dingo\Api\Http\Request;
-use Mockery;
 use Specialtactics\L5Api\Http\Middleware\SnakeCaseInputParameterKeys;
 use Specialtactics\L5Api\Tests\BaseTestCase;
 
 class SnakeCaseMiddlewareTest extends BaseTestCase
 {
     /**
-     * Test that we are not snake_casing keys which are all uppercase
+     * Test that we are not snake_casing keys which are all uppercase.
      *
      * @test
      */
@@ -19,14 +18,14 @@ class SnakeCaseMiddlewareTest extends BaseTestCase
         // Setup request
         $content = [
             'keyShouldTransform' => true,
-            'AUD/USD' => '0.80',
-            'AUD' => '0.75'
+            'AUD/USD'            => '0.80',
+            'AUD'                => '0.75',
         ];
 
         $request = Request::create('/test', 'POST', [], [], [], ['CONTENT_TYPE' => 'application/json'], json_encode($content));
 
-        $snakeCaseMiddleware = new SnakeCaseInputParameterKeys;
-        $snakeCaseMiddleware->handle($request, function($request) {});
+        $snakeCaseMiddleware = new SnakeCaseInputParameterKeys();
+        $snakeCaseMiddleware->handle($request, function ($request) {});
 
         $input = $request->input();
 

@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
+use Hash;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use Hash;
-use App\Models\Role;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -19,7 +18,10 @@ class User extends BaseModel implements
     CanResetPasswordContract,
     JWTSubject
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable;
+    use Authenticatable;
+    use Authorizable;
+    use CanResetPassword;
+    use Notifiable;
 
     /**
      * @var int Auto increments integer key
@@ -37,11 +39,11 @@ class User extends BaseModel implements
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'primary_role'
+        'name', 'email', 'password', 'primary_role',
     ];
 
     /**
-     * The attributes that should be hidden for arrays and API output
+     * The attributes that should be hidden for arrays and API output.
      *
      * @var array
      */
@@ -50,7 +52,7 @@ class User extends BaseModel implements
     ];
 
     /**
-     * Model's boot function
+     * Model's boot function.
      */
     public static function boot()
     {
@@ -65,40 +67,44 @@ class User extends BaseModel implements
     }
 
     /**
-     * Return the validation rules for this model
+     * Return the validation rules for this model.
      *
      * @return array Rules
      */
-    public function getValidationRules() {
+    public function getValidationRules()
+    {
         return [
-            'email' => 'email|max:255|unique:users',
-            'name'  => 'required|min:3',
+            'email'    => 'email|max:255|unique:users',
+            'name'     => 'required|min:3',
             'password' => 'required|min:6',
         ];
     }
 
     /**
-     * User's primary role
+     * User's primary role.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
-    public function primaryRole() {
+    public function primaryRole()
+    {
         return $this->belongsTo(Role::class, 'primary_role');
     }
 
     /**
-     * User's secondary roles
+     * User's secondary roles.
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
 
     /**
-     * Get all user's roles
+     * Get all user's roles.
      */
-    public function getRoles() {
+    public function getRoles()
+    {
         $allRoles = array_merge(
             [
                 $this->primaryRole->name,
@@ -114,7 +120,8 @@ class User extends BaseModel implements
      *
      * @return bool
      */
-    public function isAdmin() {
+    public function isAdmin()
+    {
         return $this->primaryRole->name == Role::ROLE_ADMIN;
     }
 
@@ -139,10 +146,10 @@ class User extends BaseModel implements
     {
         return [
             'user' => [
-                'id' => $this->getKey(),
-                'name' => $this->name,
+                'id'          => $this->getKey(),
+                'name'        => $this->name,
                 'primaryRole' => $this->primaryRole->name,
-            ]
+            ],
         ];
     }
 

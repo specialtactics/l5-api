@@ -275,7 +275,9 @@ class RestfulTransformer extends TransformerAbstract
         }
 
         // For previous versions of Eloquent, dates were stored as arrays
-        $dateFields = array_merge($model->dates, $dateFields);
+        if ($model->dates && is_array($model->dates)) {
+            $dateFields = array_merge($model->dates, $dateFields);
+        }
 
         foreach ($model->getCasts() as $field => $castType) {
             if (in_array($castType, static::DATE_CAST_TYPES)) {

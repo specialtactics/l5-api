@@ -124,6 +124,11 @@ class APIBoilerplate
         return $attributeString;
     }
 
+    public static function getRequestedKeyCaseFormat(): string
+    {
+        return self::$requestedKeyCaseFormat;
+    }
+
     /**
      * Format the provided key string into the required case response format
      *

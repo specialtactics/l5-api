@@ -16,6 +16,8 @@ class JsonFormatterTest extends AppTestCase
      */
     public function formatMetaArrayKeysAccordingToFormat()
     {
+        $originalCase = APIBoilerplate::getRequestedKeyCaseFormat();
+
         $jsonFormatter = new Json;
 
         // Camel
@@ -53,5 +55,8 @@ class JsonFormatterTest extends AppTestCase
         $responseData = $response->decodeResponseJson();
 
         $this->assertArrayHasKey('per_page', $responseData['meta']['pagination']);
+
+        // Restore to original
+        $this->setAPIKeyCase($originalCase);
     }
 }

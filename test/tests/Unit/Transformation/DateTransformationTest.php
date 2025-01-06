@@ -21,9 +21,6 @@ class DateTransformationTest extends AppTestCase
 
         $transformed = (new RestfulTransformer)->transform($model);
 
-        dump($transformed); // For github ci
-        dump(APIBoilerplate::getResponseCaseType());
-
         $this->assertTrue($this->doesMatchFormat($transformed['processedAt']));
         $this->assertTrue($this->doesMatchFormat($transformed['scheduledAt']));
         $this->assertTrue($this->doesMatchFormat($transformed['countedAt']));

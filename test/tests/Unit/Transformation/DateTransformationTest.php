@@ -3,6 +3,7 @@
 namespace Specialtactics\L5Api\Tests\Unit;
 
 use App\Models\Dates\ModelWithDates;
+use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Tests\AppTestCase;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
@@ -21,6 +22,7 @@ class DateTransformationTest extends AppTestCase
         $transformed = (new RestfulTransformer)->transform($model);
 
         dump($transformed); // For github ci
+        dump(APIBoilerplate::getResponseCaseType());
 
         $this->assertTrue($this->doesMatchFormat($transformed['processedAt']));
         $this->assertTrue($this->doesMatchFormat($transformed['scheduledAt']));

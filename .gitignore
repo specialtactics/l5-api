@@ -4,6 +4,7 @@ composer.lock
 .php_cs.cache
 phpunit.xml
 .phpunit.result.cache
+test-results
 storage
 vendor
 .php_cs

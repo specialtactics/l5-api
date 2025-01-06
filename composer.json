@@ -14,7 +14,8 @@
     "api-ecosystem-for-laravel/dingo-api": "^4.1",
     "php-open-source-saver/jwt-auth": "^2.1",
     "illuminate/support": "^10.0",
-    "ramsey/uuid": "^4.3"
+    "ramsey/uuid": "^4.3",
+    "nesbot/carbon": "^2.0|^3.0"
   },
   "require-dev": {
     "ext-json": "*",

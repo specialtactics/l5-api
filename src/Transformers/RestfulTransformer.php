@@ -2,6 +2,8 @@
 
 namespace Specialtactics\L5Api\Transformers;
 
+use DateTimeInterface;
+use Carbon\Carbon;
 use League\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
@@ -9,6 +11,8 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 class RestfulTransformer extends TransformerAbstract
 {
+    public const DATE_CAST_TYPES = ['date', 'datetime', 'immutable_date', 'immutable_datetime'];
+
     /**
      * @var RestfulModel The model to be transformed
      */
@@ -82,11 +86,21 @@ class RestfulTransformer extends TransformerAbstract
         }, ARRAY_FILTER_USE_KEY);
 
         /*
-         * Format all dates as Iso8601 strings, this includes the created_at and updated_at columns
+         * Format all dates as Iso8601 strings, this includes timestamped columns
          */
-        foreach ($model->getDates() as $dateColumn) {
+        foreach ($this->getModelDateFields($model) as $dateColumn) {
             if (! empty($model->$dateColumn) && ! in_array($dateColumn, $filterOutAttributes)) {
-                $transformed[$dateColumn] = $model->$dateColumn->toIso8601String();
+                if ($model->$dateColumn instanceof Carbon) {
+                    $transformed[$dateColumn] = $model->$dateColumn->toISOString();
+                } else if ($model->$dateColumn instanceof DateTimeInterface) {
+                    $transformed[$dateColumn] = Carbon::instance($model->$dateColumn)->toISOString();
+                } else {
+                    try {
+                        $transformed[$dateColumn] = Carbon::parse($model->$dateColumn)->toISOString();
+                    } catch (\Error $e) {
+                        $transformed[$dateColumn] = $model->$dateColumn;
+                    }
+                }
             }
         }
 
@@ -183,7 +197,7 @@ class RestfulTransformer extends TransformerAbstract
      *
      * @return array Array of attributes to filter out
      */
-    protected function getFilteredOutAttributes()
+    public function getFilteredOutAttributes()
     {
         $filterOutAttributes = array_merge(
             $this->model->getHidden(),
@@ -252,5 +266,36 @@ class RestfulTransformer extends TransformerAbstract
         }
 
         return $transformed;
+    }
+
+    /**
+     * Get all fields which are date-like
+     * Uses casts, and backports the older $date model attribute (deprecated from Laravel 10).
+     * The deprecated functionaliy can be removed in the future, perhaps with Laravel 12
+     *
+     * @param EloquentModel $model
+     * @return array
+     */
+    public function getModelDateFields(EloquentModel $model): array
+    {
+        $dateFields = [];
+
+        foreach ($model->getDates() as $dateColumn) {
+            $dateFields[] = $dateColumn;
+        }
+
+        // For previous versions of Eloquent, dates were stored as arrays
+        if (property_exists($model, 'dates') && is_array($model->dates)) {
+            $dateFields = array_merge($model->dates, $dateFields);
+        }
+
+        // Since Laravel 10, we use casts for dates
+        foreach ($model->getCasts() as $field => $castType) {
+            if (in_array($castType, static::DATE_CAST_TYPES)) {
+                $dateFields[] = $field;
+            }
+        }
+
+        return array_unique($dateFields);
     }
 }

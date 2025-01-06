@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/specialtactics/l5-api.svg?branch=master)](https://travis-ci.com/specialtactics/l5-api)
+[![CI Tests](https://github.com/specialtactics/l5-api/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/specialtactics/l5-api/actions)
 [![StyleCI](https://github.styleci.io/repos/131504248/shield?branch=master)](https://github.styleci.io/repos/131504248)
 [![Github All Releases](https://img.shields.io/packagist/dt/specialtactics/l5-api.svg)]()
 [![Github All Releases](https://img.shields.io/packagist/dm/specialtactics/l5-api.svg)]()

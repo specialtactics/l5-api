@@ -16,7 +16,7 @@ class L5ApiServiceProvider extends LaravelServiceProvider
     {
         // Set API Transformer Adapter & properties
         $this->app['Dingo\Api\Transformer\Factory']->setAdapter(function ($app) {
-            return new \Dingo\Api\Transformer\Adapter\Fractal(new \League\Fractal\Manager, 'include', ',');
+            return new \Dingo\Api\Transformer\Adapter\Fractal(new \PHPOpenSourceSaver\Fractal\Manager, 'include', ',');
         });
 
         // Register Fascades

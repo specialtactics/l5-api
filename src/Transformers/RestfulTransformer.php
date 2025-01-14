@@ -2,6 +2,7 @@
 
 namespace Specialtactics\L5Api\Transformers;
 
+use stdClass;
 use DateTimeInterface;
 use Carbon\Carbon;
 use PHPOpenSourceSaver\Fractal\TransformerAbstract;
@@ -26,18 +27,14 @@ class RestfulTransformer extends TransformerAbstract
      *
      * @throws \Exception
      */
-    public function transform($object)
+    public function transform(EloquentModel|stdClass $object)
     {
-        if (is_object($object)) {
-            if ($object instanceof RestfulModel) {
-                $transformed = $this->transformRestfulModel($object);
-            } elseif ($object instanceof EloquentModel) {
-                $transformed = $this->transformEloquentModel($object);
-            } elseif ($object instanceof \stdClass) {
-                $transformed = $this->transformStdClass($object);
-            } else {
-                throw new \Exception('Unexpected object type encountered in transformer');
-            }
+        if ($object instanceof RestfulModel) {
+            $transformed = $this->transformRestfulModel($object);
+        } elseif ($object instanceof EloquentModel) {
+            $transformed = $this->transformEloquentModel($object);
+        } elseif ($object instanceof stdClass) {
+            $transformed = $this->transformStdClass($object);
         } else {
             throw new \Exception('Unexpected object type encountered in transformer');
         }

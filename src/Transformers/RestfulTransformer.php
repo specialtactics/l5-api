@@ -4,7 +4,7 @@ namespace Specialtactics\L5Api\Transformers;
 
 use DateTimeInterface;
 use Carbon\Carbon;
-use League\Fractal\TransformerAbstract;
+use PHPOpenSourceSaver\Fractal\TransformerAbstract;
 use Specialtactics\L5Api\APIBoilerplate;
 use Specialtactics\L5Api\Models\RestfulModel;
 use Illuminate\Database\Eloquent\Model as EloquentModel;

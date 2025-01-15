@@ -27,7 +27,7 @@ class RestfulTransformer extends TransformerAbstract
      *
      * @throws \Exception
      */
-    public function transform(EloquentModel|stdClass $object)
+    public function transform($object)
     {
         if ($object instanceof RestfulModel) {
             $transformed = $this->transformRestfulModel($object);

@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^8.2",
-    "api-ecosystem-for-laravel/dingo-api": "^4.2",
+    "api-ecosystem-for-laravel/dingo-api": "^4.4",
     "php-open-source-saver/jwt-auth": "^2.7",
     "illuminate/support": "^11.0",
     "ramsey/uuid": "^4.7",

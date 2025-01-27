@@ -23,7 +23,7 @@
     "fakerphp/faker": "^1.23",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^10.1",
+    "phpunit/phpunit": "^11.5",
     "orchestra/testbench": "^9.9",
     "laravel/legacy-factories": "^1.0"
   },

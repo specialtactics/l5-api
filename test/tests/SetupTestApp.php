@@ -35,6 +35,8 @@ class SetupTestApp extends BaseTestCase
      */
     public function tearDown(): void
     {
+        parent::tearDown();
+
         Mockery::close();
     }
 

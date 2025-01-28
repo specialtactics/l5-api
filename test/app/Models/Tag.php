@@ -12,9 +12,9 @@ class Tag extends BaseModel
     public $primaryKey = 'tag_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var ?array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = [];
+    public static ?array $itemWith;
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default
@@ -36,7 +36,7 @@ class Tag extends BaseModel
      *
      * @return array Rules
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [];
     }

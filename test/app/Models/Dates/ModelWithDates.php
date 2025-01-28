@@ -32,7 +32,7 @@ class ModelWithDates extends BaseModel
      *
      * @return array Rules
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [
             'title' => 'required|string|unique:forums',

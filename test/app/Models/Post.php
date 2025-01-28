@@ -12,9 +12,9 @@ class Post extends BaseModel
     public $primaryKey = 'post_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var ?array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = ['topic', 'author'];
+    public static ?array $itemWith = ['topic', 'author'];
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default
@@ -36,7 +36,7 @@ class Post extends BaseModel
      *
      * @return array Rules
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [
             'content' => 'required',
@@ -48,7 +48,7 @@ class Post extends BaseModel
      *
      * Add various functionality in the model lifecycle hooks
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

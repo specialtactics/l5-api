@@ -27,9 +27,9 @@ class User extends BaseModel implements
     public $primaryKey = 'user_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var ?array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = ['primaryRole', 'roles'];
+    public static ?array $itemWith = ['primaryRole', 'roles'];
 
     /**
      * The attributes that are mass assignable.
@@ -52,7 +52,7 @@ class User extends BaseModel implements
     /**
      * Model's boot function
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -69,7 +69,8 @@ class User extends BaseModel implements
      *
      * @return array Rules
      */
-    public function getValidationRules() {
+    public function getValidationRules(): array
+    {
         return [
             'email' => 'email|max:255|unique:users',
             'name'  => 'required|min:3',
@@ -98,7 +99,8 @@ class User extends BaseModel implements
     /**
      * Get all user's roles
      */
-    public function getRoles() {
+    public function getRoles(): ?array
+    {
         $allRoles = array_merge(
             [
                 $this->primaryRole->name,
@@ -114,7 +116,8 @@ class User extends BaseModel implements
      *
      * @return bool
      */
-    public function isAdmin() {
+    public function isAdmin(): bool
+    {
         return $this->primaryRole->name == Role::ROLE_ADMIN;
     }
 
@@ -124,7 +127,7 @@ class User extends BaseModel implements
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): string
     {
         return $this->getKey();
     }
@@ -135,7 +138,7 @@ class User extends BaseModel implements
      *
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [
             'user' => [
@@ -151,7 +154,7 @@ class User extends BaseModel implements
      *
      * @return string
      */
-    public function getAuthIdentifierName()
+    public function getAuthIdentifierName(): string
     {
         return $this->getKeyName();
     }

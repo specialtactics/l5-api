@@ -56,7 +56,7 @@ class RestfulModel extends Model
      *
      * @var null|RestfulTransformer The transformer to use for this model, if overriding the default
      */
-    public static ?RestfulTransformer $transformer = null;
+    public static $transformer = null;
 
     /**
      * Return the validation rules for this model

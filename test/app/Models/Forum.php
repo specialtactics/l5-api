@@ -18,9 +18,9 @@ class Forum extends BaseModel
     public $primaryKey = 'forum_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var ?array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = ['topics'];
+    public static ?array $itemWith = ['topics'];
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default
@@ -42,7 +42,7 @@ class Forum extends BaseModel
      *
      * @return array Rules
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [
             'name' => 'required|string|unique:forums',

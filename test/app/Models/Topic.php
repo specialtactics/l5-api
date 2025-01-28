@@ -12,9 +12,9 @@ class Topic extends BaseModel
     public $primaryKey = 'topic_id';
 
     /**
-     * @var array Relations to load implicitly by Restful controllers
+     * @var ?array Relations to load implicitly by Restful controllers
      */
-    public static $localWith = ['author', 'forum', 'posts'];
+    public static ?array $itemWith = ['author', 'forum', 'posts'];
 
     /**
      * @var null|BaseTransformer The transformer to use for this model, if overriding the default
@@ -36,7 +36,7 @@ class Topic extends BaseModel
      *
      * @return array Rules
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [
             'title' => 'required|string',
@@ -63,7 +63,7 @@ class Topic extends BaseModel
      *
      * Add various functionality in the model lifecycle hooks
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

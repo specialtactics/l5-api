@@ -34,25 +34,14 @@ class RestfulModel extends Model
      *
      * @var array Attributes to disallow updating through an API update or put
      */
-    public $immutableAttributes = ['created_at', 'deleted_at'];
-
-    /**
-     * Acts like $with (eager loads relations), however only for immediate controller requests for that object
-     * This is useful if you want to use "with" for immediate resource routes, however don't want these relations
-     *  always loaded in various service functions, for performance reasons
-     *
-     * @deprecated Use  getItemWith() and getCollectionWith()
-     *
-     * @var array Relations to load implicitly by Restful controllers
-     */
-    public static $localWith = null;
+    public array $immutableAttributes = ['created_at', 'updated_at', 'deleted_at'];
 
     /**
      * What relations should one model of this entity be returned with, from a relevant controller
      *
      * @var null|array
      */
-    public static $itemWith = [];
+    public static ?array $itemWith = [];
 
     /**
      * What relations should a collection of models of this entity be returned with, from a relevant controller
@@ -60,21 +49,21 @@ class RestfulModel extends Model
      *
      * @var null|array
      */
-    public static $collectionWith = null;
+    public static ?array $collectionWith = null;
 
     /**
      * You can define a custom transformer for a model, if you wish to override the functionality of the Base transformer
      *
      * @var null|RestfulTransformer The transformer to use for this model, if overriding the default
      */
-    public static $transformer = null;
+    public static ?RestfulTransformer $transformer = null;
 
     /**
      * Return the validation rules for this model
      *
      * @return array Validation rules to be used for the model when creating it
      */
-    public function getValidationRules()
+    public function getValidationRules(): array
     {
         return [];
     }
@@ -85,7 +74,7 @@ class RestfulModel extends Model
      *
      * @return array Validation roles to use for updating model
      */
-    public function getValidationRulesUpdating()
+    public function getValidationRulesUpdating(): array
     {
         return $this->getValidationRules();
     }
@@ -95,7 +84,7 @@ class RestfulModel extends Model
      *
      * @return array
      */
-    public function getValidationMessages()
+    public function getValidationMessages(): array
     {
         return [];
     }
@@ -105,7 +94,7 @@ class RestfulModel extends Model
      *
      * Add various functionality in the model lifecycle hooks
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -130,7 +119,7 @@ class RestfulModel extends Model
             if (! empty($model->immutableAttributes)) {
                 // For each immutable attribute, check if they have changed
                 foreach ($model->immutableAttributes as $attributeName) {
-                    if ($model->getOriginal($attributeName) != $model->getAttribute($attributeName)) {
+                    if ($model->isDirty($attributeName)) {
                         throw new BadRequestHttpException('Updating the "'. APIBoilerplate::formatCaseAccordingToResponseFormat($attributeName) .'" attribute is not allowed.');
                     }
                 }
@@ -143,7 +132,7 @@ class RestfulModel extends Model
      *
      * @return BaseTransformer
      */
-    public static function getTransformer()
+    public static function getTransformer(): RestfulTransformer
     {
         return is_null(static::$transformer) ? new BaseTransformer : new static::$transformer;
     }
@@ -158,7 +147,7 @@ class RestfulModel extends Model
      *
      * @return void
      */
-    public function orderAttributesUuidFirst()
+    public function orderAttributesUuidFirst(): void
     {
         if ($this->getKeyName()) {
             $UuidValue = $this->getKey();
@@ -168,37 +157,25 @@ class RestfulModel extends Model
     }
 
     /**
-     * If using deprecated $localWith then use that
-     * Otherwise, use $itemWith
-     *
-     * @return array
+     * @return array|null
      */
-    public static function getItemWith()
+    public static function getItemWith(): ?array
     {
-        if (is_null(static::$localWith)) {
-            return static::$itemWith;
-        } else {
-            return static::$localWith;
-        }
+        return static::$itemWith;
     }
 
     /**
-     * If using deprecated $localWith then use that
-     * Otherwise, if collectionWith hasn't been set, use $itemWith by default
+     * If collectionWith hasn't been set, use $itemWith by default
      * Otherwise, use collectionWith
      *
-     * @return array
+     * @return array|null
      */
-    public static function getCollectionWith()
+    public static function getCollectionWith(): ?array
     {
-        if (is_null(static::$localWith)) {
-            if (! is_null(static::$collectionWith)) {
-                return static::$collectionWith;
-            } else {
-                return static::$itemWith;
-            }
+        if (! is_null(static::$collectionWith)) {
+            return static::$collectionWith;
         } else {
-            return static::$localWith;
+            return static::$itemWith;
         }
     }
 

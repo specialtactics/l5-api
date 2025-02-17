@@ -1,59 +1,70 @@
 {
-  "name": "specialtactics/l5-api",
-  "description": "Dependencies for the Laravel API Boilerplate package",
-  "keywords": ["laravel", "boilerplate", "api"],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Max Snow",
-      "email": "contact@maxsnow.me"
-    }
-  ],
-  "require": {
-    "php": "^8.2",
-    "api-ecosystem-for-laravel/dingo-api": "^4.4.1",
-    "php-open-source-saver/jwt-auth": "^2.7",
-    "illuminate/support": "^11.0",
-    "ramsey/uuid": "^4.7",
-    "nesbot/carbon": "^2.0|^3.0"
-  },
-  "require-dev": {
-    "ext-json": "*",
-    "beyondcode/laravel-dump-server": "^2.0",
-    "fakerphp/faker": "^1.23",
-    "mockery/mockery": "^1.6",
-    "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^11.5",
-    "orchestra/testbench": "^9.9",
-    "laravel/legacy-factories": "^1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Specialtactics\\L5Api\\": "src/"
+    "name": "specialtactics/l5-api",
+    "description": "Dependencies for the Laravel API Boilerplate package",
+    "keywords": [
+        "laravel",
+        "boilerplate",
+        "api"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Max Snow",
+            "email": "contact@maxsnow.me"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "api-ecosystem-for-laravel/dingo-api": "^4.4.1",
+        "php-open-source-saver/jwt-auth": "^2.7",
+        "illuminate/support": "^11.0|^12.0",
+        "ramsey/uuid": "^4.7",
+        "nesbot/carbon": "^2.0|^3.0"
     },
-    "files": ["helpers/helpers.php"]
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Specialtactics\\L5Api\\Tests\\": "test/tests/",
-      "Specialtactics\\L5Api\\Test\\Mocks\\": "test/mocks/",
-      "App\\": "test/app/"
+    "require-dev": {
+        "ext-json": "*",
+        "beyondcode/laravel-dump-server": "^2.0",
+        "fakerphp/faker": "^1.23",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.6",
+        "phpunit/phpunit": "^11.5",
+        "orchestra/testbench": "^9.9|^10.0",
+        "laravel/legacy-factories": "^1.0"
     },
-    "classmap": ["test/database/seeds/", "test/database/factories/"]
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Specialtactics\\L5Api\\L5ApiServiceProvider"
-      ]
+    "autoload": {
+        "psr-4": {
+            "Specialtactics\\L5Api\\": "src/"
+        },
+        "files": [
+            "helpers/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Specialtactics\\L5Api\\Tests\\": "test/tests/",
+            "Specialtactics\\L5Api\\Test\\Mocks\\": "test/mocks/",
+            "App\\": "test/app/"
+        },
+        "classmap": [
+            "test/database/seeds/",
+            "test/database/factories/"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Specialtactics\\L5Api\\L5ApiServiceProvider"
+            ]
+        }
+    },
+    "archive": {
+        "exclude": [
+            "/test"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "test": "./vendor/bin/phpunit --colors=always --testdox"
     }
-  },
-  "archive": {
-    "exclude": ["/test"]
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "scripts": {
-    "test": "./vendor/bin/phpunit --colors=always --testdox"
-  }
 }

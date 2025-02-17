@@ -16,7 +16,7 @@ jobs:
       matrix:
         stability: [prefer-stable]
         php: [8.2, 8.3, 8.4]
-        laravel: [11]
+        laravel: [11, '12']
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
@@ -24,7 +24,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Docs: https://github.com/shivammathur/setup-php
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -32,7 +31,6 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip
           ini-values: error_reporting=E_ALL
           tools: composer:v2
-          # todo: Add
           coverage: none
 
       - name: Install dependencies

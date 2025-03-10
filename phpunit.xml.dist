@@ -3,7 +3,6 @@
   <testsuites>
     <testsuite name="API Test Suite">
       <directory suffix="Test.php">./test/tests</directory>
-      <exclude>./test/tests/TestCase.php</exclude>
     </testsuite>
   </testsuites>
   <php>

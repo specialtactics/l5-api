@@ -3,11 +3,30 @@
 namespace Specialtactics\L5Api\Http\Controllers\Features;
 
 use App\Transformers\BaseTransformer;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Specialtactics\L5Api\Enums\PaginationType;
 use Specialtactics\L5Api\Helpers;
 
 trait RestfulControllerTrait
 {
+    public PaginationType $paginationType = PaginationType::LENGTH_AWARE;
+
+    /**
+     * Get the correct paginator instance based on the controller's paginator type param
+     */
+    public function getPaginator(Builder $query, int $perPage): Paginator|LengthAwarePaginator|CursorPaginator
+    {
+        if ($this->paginationType === PaginationType::SIMPLE) {
+            return $query->simplePaginate($perPage);
+        } else {
+            return $query->paginate($perPage);
+        }
+    }
+
     /**
      * Figure out which transformer to use
      *

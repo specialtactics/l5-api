@@ -17,6 +17,7 @@
     <env name="API_PREFIX" value="/"/>
     <env name="JWT_SECRET" value="WrL8dp51k231ErDyUMgazU9KceL1RKXusu1U39YARuMbUWKuurPEtqGhEDCrUMoB"/>
     <env name="JWT_TTL" value="7220"/>
+    <env name="BCRYPT_ROUNDS" value="4" />
     <!-- Test App -->
   </php>
   <source>

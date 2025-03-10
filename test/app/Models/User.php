@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -9,9 +10,11 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Str;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use Hash;
+use \Illuminate\Support\Facades\Hash;
 use App\Models\Role;
+use Database\Factories\UserFactory;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -19,7 +22,7 @@ class User extends BaseModel implements
     CanResetPasswordContract,
     JWTSubject
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HasFactory;
 
     /**
      * @var int Auto increments integer key
@@ -40,10 +43,13 @@ class User extends BaseModel implements
         'name', 'email', 'password', 'primary_role'
     ];
 
+    protected $casts = [
+        'verifiable_until' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     /**
      * The attributes that should be hidden for arrays and API output
-     *
-     * @var array
      */
     protected $hidden = [
         'password', 'remember_token', 'primary_role',
@@ -56,12 +62,16 @@ class User extends BaseModel implements
     {
         parent::boot();
 
-        static::saving(function (User $user) {
-            // Hash user password, if not already hashed
-            if (Hash::needsRehash($user->password)) {
-                $user->password = Hash::make($user->password);
+        static::creating(function (User $user) {
+            if (is_null($user->password)) {
+                $user->password = Hash::make(Str::random(64));
             }
         });
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return new UserFactory();
     }
 
     /**

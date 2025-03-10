@@ -23,9 +23,6 @@ class SetupTestApp extends BaseTestCase
         // Load migrations for tests
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        // Load factories for tests
-        $this->withFactories(__DIR__ . '/../database/factories');
-
         // Migrate and seed
         $this->artisan('migrate', ['--database' => 'testing', '--seed' => true]);
     }

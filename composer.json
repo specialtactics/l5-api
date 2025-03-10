@@ -24,8 +24,7 @@
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
     "phpunit/phpunit": "^11.5",
-    "orchestra/testbench": "^9.9",
-    "laravel/legacy-factories": "^1.0"
+    "orchestra/testbench": "^9.9"
   },
   "autoload": {
     "psr-4": {
@@ -37,9 +36,10 @@
     "psr-4": {
       "Specialtactics\\L5Api\\Tests\\": "test/tests/",
       "Specialtactics\\L5Api\\Test\\Mocks\\": "test/mocks/",
-      "App\\": "test/app/"
+      "App\\": "test/app/",
+      "Database\\": "test/database/"
     },
-    "classmap": ["test/database/seeds/", "test/database/factories/"]
+    "classmap": ["test/database/seeds/"]
   },
   "extra": {
     "laravel": {

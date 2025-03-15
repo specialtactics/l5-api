@@ -96,8 +96,8 @@ trait AuthorizesUserActionsOnModelsTrait
             return true;
         }
 
-        // Check if the authenticated user has the required ability for the model
-        if ($user->can($ability, $arguments)) {
+        // Check if the user has the required ability for the model
+        if (Gate::forUser($user)->allows($ability, $arguments)) {
             return true;
         }
 

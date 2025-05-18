@@ -12,6 +12,8 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Str;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use App\Models\Role;
+use Database\Factories\UserFactory;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -42,22 +44,23 @@ class User extends BaseModel implements
 
     /**
      * The attributes that should be hidden for arrays and API output
-     *
-     * @var array
      */
     protected $hidden = [
         'password', 'remember_token', 'primary_role',
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
     /**
      * Model's boot function
@@ -69,6 +72,11 @@ class User extends BaseModel implements
         static::saving(function (User $user) {
             $user->email = Str::lower($user->email);
         });
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return new UserFactory();
     }
 
     /**

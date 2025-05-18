@@ -43,7 +43,6 @@ $api->version('v1', ['middleware' => ['api']], function ($api) {
      * Test
      */
     $api->group(['prefix' => 'posts'], function ($api) {
-        $api->get('/', 'App\Http\Controllers\PostController@getAll');
         $api->post('/', 'App\Http\Controllers\PostController@post');
     });
 

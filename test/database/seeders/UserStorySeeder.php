@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Role;
 use App\Models\User;
 
@@ -15,14 +17,14 @@ class UserStorySeeder extends BaseSeeder
         $roles = Role::all();
 
         // Create an admin user
-        factory(App\Models\User::class)->create([
+        User::factory()->create([
             'name'         => 'Admin',
             'email'        => 'admin@admin.com',
             'primary_role' => $roles->where('name', 'admin')->first()->role_id,
         ]);
 
         // Create regular user
-        factory(App\Models\User::class)->create([
+        User::factory()->create([
             'name'         => 'Bob',
             'email'        => 'bob@bob.com',
             'primary_role' => $roles->where('name', 'regular')->first()->role_id,
@@ -34,7 +36,7 @@ class UserStorySeeder extends BaseSeeder
 
         // Assign fake roles to users
         for ($i = 0; $i < 5; ++$i) {
-            $user = factory(App\Models\User::class)->create([
+            $user = User::factory()->create([
                 'primary_role' => $roles->random()->role_id,
             ]);
 

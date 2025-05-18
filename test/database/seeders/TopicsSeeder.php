@@ -1,9 +1,11 @@
 <?php
 
-class TagsSeeder extends BaseSeeder
+namespace Database\Seeders;
+
+class TopicsSeeder extends BaseSeeder
 {
     /**
-     * Run fake seeds - for non production environments
+     * Run fake Seeders - for non production environments
      *
      * @return mixed
      */
@@ -12,7 +14,7 @@ class TagsSeeder extends BaseSeeder
     }
 
     /**
-     * Run seeds to be ran only on production environments
+     * Run Seeders to be ran only on production environments
      *
      * @return mixed
      */
@@ -21,7 +23,7 @@ class TagsSeeder extends BaseSeeder
     }
 
     /**
-     * Run seeds to be ran on every environment (including production)
+     * Run Seeders to be ran on every environment (including production)
      *
      * @return mixed
      */

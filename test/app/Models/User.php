@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -9,9 +10,8 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Str;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use Hash;
-use App\Models\Role;
 
 class User extends BaseModel implements
     AuthenticatableContract,
@@ -19,7 +19,7 @@ class User extends BaseModel implements
     CanResetPasswordContract,
     JWTSubject
 {
-    use Authenticatable, Authorizable, CanResetPassword, Notifiable;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable, HasFactory;
 
     /**
      * @var int Auto increments integer key
@@ -50,6 +50,16 @@ class User extends BaseModel implements
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
      * Model's boot function
      */
     public static function boot(): void
@@ -57,10 +67,7 @@ class User extends BaseModel implements
         parent::boot();
 
         static::saving(function (User $user) {
-            // Hash user password, if not already hashed
-            if (Hash::needsRehash($user->password)) {
-                $user->password = Hash::make($user->password);
-            }
+            $user->email = Str::lower($user->email);
         });
     }
 

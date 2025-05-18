@@ -1,11 +1,13 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Forum;
 
 class ForumsSeeder extends BaseSeeder
 {
     /**
-     * Run fake seeds - for non production environments
+     * Run fake Seeders - for non production environments
      *
      * @return mixed
      */
@@ -16,7 +18,7 @@ class ForumsSeeder extends BaseSeeder
     }
 
     /**
-     * Run seeds to be ran only on production environments
+     * Run Seeders to be ran only on production environments
      *
      * @return mixed
      */
@@ -25,7 +27,7 @@ class ForumsSeeder extends BaseSeeder
     }
 
     /**
-     * Run seeds to be ran on every environment (including production)
+     * Run Seeders to be ran on every environment (including production)
      *
      * @return mixed
      */

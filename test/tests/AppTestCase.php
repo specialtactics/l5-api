@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use JWTAuth;
 use Specialtactics\L5Api\APIBoilerplate;
-use UserStorySeeder;
+use Database\Seeders\UserStorySeeder;
 
 class AppTestCase extends SetupTestApp
 {

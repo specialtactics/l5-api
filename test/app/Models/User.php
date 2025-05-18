@@ -12,7 +12,6 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Str;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
-use \Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use Database\Factories\UserFactory;
 
@@ -43,11 +42,6 @@ class User extends BaseModel implements
         'name', 'email', 'password', 'primary_role'
     ];
 
-    protected $casts = [
-        'verifiable_until' => 'datetime',
-        'password' => 'hashed',
-    ];
-
     /**
      * The attributes that should be hidden for arrays and API output
      */
@@ -56,16 +50,27 @@ class User extends BaseModel implements
     ];
 
     /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    /**
      * Model's boot function
      */
     public static function boot(): void
     {
         parent::boot();
 
-        static::creating(function (User $user) {
-            if (is_null($user->password)) {
-                $user->password = Hash::make(Str::random(64));
-            }
+        static::saving(function (User $user) {
+            $user->email = Str::lower($user->email);
         });
     }
 

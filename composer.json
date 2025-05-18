@@ -11,20 +11,20 @@
   ],
   "require": {
     "php": "^8.2",
-    "api-ecosystem-for-laravel/dingo-api": "^4.4.1",
-    "php-open-source-saver/jwt-auth": "^2.7",
-    "illuminate/support": "^11.0",
+    "api-ecosystem-for-laravel/dingo-api": "^4.6",
+    "php-open-source-saver/jwt-auth": "^2.8",
+    "illuminate/support": "^12.0",
     "ramsey/uuid": "^4.7",
-    "nesbot/carbon": "^2.0|^3.0"
+    "nesbot/carbon": "^3.0"
   },
   "require-dev": {
     "ext-json": "*",
-    "beyondcode/laravel-dump-server": "^2.0",
-    "fakerphp/faker": "^1.23",
+    "beyondcode/laravel-dump-server": "^2.1",
+    "fakerphp/faker": "^1.24",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
     "phpunit/phpunit": "^11.5",
-    "orchestra/testbench": "^9.9"
+    "orchestra/testbench": "^10.3"
   },
   "autoload": {
     "psr-4": {
@@ -37,9 +37,10 @@
       "Specialtactics\\L5Api\\Tests\\": "test/tests/",
       "Specialtactics\\L5Api\\Test\\Mocks\\": "test/mocks/",
       "App\\": "test/app/",
-      "Database\\": "test/database/"
+      "Database\\Factories\\": "test/database/factories/",
+      "Database\\Seeders\\": "test/database/seeders/"
     },
-    "classmap": ["test/database/seeds/"]
+    "classmap": ["test/database/migrations/"]
   },
   "extra": {
     "laravel": {

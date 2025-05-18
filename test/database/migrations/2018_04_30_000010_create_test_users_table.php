@@ -21,9 +21,11 @@ class CreateTestUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('active')->default(true);
 
             $table->uuid('primary_role')->nullable();
             $table->foreign('primary_role')->references('role_id')->on('roles')->onDelete('set null');
+            $table->timestamp('email_verified_at')->nullable();
 
             $table->primary('user_id');
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 class BaseSeeder extends Seeder {
@@ -9,7 +11,7 @@ class BaseSeeder extends Seeder {
     public $faker = null;
 
     /**
-     * Run the database seeds.
+     * Run the database Seeders.
      *
      * @return void
      */
@@ -17,7 +19,7 @@ class BaseSeeder extends Seeder {
     {
         // You can set the locale of your seeder as a parameter to the create function
         // Available locales: https://github.com/fzaninotto/Faker/tree/master/src/Faker/Provider
-        $this->faker = Faker\Factory::create();
+        $this->faker = \Faker\Factory::create();
 
         $this->before();
 
@@ -25,7 +27,7 @@ class BaseSeeder extends Seeder {
         $this->runAlways();
 
         // Production Only
-        if (App::environment() == 'production') {
+        if (app()->environment() === 'production') {
             $this->runProduction();
         }
         // Fake environments
@@ -37,7 +39,7 @@ class BaseSeeder extends Seeder {
     }
 
     /**
-     * Run fake seeds - for non production environments
+     * Run fake Seeders - for non production environments
      *
      * @return void
      */
@@ -45,7 +47,7 @@ class BaseSeeder extends Seeder {
     }
 
     /**
-     * Run seeds to be ran only on production environments
+     * Run Seeders to be ran only on production environments
      *
      * @return void
      */
@@ -53,7 +55,7 @@ class BaseSeeder extends Seeder {
     }
 
     /**
-     * Run seeds to be ran on every environment (including production)
+     * Run Seeders to be ran on every environment (including production)
      *
      * @return void
      */

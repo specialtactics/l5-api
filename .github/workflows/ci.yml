@@ -9,14 +9,14 @@ on:
 
 jobs:
   tests:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
         stability: [prefer-stable]
-        php: [8.2, 8.3, 8.4]
-        laravel: [12]
+        php: [8.3, 8.4, 8.5]
+        laravel: [13]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 

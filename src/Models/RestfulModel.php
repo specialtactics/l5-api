@@ -94,17 +94,15 @@ class RestfulModel extends Model
      *
      * Add various functionality in the model lifecycle hooks
      */
-    public static function boot(): void
+    public static function booted(): void
     {
-        parent::boot();
-
         // Add functionality for creating a model
         static::creating(function (self $model) {
             // If the PK(s) are missing, generate them
             $uuidKeyName = $model->getKeyName();
 
             if ($uuidKeyName && ! $model->incrementing && ! is_array($uuidKeyName) && ! array_key_exists($uuidKeyName, $model->getAttributes())) {
-                $model->$uuidKeyName = Uuid::uuid4()->toString();
+                $model->$uuidKeyName = Uuid::uuid7()->toString();
             }
         });
 

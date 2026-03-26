@@ -12,6 +12,8 @@ Please go to [The boilerplate wiki](https://github.com/specialtactics/laravel-ap
 
 | Laravel Version | Boilerplate Version | Minimum PHP Version | Support Status |
 |-----------------|---------------------|---------------------|----------------|
+| 13.x            | 9.x.x               | 8.3                 | In Development |
+| 13.x            | 8.x.x               | 8.3                 | Supported      |
 | 12.x            | 7.x.x               | 8.2                 | Supported      |
 | 11.x            | 6.x.x               | 8.2                 | Supported      |
 | 10.x            | 5.x.x               | 8.1                 | Not Supported  |

@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Tests\Unit;
 
 use App\Models\Dates\ModelWithDates;
 use Specialtactics\L5Api\APIBoilerplate;
+use PHPUnit\Framework\Attributes\Test;
 use Specialtactics\L5Api\Tests\AppTestCase;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
 
@@ -12,8 +13,8 @@ class DateTransformationTest extends AppTestCase
     /**
     * Check various dates are formatted correctly
      *
-     * @test
      */
+    #[Test]
     public function canTransformDates()
     {
         $model = new ModelWithDates(['title' => 'Example dates', 'processed_at' => now(), 'scheduled_at' => now()->addDays(10), 'counted_at' => now()->subDays(5)]);

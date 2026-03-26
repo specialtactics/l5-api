@@ -10,21 +10,20 @@
     }
   ],
   "require": {
-    "php": "^8.2",
-    "api-ecosystem-for-laravel/dingo-api": "^4.6",
-    "php-open-source-saver/jwt-auth": "^2.8",
-    "illuminate/support": "^12.0",
+    "php": "^8.3",
+    "api-ecosystem-for-laravel/dingo-api": "^4.8",
+    "php-open-source-saver/jwt-auth": "^2.9",
+    "illuminate/support": "^13.0",
     "ramsey/uuid": "^4.7",
     "nesbot/carbon": "^3.0"
   },
   "require-dev": {
     "ext-json": "*",
-    "beyondcode/laravel-dump-server": "^2.1",
     "fakerphp/faker": "^1.24",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^11.5",
-    "orchestra/testbench": "^10.3"
+    "phpunit/phpunit": "^12.0",
+    "orchestra/testbench": "^11.3"
   },
   "autoload": {
     "psr-4": {

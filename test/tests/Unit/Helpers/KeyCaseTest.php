@@ -3,6 +3,7 @@
 namespace Specialtactics\L5Api\Tests\Unit\Helpers;
 
 use Specialtactics\L5Api\Tests\AppTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Specialtactics\L5Api\Helpers;
 
 class KeyCaseTest extends AppTestCase
@@ -114,8 +115,8 @@ class KeyCaseTest extends AppTestCase
     ];
 
     /**
-     * @test
      */
+    #[Test]
     public function camelCaseArrayKeys()
     {
         $result = Helpers::camelCaseArrayKeys(self::MIXED_CASES);
@@ -123,8 +124,8 @@ class KeyCaseTest extends AppTestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function snakeCaseArrayKeys()
     {
         $result = Helpers::snakeCaseArrayKeys(self::MIXED_CASES);
@@ -132,8 +133,8 @@ class KeyCaseTest extends AppTestCase
     }
 
     /**
-     * @test
      */
+    #[Test]
     public function keyCaseFiltersShouldProduceConsistentResults()
     {
         $result = Helpers::camelCaseArrayKeys(Helpers::snakeCaseArrayKeys(Helpers::camelCaseArrayKeys(Helpers::snakeCaseArrayKeys(self::MIXED_CASES))));

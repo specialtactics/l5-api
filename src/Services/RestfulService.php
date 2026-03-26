@@ -155,7 +155,7 @@ class RestfulService
      *
      * @throws StoreResourceFailedException
      */
-    public function validateResource($resource, array $data = null)
+    public function validateResource($resource, ?array $data = null)
     {
         // If no data is provided, validate the resource against it's present attributes
         if (is_null($data)) {

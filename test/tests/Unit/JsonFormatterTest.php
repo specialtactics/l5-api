@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Tests\Unit;
 
 use Mockery;
 use Specialtactics\L5Api\APIBoilerplate;
+use PHPUnit\Framework\Attributes\Test;
 use Specialtactics\L5Api\Tests\AppTestCase;
 use Specialtactics\L5Api\Http\Response\Format\Json;
 
@@ -12,8 +13,8 @@ class JsonFormatterTest extends AppTestCase
     /**
      * Check that the JSON Formatter, formats the meta key case correctly
      *
-     * @test
      */
+    #[Test]
     public function formatMetaArrayKeysAccordingToFormat()
     {
         $originalCase = APIBoilerplate::getRequestedKeyCaseFormat();

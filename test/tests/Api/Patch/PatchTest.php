@@ -3,13 +3,14 @@
 namespace Specialtactics\L5Api\Tests\Api\Patch;
 
 use Specialtactics\L5Api\Tests\AppTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class PatchTest extends AppTestCase
 {
     /**
      * @testdox Updating a forum description
-     * @test
      */
+    #[Test]
     public function patchForumDescription()
     {
         $description = 'Lorum Ipsum new discussions';

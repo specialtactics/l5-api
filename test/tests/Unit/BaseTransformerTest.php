@@ -4,6 +4,7 @@ namespace Specialtactics\L5Api\Tests\Unit;
 
 use Ramsey\Uuid\Uuid;
 use Specialtactics\L5Api\Tests\AppTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Specialtactics\L5Api\Tests\Fixtures\Models\ModelWithCasts;
 use Specialtactics\L5Api\Tests\Fixtures\Models\ModelWithIdPK;
 use Specialtactics\L5Api\Transformers\RestfulTransformer;
@@ -14,8 +15,8 @@ class BaseTransformerTest extends AppTestCase
      * Check that if a model has a primary key called "id", that it will be transformed correctly,
      * rather than being unset
      *
-     * @test
      */
+    #[Test]
     public function canTransformModelWithPKOfId()
     {
         $model = new ModelWithIdPK(['example_attribute' => 'abc123']);
@@ -30,8 +31,8 @@ class BaseTransformerTest extends AppTestCase
     /**
      * Make sure that an array cast attribute is transformed correctly, in situations when it's blank
      *
-     * @test
      */
+    #[Test]
     public function nullArrayCastWillBeEmptyArray()
     {
         //

@@ -22,7 +22,7 @@
     "fakerphp/faker": "^1.24",
     "mockery/mockery": "^1.6",
     "nunomaduro/collision": "^8.6",
-    "phpunit/phpunit": "^11.5",
+    "phpunit/phpunit": "^12.0",
     "orchestra/testbench": "^11.3"
   },
   "autoload": {

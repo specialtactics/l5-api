@@ -5,6 +5,7 @@ namespace Specialtactics\L5Api\Tests\Unit;
 use Dingo\Api\Http\Request;
 use Mockery;
 use Specialtactics\L5Api\Http\Middleware\SnakeCaseInputParameterKeys;
+use PHPUnit\Framework\Attributes\Test;
 use Specialtactics\L5Api\Tests\BaseTestCase;
 
 class SnakeCaseMiddlewareTest extends BaseTestCase
@@ -12,8 +13,8 @@ class SnakeCaseMiddlewareTest extends BaseTestCase
     /**
      * Test that we are not snake_casing keys which are all uppercase
      *
-     * @test
      */
+    #[Test]
     public function dontTransformAllUpercaseKeys()
     {
         // Setup request
